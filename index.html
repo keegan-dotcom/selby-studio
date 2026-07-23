@@ -95,7 +95,8 @@ header.scrolled{background:rgba(11,11,13,.82);backdrop-filter:blur(14px);border-
 .hero-inner{padding-top:60px;padding-bottom:40px}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(52px,8.2vw,108px);line-height:1.02;letter-spacing:-.01em;margin:26px 0 34px;max-width:1000px}
 .hero h1 em{font-style:italic}
-.hero h1 .accent{color:var(--gold)}
+.hero h1 .accent{color:var(--gold);white-space:nowrap}
+@media(max-width:700px){.hero h1 .accent{white-space:normal}}
 .hero-sub{color:var(--muted);font-size:clamp(17px,1.6vw,20px);max-width:620px;line-height:1.7}
 .hero-sub b{color:var(--ink);font-weight:500}
 .hero-meta{display:flex;gap:44px;margin-top:64px;flex-wrap:wrap}
