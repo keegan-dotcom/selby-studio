@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Case for Disclosure</title>
+<meta name="description" content="A visual field guide to the UFO phenomenon: 5,000 years of sky visitors, crash stories, cockpit video and sworn testimony, with the pushback beside every claim.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* One visual world, dark by choice: deep-space ground, ice signal, amber warning. Layout: cinematic full-bleed bands, media-first cards. */
+  color-scheme:dark;
+  --void:#04050a; --ink:#0a0d15; --panel:#0f131d; --line:rgba(190,210,255,.13); --line2:rgba(190,210,255,.26);
+  --text:#e8ecf5; --mute:#8d96ab; --sig:#9cd0ff; --amber:#ffb476;
+  --rec:#9cd0ff; --wit:#b9f0dc; --clm:#ffb476; --myt:#cbb9ff; --hoax:#ff8a8a;
+  --display:"Instrument Serif","Cormorant Garamond",Georgia,serif;
+  --body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --gut:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--void);color:var(--text);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--sig);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+img,video{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+.mono{font:500 11px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.wrap{max-width:1360px;margin:0 auto;padding:0 var(--gut)}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;gap:16px;padding:12px var(--gut);pointer-events:none}
+.nav>*{pointer-events:auto}
+.brand{font:400 22px/1 var(--display);color:var(--text);letter-spacing:.02em;white-space:nowrap}
+.brand i{color:var(--sig);font-style:italic}
+.pill{margin:0 auto;display:flex;gap:2px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(8,10,17,.72);backdrop-filter:blur(14px);overflow-x:auto;max-width:min(880px,calc(100vw - 32px));scrollbar-width:none}
+.pill::-webkit-scrollbar{display:none}
+.pill a{font:500 12px/1 var(--body);color:var(--mute);padding:8px 12px;border-radius:999px;white-space:nowrap}
+.pill a:hover{color:var(--text);text-decoration:none}
+.pill a.on{background:var(--text);color:#06070c}
+.prog{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,var(--sig),var(--amber));z-index:60}
+@media (max-width:900px){.brand{display:none}.nav{padding:8px}}
+
+/* hero */
+.hero{position:relative;min-height:min(100svh,980px);display:grid;grid-template-rows:1fr auto;overflow:hidden;background:radial-gradient(120% 90% at 70% 110%,#3a2414 0,#0b1730 38%,#04050a 72%)}
+#sky{position:absolute;inset:0;width:100%;height:100%}
+.rings{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
+.rings *{fill:none;stroke:rgba(220,232,255,.34);stroke-width:1;vector-effect:non-scaling-stroke}
+.rings .spin{transform-origin:600px 400px;animation:spin 140s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-mid{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(12px,3vw,48px);padding:120px var(--gut) 40px}
+.hero h1{display:contents}
+.hero h1 span{font-size:clamp(46px,7.4vw,132px);line-height:.88;text-transform:uppercase;letter-spacing:-.015em;text-shadow:0 2px 40px rgba(0,0,0,.55)}
+.hero h1 .l{justify-self:start}.hero h1 .c{font-style:italic;text-transform:none;font-size:clamp(34px,4.6vw,84px);color:var(--sig)}.hero h1 .r{justify-self:end;text-align:right}
+.hero-top{position:absolute;left:0;right:0;top:92px;text-align:center}
+.hero-sub{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);width:min(560px,calc(100% - 32px));text-align:center;color:#cfd7e8;font-size:15px;text-shadow:0 1px 16px #000}
+.hero-idx{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0;padding:0 var(--gut) 22px}
+.hero-idx a{display:block;padding:14px 10px 0 0;border-top:1px solid var(--line2);color:var(--text);font-size:13px}
+.hero-idx a b{display:block;font:500 11px var(--mono);color:var(--mute);margin-bottom:5px;letter-spacing:.1em}
+.hero-idx a:hover{text-decoration:none;border-top-color:var(--sig)}
+@media (max-width:760px){.hero-mid{grid-template-columns:1fr;justify-items:center;text-align:center;padding-top:150px;gap:4px}.hero h1 .l,.hero h1 .r{justify-self:center;text-align:center}.hero-sub{position:static;transform:none;margin:22px auto 0;grid-column:1}.hero-idx{grid-template-columns:repeat(3,1fr)}}
+
+/* sections */
+section{position:relative;padding:clamp(72px,10vw,140px) 0 0}
+.head{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:end;margin-bottom:clamp(24px,4vw,44px)}
+.head .mono{grid-column:1/-1}
+.head h2{font-size:clamp(40px,6vw,92px);line-height:.95}
+.head h2 i{color:var(--sig)}
+.head p{color:var(--mute);max-width:46ch;justify-self:end;font-size:15px;padding-bottom:8px}
+@media (max-width:760px){.head{grid-template-columns:1fr}.head p{justify-self:start}}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border:1px solid var(--line2);border-radius:999px;color:var(--text);background:transparent;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c,var(--mute))}
+.chip.plain::before{display:none}
+button.chip[aria-pressed="true"]{background:var(--text);color:#06070c;border-color:var(--text)}
+.t-rec{--c:var(--rec)}.t-wit{--c:var(--wit)}.t-clm{--c:var(--clm)}.t-myt{--c:var(--myt)}.t-hoax{--c:var(--hoax)}
+
+/* media frame */
+.media{position:relative;aspect-ratio:16/10;background:#080a11;overflow:hidden;border-radius:10px 10px 0 0}
+.media>img,.media>video,.media>iframe,.media .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0}
+.media>img.doc{object-position:top}
+.media .face{position:absolute;inset:0;display:block;color:#fff}
+.media .face::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.72))}
+.media .play{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px;border-radius:50%;background:rgba(6,8,14,.62);border:1px solid rgba(255,255,255,.55);backdrop-filter:blur(6px);z-index:2;display:grid;place-items:center;transition:transform .2s}
+.media .play::before{content:"";border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.media .face:hover .play{transform:scale(1.08);background:var(--sig)}
+.media .cap{position:absolute;left:10px;right:10px;bottom:8px;z-index:2;font-size:12px;line-height:1.3;color:#e8ecf5;text-shadow:0 1px 6px #000;pointer-events:none}
+.media .src{position:absolute;right:8px;top:8px;z-index:3;font:500 10px var(--mono);letter-spacing:.06em;color:#dfe6f5;background:rgba(6,8,14,.6);padding:4px 6px;border-radius:5px;backdrop-filter:blur(6px)}
+.media .tabs{position:absolute;left:8px;top:8px;z-index:3;display:flex;gap:4px}
+.media .tabs button{width:26px;height:22px;border-radius:5px;border:1px solid rgba(255,255,255,.3);background:rgba(6,8,14,.6);font:500 10px var(--mono);color:#fff;backdrop-filter:blur(6px);padding:0}
+.media .tabs button[aria-pressed="true"]{background:#fff;color:#000}
+.tile{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(90% 120% at 80% 110%,color-mix(in srgb,var(--c,var(--sig)) 30%,#05060b) 0,#0a0e18 55%,#05060b 100%)}
+.tile b{font:400 clamp(42px,6vw,84px)/1 var(--display);color:color-mix(in srgb,var(--c,var(--sig)) 70%,#fff);opacity:.9;letter-spacing:-.02em;text-align:center;padding:0 10px}
+.tile::before{content:"";position:absolute;inset:-40%;background:repeating-radial-gradient(circle at 50% 50%,transparent 0 22px,rgba(255,255,255,.045) 22px 23px)}
+
+/* reel */
+.reel{display:grid;grid-auto-flow:column;grid-auto-columns:min(78vw,520px);gap:14px;overflow-x:auto;padding:0 var(--gut) 18px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.reel>div{scroll-snap-align:start}
+.reel .media{border-radius:12px}
+.reel h3{font-size:26px;margin-top:10px}
+.reel .mono{margin-top:3px}
+
+/* primer */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.facts div{background:var(--ink);padding:22px}
+.facts b{display:block;font:400 clamp(40px,5vw,64px)/1 var(--display);color:var(--sig);font-variant-numeric:tabular-nums}
+.facts span{display:block;color:var(--mute);font-size:14px;margin-top:8px}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;color:var(--mute);font-size:13px}
+.key span{display:flex;align-items:center;gap:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px}
+.two>div{background:var(--ink);padding:22px}
+.two h3{font-size:28px;margin-bottom:10px}
+.two ul{margin:0;padding:0 0 0 18px;color:#c9d1e2;font-size:14.5px;display:grid;gap:7px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+
+/* timeline */
+.tools{position:sticky;top:58px;z-index:20;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px var(--gut);margin:0 calc(var(--gut)*-1) 18px;background:linear-gradient(180deg,rgba(4,5,10,.94),rgba(4,5,10,.8));backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tools input{flex:1 1 180px;min-width:150px;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:8px 14px;color:var(--text);font:400 14px var(--body)}
+.tools .sp{width:1px;height:20px;background:var(--line2)}
+.era{display:grid;grid-template-columns:auto 1fr auto;gap:6px 18px;align-items:baseline;border-top:1px solid var(--line2);padding:18px 0 14px;margin-top:44px}
+.era h3{font-size:clamp(30px,4vw,54px)}
+.era .mono:last-child{text-align:right}
+.era p{grid-column:1/-1;color:var(--mute);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;display:flex;flex-direction:column;border-top:2px solid var(--c)}
+.card .body{padding:14px 16px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h4{font:400 25px/1.08 var(--display);margin:0;text-wrap:balance}
+.card .where{color:var(--mute);font-size:13px}
+details{border-top:1px solid var(--line);margin-top:auto}
+details>summary{list-style:none;cursor:pointer;padding:10px 0 0;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sig);display:flex;justify-content:space-between}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"+";font-size:15px;line-height:.8}
+details[open]>summary::after{content:"–"}
+.card details p{font-size:14.5px;color:#d5dbea;margin-top:10px}
+.card details .push{border-left:2px solid var(--amber);padding-left:11px;color:#c7cedd}
+.card details .push b{display:block;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
+.links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:13px}
+.empty{color:var(--mute);padding:40px 0;text-align:center}
+
+/* sites */
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:min(86vw,640px);gap:16px;overflow-x:auto;padding:0 var(--gut) 20px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.site{scroll-snap-align:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.site .media{aspect-ratio:16/9;border-radius:0}
+.site .over{position:absolute;inset:auto 0 0 0;z-index:2;padding:16px 18px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.85))}
+.site .over h3{font-size:clamp(30px,4.4vw,48px);line-height:1}
+.site .num{position:absolute;left:16px;top:10px;z-index:2;font:400 54px/1 var(--display);color:rgba(255,255,255,.85);text-shadow:0 2px 14px #000}
+.site .body{padding:14px 18px 16px;display:grid;gap:10px}
+.site .body p{font-size:14.5px;color:#d5dbea}
+.site .media .cap{display:none}
+.site .ab{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.site .ab b{display:block;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;color:var(--myt)}
+.site .ab div:last-child b{color:var(--amber)}
+@media (max-width:560px){.site .ab{grid-template-columns:1fr}}
+.arrows{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}
+.arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:transparent;font-size:18px}
+.arrows button:hover{background:var(--text);color:#000}
+
+/* beings / craft / generic cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px}
+.unit{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.unit .art{aspect-ratio:1/1;position:relative;background:radial-gradient(80% 80% at 50% 30%,#162036 0,#090c14 70%);display:grid;place-items:center;overflow:hidden}
+.unit .art.wide{aspect-ratio:16/10}
+.unit .art svg{width:72%;height:72%;overflow:visible}
+.unit .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.unit .body{padding:14px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.unit h3{font-size:30px;line-height:1}
+.unit dl{margin:8px 0 0;display:grid;gap:9px;font-size:14px}
+.unit dt{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.unit dd{margin:2px 0 0;color:#d5dbea}
+.unit dd.warn{border-left:2px solid var(--amber);padding-left:10px}
+.lineup{border:1px solid var(--line);border-radius:14px;background:radial-gradient(90% 120% at 50% 100%,#131d33 0,#090c14 70%);overflow-x:auto}
+.lineup svg{display:block;width:100%;min-width:760px;height:auto}
+.float{animation:float 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-7px)}}
+.blink{animation:blink 2.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:18px}
+.obs div{background:var(--ink);padding:18px}
+.obs b{font:400 44px/1 var(--display);color:var(--sig)}
+.obs h4{font:400 22px/1.1 var(--display);margin:6px 0 6px}
+.obs p{font-size:13.5px;color:var(--mute)}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+
+/* drake */
+.drake{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.eq{font:400 clamp(20px,2.6vw,32px)/1.2 var(--display);color:var(--text);margin-bottom:16px;overflow-x:auto;white-space:nowrap}
+.eq i{color:var(--sig)}
+.sl{display:grid;grid-template-columns:44px 1fr 92px;gap:4px 12px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.sl b{font:italic 400 22px var(--display);color:var(--sig)}
+.sl label{font-size:13px;color:#cfd6e6}
+.sl output{font:500 13px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.sl input{grid-column:2/4;width:100%;accent-color:var(--sig)}
+.sl small{grid-column:2/4;color:var(--mute);font-size:12px}
+.N{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--line2)}
+.N b{font:400 clamp(48px,7vw,96px)/1 var(--display);color:var(--amber);font-variant-numeric:tabular-nums}
+.N span{color:var(--mute);font-size:14px;max-width:34ch}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.stack{display:grid;gap:14px}
+.stack .media{border-radius:12px}
+
+/* table-like */
+.rows{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.rw{display:grid;grid-template-columns:86px 1fr 1.5fr 1.2fr;gap:14px;padding:13px 16px;border-top:1px solid var(--line);font-size:14px;align-items:start;background:var(--ink);border-left:2px solid var(--c)}
+.rw:first-child{border-top:0}
+.rw b{font:400 24px/1 var(--display)}
+.rw span:nth-child(2){color:var(--mute)}
+.rw span:last-child{color:#c7cedd;font-size:13px}
+@media (max-width:820px){.rw{grid-template-columns:70px 1fr}.rw span{grid-column:2}}
+.acc details{border:1px solid var(--line);border-radius:10px;padding:2px 16px 14px;background:var(--ink);margin:0 0 8px}
+.acc summary{font:400 24px var(--display);letter-spacing:0;text-transform:none;color:var(--text);padding:12px 0 0}
+.acc p{color:#cdd4e3;font-size:14.5px;margin-top:8px;max-width:78ch}
+
+/* voices */
+.vgroup{margin-top:26px}
+.vgroup h3{font-size:30px;margin-bottom:10px}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:8px}
+.people details{border:1px solid var(--line);border-radius:10px;background:var(--ink);padding:0 14px 12px;margin:0}
+.people summary{display:grid;grid-template-columns:1fr auto;gap:2px 8px;letter-spacing:0;text-transform:none;padding:12px 0 0}
+.people summary b{font:400 22px/1.1 var(--display);color:var(--text)}
+.people summary span{grid-column:1;font:400 12.5px var(--body);color:var(--mute)}
+.people summary::after{grid-row:1;grid-column:2}
+.people p{font-size:14px;color:#d0d7e6;margin-top:8px}
+
+/* films */
+.films{display:grid;grid-auto-flow:column;grid-auto-columns:min(74vw,360px);gap:14px;overflow-x:auto;padding:0 var(--gut) 18px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.film{scroll-snap-align:start}
+.film .media{border-radius:12px;aspect-ratio:16/10}
+.film .poster{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:16px;background:linear-gradient(160deg,hsl(var(--h) 46% 22%),#07090f 68%);color:#fff}
+.film .poster b{font:400 62px/1 var(--display);opacity:.9}
+.film .poster h3{font-size:27px;line-height:1.02;max-width:86%}
+.film .poster .mono{color:#ffd9b8}
+.film p{font-size:14px;color:var(--mute);margin-top:9px}
+
+/* thesis */
+.thesis{background:radial-gradient(100% 60% at 50% 0,#14203a 0,var(--void) 70%)}
+.th{display:grid;grid-template-columns:minmax(64px,120px) 1fr;gap:10px 24px;padding:30px 0;border-top:1px solid var(--line2)}
+.th>div{min-width:0}
+.th>b{font:400 clamp(54px,8vw,110px)/.85 var(--display);color:var(--amber)}
+.th h3{font-size:clamp(32px,4.6vw,62px);line-height:1}
+.th .say{font-size:17px;color:#dfe5f2;max-width:66ch;margin-top:12px}
+.th details{max-width:66ch;margin-top:14px}
+.th details div{display:grid;gap:12px;margin-top:12px;font-size:14.5px;color:#cfd6e6}
+.th details b{display:block;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--wit);margin-bottom:3px}
+.th details div p:last-child b{color:var(--amber)}
+.th .inset{margin-top:16px;max-width:66ch}
+@media (max-width:600px){.th{grid-template-columns:1fr}}
+.close{font:italic 400 clamp(28px,4vw,54px)/1.12 var(--display);max-width:22em;margin:60px 0 0;color:var(--text)}
+
+.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px}
+.lib h3{font-size:32px;margin-bottom:8px}
+.lib li{list-style:none;padding:10px 0;border-top:1px solid var(--line);font-size:14.5px}
+.lib ul{margin:0;padding:0}
+.lib li span{display:block;color:var(--mute);font-size:13px}
+footer{margin-top:110px;border-top:1px solid var(--line);padding:26px 0 60px;color:var(--mute);font-size:13px}
+footer p{max-width:86ch;margin-top:8px}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<nav class="nav" aria-label="Sections">
+  <a class="brand" href="#top">Disclosure<i>.</i></a>
+  <div class="pill" id="pill">
+    <a href="#footage">Footage</a><a href="#start">Start here</a><a href="#timeline">Timeline</a><a href="#sites">Sacred sites</a><a href="#beings">Beings</a><a href="#craft">Craft</a><a href="#origins">Origins</a><a href="#math">The math</a><a href="#retrievals">Crash retrievals</a><a href="#voices">Voices</a><a href="#thesis">The thesis</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <svg class="rings" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="spin"><circle cx="600" cy="400" r="150"/><circle cx="600" cy="400" r="270" stroke-dasharray="2 9"/><circle cx="600" cy="400" r="390"/><circle cx="600" cy="400" r="540" stroke-dasharray="1 14"/><path d="M600 10V120M600 680V790M210 400H320M880 400H990"/></g>
+    <path d="M0 400H1200M600 0V800" stroke-dasharray="1 10"/>
+  </svg>
+  <p class="mono hero-top">A visual field guide to the phenomenon · updated November 2026</p>
+  <div class="hero-mid">
+    <h1><span class="l">The<br>case</span><span class="c">for</span><span class="r">Disclosure</span></h1>
+    <p class="hero-sub">Five thousand years of sky visitors, crash stories, cockpit video and sworn testimony. Watch the evidence, then read the pushback beside every claim.</p>
+  </div>
+  <div class="hero-idx" id="idx"></div>
+</header>
+
+<main>
+<section id="footage">
+  <div class="wrap head"><span class="mono">01 · Footage</span><h2>Watch <i>first</i></h2><p>Military footage the US government has released, and the clips Congress has been shown.</p></div>
+  <div class="reel" id="reel"></div>
+</section>
+
+<section id="start"><div class="wrap">
+  <div class="head"><span class="mono">02 · Start here</span><h2>What is <i>known</i></h2><p>Disclosure means a government saying openly what it knows about UFOs, now officially called UAP. Here is the ground nobody disputes.</p></div>
+  <div class="facts">
+    <div><b>12,618</b><span>reports logged by the Air Force's Project Blue Book, 1947 to 1969. It left 701 unidentified.</span></div>
+    <div><b>143 / 144</b><span>military reports the US intelligence community could not explain in its 2021 assessment.</span></div>
+    <div><b>1,652</b><span>reports held by the Pentagon's UAP office by late 2024. It said 21 new cases had no answer.</span></div>
+    <div><b>34</b><span>officials who went on camera in 2025 to allege a hidden recovery program.</span></div>
+    <div><b>5</b><span>batches of government UFO files published since May 2026 under a presidential directive.</span></div>
+  </div>
+  <div class="two">
+    <div><h3>On the record</h3><ul><li>The US military studies these objects and has since 1947.</li><li>Three Navy videos are authentic and still unidentified.</li><li>Officers have testified under oath that a crash retrieval program exists.</li><li>Congress has voted for a review board with subpoena power.</li></ul></div>
+    <div><h3>Still unproven</h3><ul><li>That any object is non-human technology.</li><li>That any craft, material or body is in government hands.</li><li>Every retrieval account so far is testimony. No hardware has been shown.</li><li>The official position is that there is no evidence of visitors.</li></ul></div>
+  </div>
+  <div class="key" id="key"></div>
+</div></section>
+
+<section id="timeline"><div class="wrap">
+  <div class="head"><span class="mono">03 · Timeline</span><h2>The <i>record</i></h2><p><span id="count"></span> events from Sumer to this month. Open any card for the case and the pushback.</p></div>
+  <div class="tools" id="tools"><input id="q" type="search" placeholder="Search: Roswell, nuclear, Grusch…" aria-label="Search the timeline"></div>
+  <div id="tl"></div>
+</div></section>
+
+<section id="sites">
+  <div class="wrap"><div class="head"><span class="mono">04 · Sacred sites</span><h2>Where the gods <i>landed</i></h2><p>Twelve monuments the ancient-astronaut reading returns to, with what archaeologists found.</p></div>
+  <div class="arrows"><button id="sprev" aria-label="Previous site">←</button><button id="snext" aria-label="Next site">→</button></div></div>
+  <div class="rail" id="rail"></div>
+</section>
+
+<section id="beings"><div class="wrap">
+  <div class="head"><span class="mono">05 · Beings</span><h2>Who people <i>see</i></h2><p>The types that recur in witness reports, and where each one first appears.</p></div>
+  <div class="lineup" id="lineup"></div>
+  <p class="mono" style="margin:10px 0 28px">Heights as witnesses most often report them, drawn to one scale</p>
+  <div class="cards" id="beingsGrid"></div>
+</div></section>
+
+<section id="craft"><div class="wrap">
+  <div class="head"><span class="mono">06 · Craft</span><h2>What people <i>see</i></h2><p>Ten shapes. Orbs and lights make up most of today's military reports.</p></div>
+  <div class="cards" id="craftGrid"></div>
+  <div class="split" style="margin-top:44px">
+    <div><span class="mono">The observables</span><h3 style="font-size:clamp(30px,4vw,52px);margin:6px 0 0">Why these are not aircraft</h3><div class="obs" id="obs"></div></div>
+    <div class="stack" id="obsVid"></div>
+  </div>
+</div></section>
+
+<section id="origins"><div class="wrap">
+  <div class="head"><span class="mono">07 · Origins</span><h2>Where they are <i>from</i></h2><p>Nine explanations, each with its best argument and its hardest problem.</p></div>
+  <div class="cards" id="originGrid"></div>
+</div></section>
+
+<section id="math"><div class="wrap">
+  <div class="head"><span class="mono">08 · The math</span><h2>Are we <i>alone?</i></h2><p>In 1950 Enrico Fermi asked where everybody is. In 1961 Frank Drake wrote an equation for it. Move the sliders.</p></div>
+  <div class="split">
+    <div class="drake" id="drake"></div>
+    <div class="stack" id="mathVid"></div>
+  </div>
+  <h3 style="font-size:clamp(30px,4vw,52px);margin:54px 0 16px">Eight answers to Fermi</h3>
+  <div class="cards" id="fermiGrid"></div>
+</div></section>
+
+<section id="retrievals"><div class="wrap">
+  <div class="head"><span class="mono">09 · Crash retrievals</span><h2>The <i>legacy</i> program</h2><p>Every major claim that someone holds a craft, in date order, with its standing.</p></div>
+  <div class="rows" id="retRows"></div>
+  <h3 style="font-size:clamp(30px,4vw,52px);margin:54px 0 16px">Could it fly? The physics on the table</h3>
+  <div class="acc" id="physics"></div>
+</div></section>
+
+<section id="voices"><div class="wrap">
+  <div class="head"><span class="mono">10 · Voices</span><h2>Who to <i>listen</i> to</h2><p>The people carrying the argument, and the ones testing it.</p></div>
+  <div id="voiceGroups"></div>
+</div></section>
+
+<section id="thesis" class="thesis"><div class="wrap">
+  <div class="head"><span class="mono">11 · The thesis</span><h2>What I think it <i>adds up to</i></h2><p>Everything above is the record. This last chapter is one person's reading of it, with the weak points left in.</p></div>
+  <div id="thesisList"></div>
+  <p class="close">They were here before we could write. They are in our oldest stories and maybe in our cells. The proof will be something no agency can classify.</p>
+</div></section>
+
+<section id="deeper"><div class="wrap">
+  <div class="head"><span class="mono">12 · Go deeper</span><h2>Keep <i>going</i></h2><p>Where to watch, listen and read, and the primary sources behind this page.</p></div>
+  <div class="lib" id="lib"></div>
+</div></section>
+
+<footer><div class="wrap">
+  <span class="mono">About this page</span>
+  <p>Evidence ratings are editorial judgements. Video and photographs load from Wikimedia Commons and YouTube and remain the property of their makers. Commons items are credited on each frame with their licence, and the label links to the file page. Government footage is in the public domain. Last updated 13 November 2026.</p>
+</div></footer>
+</main>
+
+<script src="data/timeline.js"></script>
+<script src="data/atlas.js"></script>
+<script src="data/media.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
