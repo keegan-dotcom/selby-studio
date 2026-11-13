@@ -1,6 +1,8 @@
 /* Original AI illustrations generated for this site (Higgsfield, GPT Image). They are reconstructions of witness descriptions, not photographs. */
 window.ART_BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3JmN8ceS5QkrfG5ooFzPEFDS1rx/";
 window.ART = {
+ "saucer": "hf_20261113_225010_e8c38b5e-476c-4711-a8ee-6b867813e2db.png",
+ "hero": "hf_20261113_225010_1acf85a3-c8a6-468f-9aca-e5d1bf432b67.png",
  "origin": ["hf_20261113_224029_950d5057-ea28-4a18-aac1-818f17ee0c83.png", "hf_20261113_224029_ccc6beca-ee26-41ad-92b1-6f3fe4284662.png", "hf_20261113_224029_18a2a9a4-26e7-4c42-be28-c8fe824b03d7.png", "hf_20261113_224028_20b1fb02-5e5c-4f96-8ddc-9f0e09a1bbb2.png", "hf_20261113_220936_751b6152-194b-4ec8-b4f3-62f4cca9f64f.png", "hf_20261113_224106_c318ea4e-1775-49c9-bca2-092e92891510.png", "hf_20261113_224107_f728b16e-0c4d-4285-add4-03b9148f37ec.png", "hf_20261113_224109_14e3ebbc-2f3d-4fe3-b2fa-d298a0dd8a35.png", "hf_20261113_224108_a3b17c93-40e7-422b-93a1-5fb66d059830.png"],
  "psi": "hf_20261113_223537_1fa74941-7dc4-4d0c-953d-37956c7faf8f.png",
  "lineup": "hf_20261113_220115_b53c0c25-f66a-4b0c-9ec7-52a451f55c74.png",

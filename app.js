@@ -148,60 +148,63 @@ function frame() {
 const countries = new Set(window.PROGRAMS.map(p => p.c)).size;
 [["Record:", `${window.TIMELINE.length} events, from Sumer to this month.`], ["Footage:", "Ten clips. Seven come from government archives."], ["Programs:", `${window.PROGRAMS.length} known or alleged, across ${countries} countries.`], ["Verdict:", "Open. No craft has been shown in public."]]
   .forEach(([k, v], i) => $("#facts").append(h("div", { class: "fact", style: `--i:${i}` }, h("dt", { text: k }), h("dd", { text: v }))));
-const hero = $("#top"), pc = $("#portal-canvas"), px = pc.getContext("2d"), pv = $("#portal-video"), portalBtn = $("#portal");
-const earth = new Image(); earth.src = cImg(window.BG.earth[0], 1400);
-let rotX = 0, rotY = 0, tX = 0, tY = 0, expansion = 0, maskScale = 0, busy = false, heroOn = true, pT = performance.now();
-const sizePortal = () => { const d = Math.min(devicePixelRatio || 1, 2); pc.width = hero.clientWidth * d; pc.height = hero.clientHeight * d; px.setTransform(d, 0, 0, d, 0, 0); };
-sizePortal(); addEventListener("resize", sizePortal);
-addEventListener("pointermove", e => { if (busy || !heroOn || e.pointerType === "touch") return; tY = (e.clientX / innerWidth - .5) * 37.4; tX = (e.clientY / innerHeight - .5) * -33; });
-document.addEventListener("pointerleave", () => { tX = tY = 0; });
-function drawCover() {
-  const W = hero.clientWidth, H = hero.clientHeight, vid = pv.readyState >= 2, img = earth.complete && earth.naturalWidth;
-  if (vid || img) { const m = vid ? pv : earth, mw = vid ? pv.videoWidth : earth.naturalWidth, mh = vid ? pv.videoHeight : earth.naturalHeight, s = Math.max(W / mw, H / mh) * (vid ? 1 : .62); px.fillStyle = "#020203"; px.fillRect(0, 0, W, H); px.drawImage(m, (W - mw * s) / 2, (H - mh * s) / 2, mw * s, mh * s); }
-  else { const g = px.createRadialGradient(W / 2, H * .62, 10, W / 2, H * .62, H * .5); g.addColorStop(0, "#9fd8ff"); g.addColorStop(.5, "#1f5fae"); g.addColorStop(1, "#020308"); px.fillStyle = "#020203"; px.fillRect(0, 0, W, H); px.fillStyle = g; px.beginPath(); px.arc(W / 2, H * .62, H * .34, 0, 7); px.fill(); }
-}
-function portalFrame(now) {
-  if (heroOn) {
-    const dt = Math.min(40, now - pT); pT = now; rotX += (tX - rotX) * Math.min(1, dt * .009); rotY += (tY - rotY) * Math.min(1, dt * .009);
-    const W = hero.clientWidth, H = hero.clientHeight, hr = hero.getBoundingClientRect(), r = portalBtn.getBoundingClientRect(), e = expansion;
-    const rcx = r.left + r.width / 2 - hr.left, rcy = r.top + r.height / 2 - hr.top, cx = rcx + (W / 2 - rcx) * e, cy = rcy + (H / 2 - rcy) * e;
-    const sc = e ? 1 : maskScale, w = (r.width + (W - r.width) * e) * sc, hh = (r.height + (H - r.height) * e) * sc, rad = Math.min(parseFloat(getComputedStyle(portalBtn).borderRadius) * (1 - e) * sc, w / 2, hh / 2), ax = rotX * (1 - e) * Math.PI / 180, ay = rotY * (1 - e) * Math.PI / 180;
-    px.clearRect(0, 0, W, H);
-    if (w > 1 && hh > 1) { const path = new Path2D();
-      [[w / 2 - rad, -hh / 2 + rad, -Math.PI / 2], [w / 2 - rad, hh / 2 - rad, 0], [-w / 2 + rad, hh / 2 - rad, Math.PI / 2], [-w / 2 + rad, -hh / 2 + rad, Math.PI]].forEach(([ox, oy, a0], ci) => { for (let i = 0; i <= 10; i++) { const a = a0 + Math.PI / 2 * i / 10, x = ox + Math.cos(a) * rad, y = oy + Math.sin(a) * rad, z = x * Math.sin(ay) - y * Math.sin(ax), p = 850 / (850 + z), sx = cx + x * Math.cos(ay) * p, sy = cy + y * Math.cos(ax) * p; ci + i ? path.lineTo(sx, sy) : path.moveTo(sx, sy); } });
-      path.closePath(); px.save(); px.clip(path); drawCover(); px.restore();
-      if (e < .02 && sc > .5) { px.strokeStyle = "rgba(233,237,240,.45)"; px.lineWidth = 1; px.stroke(path); } }
-  }
-  requestAnimationFrame(portalFrame);
-}
-new IntersectionObserver(es => { heroOn = es[0].isIntersecting; if (heroOn) { $("#hero-bg").play().catch(() => {}); pv.play().catch(() => {}); } else { $("#hero-bg").pause(); pv.pause(); } }).observe(hero);
-const revealMask = () => { maskScale = 0; return animate(v => maskScale = v, 1050); };
-async function travel() {
-  if (busy) return; busy = true; tX = tY = 0; hero.classList.add("go"); document.body.classList.add("lock"); scrollTo(0, 0);
-  try { pv.currentTime = 0; pv.playbackRate = 1.3; await pv.play(); } catch (e) {}
-  await animate(v => expansion = v, 1100); await new Promise(r => setTimeout(r, pv.readyState >= 2 ? 1500 : 500));
-  document.documentElement.style.scrollBehavior = "auto"; document.body.classList.remove("lock"); $("#record").scrollIntoView(); document.documentElement.style.scrollBehavior = "";
-  expansion = 0; maskScale = 0; pv.playbackRate = 1; hero.classList.remove("go"); busy = false; revealMask();
-}
-portalBtn.onclick = travel;
+const hero = $("#top");
+$("#portal-img").src = window.ART_BASE + window.ART.being.grey;
+{ const pw = $(".portal-wrap"); let rx = 0, ry = 0, tx = 0, ty = 0; if (FINE && !STILL) { addEventListener("pointermove", e => { ty = (e.clientX / innerWidth - .5) * 30; tx = (e.clientY / innerHeight - .5) * -24; }); const tick = () => { rx += (tx - rx) * .08; ry += (ty - ry) * .08; $("#portal").style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; requestAnimationFrame(tick); }; tick(); } }
+$("#hero-plate").style.backgroundImage = `url("${window.ART_BASE + window.ART.hero}")`;
+if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate").style.translate = `${(e.clientX / innerWidth - .5) * -24}px ${(e.clientY / innerHeight - .5) * -16}px`; });
 
 /* ───────── hero chapter tabs ───────── */
 (() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[6]]];
   T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
 
-/* ───────── preloader ───────── */
+/* ───────── intro: a craft crosses the night sky, lights you up and takes you ───────── */
 (() => {
-  const pre = $("#pre"), v = $("#pre-video"), val = $("#pre-val"), cnt = $("#pre-count"), logo = $("#logo"); let done = false, fake = 0;
-  const finish = () => { if (done) return; done = true; val.textContent = "100"; cnt.classList.add("bye"); logo.classList.add("dock"); pre.classList.add("done"); document.body.classList.add("ready");
-    const bg = $("#hero-bg"); bg.play().then(() => bg.classList.add("vis")).catch(() => {}); bg.addEventListener("playing", () => bg.classList.add("vis"), { once: true }); pv.play().catch(() => {});
-    revealMask(); setTimeout(() => hero.classList.add("show"), 850); setTimeout(() => cnt.remove(), 750); setTimeout(() => { logo.classList.add("set"); v.removeAttribute("src"); v.load(); }, 2000); };
-  const fakeRun = () => { if (fake) return; const t0 = performance.now(); fake = 1; const f = now => { if (done) return; const t = Math.min(1, (now - t0) / 2200); val.textContent = Math.round(ease(t) * 100); t < 1 ? requestAnimationFrame(f) : finish(); }; requestAnimationFrame(f); };
-  if (STILL) return finish();
-  const tick = () => { if (done || fake) return; if (v.duration) val.textContent = Math.round(v.currentTime / v.duration * 100); requestAnimationFrame(tick); };
-  const start = () => { if (fake || done) return; v.playbackRate = Math.max(.25, v.duration / 3); v.play().then(tick).catch(fakeRun); };
-  v.readyState >= 1 ? start() : v.addEventListener("loadedmetadata", start, { once: true });
-  v.addEventListener("ended", finish); v.addEventListener("error", fakeRun);
-  setTimeout(() => { if (!done && !(v.currentTime > 0)) fakeRun(); }, 1800); setTimeout(finish, 7000);
+  const pre = $("#pre"), cv = $("#abduct"), cx = cv.getContext("2d"), cue = $("#pre-cue"), logo = $("#logo"); let done = false, t0 = 0, raf = 0;
+  const finish = () => { if (done) return; done = true; cancelAnimationFrame(raf); logo.classList.add("dock"); pre.classList.add("done"); document.body.classList.add("ready"); setTimeout(() => hero.classList.add("show"), 250); setTimeout(() => { logo.classList.add("set"); pre.remove(); }, 1600); try { sessionStorage.setItem("abducted", "1"); } catch (e) {} };
+  let seen = false; try { seen = sessionStorage.getItem("abducted") === "1"; } catch (e) {}
+  if (STILL || seen) { pre.classList.add("quick"); return finish(); }
+  const ship = new Image(); ship.src = window.ART_BASE + window.ART.saucer;
+  const SX = 40, SY = 130, SW = 1265, SH = 450, AX = 669 - SX, AY = 519 - SY; /* crop of the craft and its underside aperture */
+  let W, H, D; const size = () => { D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * D; cv.height = H * D; cx.setTransform(D, 0, 0, D, 0, 0); };
+  size(); addEventListener("resize", size);
+  const stars = Array.from({ length: 420 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + .2, p: Math.random() * 6.3 }));
+  const motes = Array.from({ length: 90 }, () => ({ x: Math.random() * 2 - 1, y: Math.random(), s: .2 + Math.random() * .8 }));
+  const cl = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), seg = (t, a, b) => cl((t - a) / (b - a)), eo = t => 1 - Math.pow(1 - t, 3), ei = t => t * t * t;
+  const draw = now => {
+    if (!t0) t0 = now; const t = (now - t0) / 1000;
+    const pIn = eo(seg(t, .9, 3.6)), pBeam = seg(t, 3.9, 4.8), pPull = seg(t, 4.8, 6.1);
+    const zoom = 1 + ei(pPull) * 7, shake = pPull * 9;
+    const tw = Math.min(W * .62, 900), sc = .05 + .95 * pIn;
+    const px0 = W * 1.05, py0 = H * .06, px1 = W / 2, py1 = H * .3;
+    const sx = px0 + (px1 - px0) * pIn + Math.sin(t * 2.2) * 6 * pIn, sy = py0 + (py1 - py0) * pIn + Math.sin(t * 1.6) * 5;
+    const sw = tw * sc, sh = sw * SH / SW, ax = sx - sw / 2 + AX / SW * sw, ay = sy - sh / 2 + AY / SH * sh;
+    cx.setTransform(D, 0, 0, D, 0, 0); cx.fillStyle = "#020306"; cx.fillRect(0, 0, W, H);
+    cx.save(); const kx = ax + (Math.random() - .5) * shake, ky = ay + (Math.random() - .5) * shake; cx.translate(kx, ky); cx.scale(zoom, zoom); cx.translate(-ax, -ay);
+    const fade = seg(t, 0, .9);
+    for (const st of stars) { const a = fade * (.35 + .65 * Math.abs(Math.sin(t * 1.3 + st.p))); cx.fillStyle = `rgba(220,232,255,${a})`; const x = st.x * W, y = st.y * H; cx.fillRect(x, y, st.r, st.r + pIn * (1 - pIn) * 3 * st.r); }
+    if (pBeam > 0) { const bw = W * .5 * eo(pBeam) + 40, top = sh * .06, flick = .85 + Math.random() * .15;
+      cx.globalCompositeOperation = "lighter";
+      const g = cx.createLinearGradient(0, ay, 0, H * 1.05); g.addColorStop(0, `rgba(235,245,255,${.85 * pBeam * flick})`); g.addColorStop(.5, `rgba(190,215,255,${.35 * pBeam})`); g.addColorStop(1, `rgba(170,200,255,${.12 * pBeam})`);
+      cx.fillStyle = g; cx.beginPath(); cx.moveTo(ax - top, ay); cx.lineTo(ax + top, ay); cx.lineTo(ax + bw, H * 1.05); cx.lineTo(ax - bw, H * 1.05); cx.closePath(); cx.fill();
+      const core = cx.createLinearGradient(0, ay, 0, H); core.addColorStop(0, `rgba(255,255,255,${.7 * pBeam})`); core.addColorStop(1, "rgba(255,255,255,0)"); cx.fillStyle = core; cx.beginPath(); cx.moveTo(ax - top * .5, ay); cx.lineTo(ax + top * .5, ay); cx.lineTo(ax + bw * .3, H); cx.lineTo(ax - bw * .3, H); cx.closePath(); cx.fill();
+      for (const m of motes) { m.y -= .004 * m.s * (1 + pPull * 4); if (m.y < 0) m.y += 1; const yy = ay + (H - ay) * m.y, half = top + (bw - top) * m.y, xx = ax + m.x * half * .8; cx.fillStyle = `rgba(255,255,255,${.6 * pBeam * m.s})`; cx.fillRect(xx, yy, 1.6 * m.s, 3 + pPull * 14 * m.s); }
+      cx.globalCompositeOperation = "source-over"; }
+    if (ship.complete && ship.naturalWidth && sc > 0) {
+      if (pIn < 1) { cx.globalAlpha = .18; for (let k = 1; k < 4; k++) cx.drawImage(ship, SX, SY, SW, SH, sx - sw / 2 + k * 14 * (1 - pIn), sy - sh / 2 - k * 4 * (1 - pIn), sw, sh); cx.globalAlpha = 1; }
+      cx.save(); cx.translate(sx, sy); cx.rotate(Math.sin(t * 1.9) * .035 * (1 - pBeam * .7) - (1 - pIn) * .12); cx.globalCompositeOperation = "lighter"; cx.drawImage(ship, SX, SY, SW, SH, -sw / 2, -sh / 2, sw, sh); cx.restore();
+      cx.globalCompositeOperation = "lighter"; const glow = cx.createRadialGradient(ax, ay, 0, ax, ay, sw * .35); glow.addColorStop(0, `rgba(255,255,255,${.25 + .5 * pBeam})`); glow.addColorStop(1, "rgba(255,255,255,0)"); cx.fillStyle = glow; cx.fillRect(ax - sw, ay - sw, sw * 2, sw * 2); cx.globalCompositeOperation = "source-over"; }
+    cx.restore();
+    const white = ei(seg(t, 5.2, 6.1)); if (white > 0) { cx.fillStyle = `rgba(245,250,255,${white})`; cx.fillRect(0, 0, W, H); }
+    cue.style.opacity = String(seg(t, .3, 1) * (1 - seg(t, 2.6, 3.2)));
+    if (t > 6.15) return finish();
+    raf = requestAnimationFrame(draw);
+  };
+  const go = () => { raf = requestAnimationFrame(draw); };
+  ship.decode ? ship.decode().then(go, go) : (ship.onload = go);
+  setTimeout(() => { if (!t0) go(); }, 2500);
+  const skip = () => { if (!done) { pre.classList.add("flash"); finish(); } };
+  $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
 })();
 
 /* ───────── reticle cursor: exact dot, lagging targeting box, live coordinates ───────── */
@@ -351,5 +354,5 @@ $("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.S
 $("#credits").append("Background photography: ", Object.values(window.BG).map(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Hero video from the Planet Jumping asset set.");
 
 new IntersectionObserver(es => document.body.classList.toggle("at-top", es[0].isIntersecting), { rootMargin: "-45% 0px -45% 0px" }).observe($("#top"));
-armBg(document); reveal(document); collectPar(); route(); parallax(); requestAnimationFrame(frame); requestAnimationFrame(portalFrame);
+armBg(document); reveal(document); collectPar(); route(); parallax(); requestAnimationFrame(frame);
 })();

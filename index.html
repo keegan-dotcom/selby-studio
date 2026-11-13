@@ -3,34 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Not Alone | Aliens 101</title>
+<title>We Are Not Alone | Aliens 101</title>
 <meta name="description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean. Watch the evidence, then read the pushback beside every claim.">
 <meta name="theme-color" content="#050608">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Not Alone | Aliens 101">
+<meta property="og:title" content="We Are Not Alone | Aliens 101">
 <meta property="og:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
 <meta property="og:url" content="https://wearenotalone.vercel.app/">
 <meta property="og:image" content="https://wearenotalone.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Not Alone | Aliens 101">
+<meta name="twitter:title" content="We Are Not Alone | Aliens 101">
 <meta name="twitter:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
 <meta name="twitter:image" content="https://wearenotalone.vercel.app/og.png">
-<link rel="preload" href="fonts/syncopate-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/astroz.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/nexus.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <canvas class="warp" id="warp" aria-hidden="true"></canvas>
 <div class="bar" id="bar"></div>
 
-<div class="pre" id="pre" aria-label="Loading"><video id="pre-video" muted playsinline preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/5fc5651c-3b5d-4171-b507-87f7e635d1b4.mp4"></video></div>
-<div class="pre-count" id="pre-count" aria-live="polite"><span id="pre-val">0</span><i>%</i></div>
-<a class="logo" id="logo" href="#top" aria-label="Not Alone, back to top">
+<div class="pre" id="pre" aria-hidden="true"><canvas id="abduct"></canvas><p class="pre-cue" id="pre-cue">Look up</p><button class="pre-skip" id="pre-skip" type="button">Skip</button></div>
+<a class="logo dock set" id="logo" href="#top" aria-label="We Are Not Alone, back to top">
   <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke="currentColor" stroke-width="1" stroke-dasharray="78 6 18 5"/><circle cx="20" cy="20" r="9.5" stroke="currentColor" stroke-width=".8" opacity=".55"/><circle cx="20" cy="20" r="2" fill="#d9a55c"/></svg>
-  <span>Not Alone</span>
+  <span>We Are Not Alone</span>
 </a>
 <div class="topfade"></div>
 <header class="top"><nav class="nav" id="nav" aria-label="Primary"></nav><button class="menu" id="menu" type="button" data-cur="Menu">Menu</button></header>
@@ -41,19 +41,18 @@
 
 <main>
 <section class="hero" id="top" data-name="Arrival">
-  <video class="bgv" id="hero-bg" muted playsinline loop preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/3c83091e-4046-4fd6-adbb-2edb728be79a.mp4"></video>
+  <div class="hero-plate" id="hero-plate"></div>
+  <div class="beam-shimmer"></div>
   <div class="shade"></div>
-  <canvas id="portal-canvas" aria-hidden="true"></canvas>
   <div class="portal-wrap chrome">
-    <div class="portal-heading"><span>Next:</span><span>[01] <strong>Earth</strong></span></div>
-    <button class="portal" id="portal" type="button" data-cur="Enter" aria-label="Enter: travel to Earth and start the timeline"></button>
+    <div class="portal-heading"><span>Watching:</span><span>[01] <strong>You</strong></span></div>
+    <a class="portal" id="portal" href="#record" data-cur="Enter" aria-label="Enter the timeline"><img id="portal-img" alt="" draggable="false"><span class="scan"></span></a>
   </div>
   <nav class="htabs chrome" id="htabs" aria-label="Chapters"></nav>
   <div class="hero-content chrome">
-    <h1>Not alone</h1>
+    <h1>We are<br>not alone</h1>
     <dl class="facts" id="facts"></dl>
   </div>
-  <video id="portal-video" muted playsinline loop preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/fc3ded42-e845-41f3-a830-5cab512d79cd.mp4" style="position:absolute;width:1px;height:1px;visibility:hidden"></video>
 </section>
 
 <section class="scene" id="footage" data-name="Footage"><div class="bg" data-bg="footage"></div><div class="veil"></div>
