@@ -563,3 +563,24 @@ body.lock .depth{opacity:0}
 .stage .list button::before{width:0;height:6px;background:var(--hot);transform:rotate(45deg)}
 .stage .list button[aria-pressed=true]::before{width:6px}
 @media (max-width:640px){.depth{bottom:12px}.depth b{font-size:18px}.depth i{height:44px}}
+
+/* ── tabs: home = hero + timeline + thesis; everything else is a view ── */
+.view{display:none}
+body[data-v=""] .view,body:not([data-v]) .view{display:none}
+.view.cur{display:block}
+body:not([data-v=""]):not(:not([data-v])) main>:not(.view){display:none}
+body[data-v]:not([data-v=""]) main>:not(.cur){display:none}
+body[data-v]:not([data-v=""]) .view.cur:first-of-type{padding-top:150px}
+body[data-v]:not([data-v=""]) .scene.cur{padding-top:clamp(130px,16vw,190px)}
+body[data-v]:not([data-v=""]) .stage.cur{padding-top:0}
+body[data-v]:not([data-v=""]) .rail{display:none}
+body[data-v]:not([data-v=""]) .bar{display:none}
+.top{left:calc(var(--pad) + 190px);justify-content:flex-end}
+.nav{height:auto;flex-wrap:wrap;justify-content:flex-end;border:0;background:transparent;backdrop-filter:none;gap:2px}
+.nav a{padding:10px 11px;font:500 14px/1 var(--body);color:var(--dim);border-bottom:1px solid transparent}
+.nav a.on{color:var(--fg);border-bottom-color:var(--hot)}
+.nav a:hover{color:var(--fg)}
+@media (max-width:1320px){.nav{display:none}}
+.topfade{position:fixed;z-index:58;left:0;right:0;top:0;height:96px;background:linear-gradient(rgba(5,6,8,.92),rgba(5,6,8,0));pointer-events:none;opacity:0;transition:opacity .4s}
+body[data-v]:not([data-v=""]) .topfade,body.scrolled .topfade{opacity:1}
+.tools{top:58px;padding-top:12px}

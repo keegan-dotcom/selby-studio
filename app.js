@@ -93,16 +93,29 @@ function deck(panels, cls) {
 addEventListener("resize", () => decks.forEach(d => d.isConnected ? d._upd() : decks.delete(d)));
 
 /* ───────── nav, rail, menu, hud ───────── */
-const SECTIONS = [["top", "Arrival"], ["footage", "Footage"], ["start", "Known"], ["record", "Record"], ["sites", "Sites"], ["beings", "Phenotypes"], ["craft", "Craft"], ["origins", "Theories"], ["psi", "Psi"], ["math", "The math"], ["programs", "Programs"], ["retrievals", "Retrievals"], ["voices", "Voices"], ["thesis", "Thesis"], ["deeper", "Go deeper"]];
-[["footage", "Footage"], ["record", "Record"], ["programs", "Programs"], ["thesis", "Thesis"]].forEach(([id, t]) => $("#nav").append(h("a", { href: "#" + id, text: t })));
-SECTIONS.slice(1).forEach(([id, t], i) => { $("#rail").append(h("a", { href: "#" + id, "data-s": id, text: t })); $("#full").append(h("a", { href: "#" + id, style: `--i:${i}`, onclick: () => menu(false) }, t)); });
+/* Home is the timeline and the thesis. Everything else opens as its own tab (#/craft style hashes still work as #craft). */
+const VIEWS = [["footage", "Evidence", ["footage", "start"]], ["beings", "Phenotypes"], ["craft", "Craft"], ["sites", "Sites"], ["origins", "Theories"], ["psi", "Psi"], ["programs", "Programs"], ["retrievals", "Retrievals"], ["math", "The math"], ["voices", "Voices"], ["deeper", "Library"]];
+const VIEW_OF = {}; VIEWS.forEach(([id, , ids]) => (ids || [id]).forEach(x => { VIEW_OF[x] = id; const el = document.getElementById(x); el.classList.add("view"); el.dataset.view = id; }));
+const SECTIONS = [["top", "Arrival"], ["record", "Timeline"], ["thesis", "Thesis"]];
+$("#nav").append(h("a", { href: "#top", "data-v": "", text: "Timeline" }), ...VIEWS.map(([id, t]) => h("a", { href: "#" + id, "data-v": id, text: t })));
+[["#top", "Timeline"], ["#thesis", "Thesis"], ...VIEWS.map(([id, t]) => ["#" + id, t])].forEach(([href, t], i) => $("#full").append(h("a", { href, style: `--i:${i}`, onclick: () => menu(false) }, t)));
 const menu = on => { $("#full").classList.toggle("open", on); document.body.classList.toggle("lock", on); };
 $("#menu").onclick = () => menu(true); $("#full-x").onclick = () => menu(false);
 addEventListener("keydown", e => { if (e.key === "Escape") menu(false); });
-const secIO = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const id = e.target.id, i = SECTIONS.findIndex(s => s[0] === id);
-  $$("#rail a").forEach(a => a.classList.toggle("on", a.dataset.s === id)); $$("#nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + id));
-  }), { rootMargin: "-45% 0px -50% 0px" });
-SECTIONS.forEach(([id]) => secIO.observe(document.getElementById(id)));
+function route() {
+  const id = decodeURIComponent(location.hash.replace(/^#\/?/, "")), v = VIEW_OF[id] || "";
+  const was = document.body.dataset.v || ""; document.body.dataset.v = v;
+  $$(".view").forEach(el => el.classList.toggle("cur", el.dataset.view === v));
+  $$("#nav a").forEach(a => a.classList.toggle("on", a.dataset.v === v));
+  document.documentElement.style.scrollBehavior = "auto";
+  if (v) { if (v !== was || id === v) scrollTo(0, 0); else document.getElementById(id).scrollIntoView(); }
+  else if (id) { const el = document.getElementById(id); if (el) el.scrollIntoView(); } else if (was) scrollTo(0, 0);
+  document.documentElement.style.scrollBehavior = "";
+  requestAnimationFrame(() => { decks.forEach(d => d.isConnected && d._upd()); collectPar(); parallax(); });
+}
+addEventListener("hashchange", route);
+/* timeline rail: one entry per era plus the thesis */
+const railIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) $$("#rail a").forEach(a => a.classList.toggle("on", a.dataset.s === e.target.id)); }), { rootMargin: "-45% 0px -50% 0px" });
 
 /* ───────── reveal + backgrounds + parallax ───────── */
 const rvIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rvIO.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
@@ -122,7 +135,7 @@ sizeWarp(); addEventListener("resize", sizeWarp);
 function frame() {
   const y = scrollY, d = document.documentElement, dv = y - lastY; lastY = y; vel += (dv - vel) * .2;
   $("#bar").style.width = (100 * y / Math.max(1, d.scrollHeight - d.clientHeight)) + "%";
-  { const pc = Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight)); $("#depth-n").textContent = pc + "%"; $("#depth-f").style.transform = `scaleY(${pc / 100})`; $("#depth").classList.toggle("on", y > innerHeight * .5); }
+  { const pc = Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight)); $("#depth-n").textContent = pc + "%"; $("#depth-f").style.transform = `scaleY(${pc / 100})`; $("#depth").classList.toggle("on", y > innerHeight * .5); document.body.classList.toggle("scrolled", y > innerHeight * .8); }
   if (!STILL) { if (dv) parallax();
     wx.clearRect(0, 0, warp.width, warp.height); wx.lineCap = "round";
     for (const s of stars) { s.y -= vel * s.z * .35 + s.z * .06; if (s.y < -40) s.y += warp.height + 80; if (s.y > warp.height + 40) s.y -= warp.height + 80;
@@ -167,13 +180,13 @@ async function travel() {
   if (busy) return; busy = true; tX = tY = 0; hero.classList.add("go"); document.body.classList.add("lock"); scrollTo(0, 0);
   try { pv.currentTime = 0; pv.playbackRate = 1.3; await pv.play(); } catch (e) {}
   await animate(v => expansion = v, 1100); await new Promise(r => setTimeout(r, pv.readyState >= 2 ? 1500 : 500));
-  document.documentElement.style.scrollBehavior = "auto"; document.body.classList.remove("lock"); $("#footage").scrollIntoView(); document.documentElement.style.scrollBehavior = "";
+  document.documentElement.style.scrollBehavior = "auto"; document.body.classList.remove("lock"); $("#record").scrollIntoView(); document.documentElement.style.scrollBehavior = "";
   expansion = 0; maskScale = 0; pv.playbackRate = 1; hero.classList.remove("go"); busy = false; revealMask();
 }
 portalBtn.onclick = travel;
 
 /* ───────── hero chapter tabs ───────── */
-(() => { const A = window.ART, T = [["footage", "The footage", "Navy and PURSUE video", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[5]], ["thesis", "The thesis", "What it adds up to", A.thesis[0]]];
+(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[5]]];
   T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
 
 /* ───────── preloader ───────── */
@@ -223,13 +236,15 @@ function drawRecord() {
   const root = $("#eras"); root.replaceChildren(); let n = 0;
   window.ERAS.forEach(era => { const rows = window.TIMELINE.filter(e => e.e === era.id && (!st.tier || e.k === st.tier) && (!st.vid || hasVid(e)) && (!st.q || (e.t + " " + e.p + " " + e.s + " " + e.c + " " + e.d + " " + (e.g || []).join(" ")).toLowerCase().includes(st.q)));
     if (!rows.length) return; n += rows.length;
-    root.append(h("section", { class: "scene era" }, h("div", { class: "bg", "data-bg": era.id }), h("div", { class: "veil" }),
+    root.append(h("section", { class: "scene era", id: "era-" + era.id }, h("div", { class: "bg", "data-bg": era.id }), h("div", { class: "veil" }),
       h("div", { class: "inner" }, h("div", { class: "headrow" }, h("div", {}, h("h2", { class: "mega", text: era.name })), h("p", { class: "lede", text: era.span + ". " + era.note + " " + rows.length + " files." }))),
       deck(rows.map(e => h("article", { class: "pan" }, mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: e.d }), h("span", { class: "chip t-" + e.k, text: TIER[e.k].name })), h("h3", { text: e.t }), h("div", { class: "where", text: e.p }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: () => openEntry(e) }))))))); });
   if (!n) root.append(h("p", { class: "empty", text: "Nothing matches. Clear a filter or try another word." }));
   armBg(root); reveal(root); collectPar();
+  $("#rail").replaceChildren(...$$(".era", root).map(sec => h("a", { href: "#" + sec.id, "data-s": sec.id, text: window.ERAS.find(x => "era-" + x.id === sec.id).name })), h("a", { href: "#thesis", "data-s": "thesis", text: "The thesis" }));
+  $$(".era", root).forEach(sec => railIO.observe(sec));
 }
-drawRecord();
+drawRecord(); railIO.observe($("#thesis"));
 
 /* ───────── sacred sites stage ───────── */
 (() => {
@@ -262,14 +277,17 @@ $("#craft-count").textContent = `${["Zero","One","Two","Three","Four","Five","Si
 $("#craft-deck").append(deck(window.CRAFT.map(c => { const u = A.craft[c.g];
   const art = () => { const b = h("div", { class: "art" }); const fail = () => b.replaceChildren(h("div", { class: "tile" }, h("b", { text: c.n }))); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: fail }), h("span", { class: "ai", text: "AI illustration" })); else fail(); return b; };
   const file = () => openDos({ left: u ? mediaFrame([["a", u, c.n]], c.n, "var(--hot)") : art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] });
-  return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); })));
+  return h("article", { class: "pan craft", "data-cur": "Open file", onclick: e => { if (!e.target.closest("button")) file(); } }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); })));
 window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("h4", { text: o.n }), h("p", { text: o.t }))));
 $("#obs-vid").append(mediaFrame([window.SECTION_VIDEO.observables], "5", "var(--hot)"), mediaFrame([["i", "USS Nimitz 2004 tic tac UFO.jpg", "Artist's reconstruction of the 2004 Nimitz encounter", "CC BY-SA 4.0"]], "2004", "var(--hot)"));
 
 /* ───────── index rows ───────── */
 const row = (no, title, tag, body, small, star) => h("details", {}, h("summary", { style: star ? "color:var(--hot)" : null }, no ? h("span", { class: "no" + (small ? " sm" : ""), text: no }) : null, h("h3", { text: title }), h("span", { class: "tag" }, tag)), h("div", { class: "rowbody" }, body));
 const blk = (k, v, warn) => v ? h("p", { class: warn ? "warn" : null }, h("b", { text: k }), v) : null;
-window.ORIGINS.forEach((o, i) => $("#origin-rows").append(row("", o.n, o.k, [blk("The idea", o.idea), blk("Best argument", o.best), blk("Hardest problem", o.hard, true), blk("Who argues it", o.who)])));
+$("#origin-rows").replaceWith(h("div", { id: "origin-deck" }, deck(window.ORIGINS.map((o, i) => { const u = (A.origin || [])[i];
+  const file = () => openDos({ left: u ? mediaFrame([["a", u, o.n]], o.n, "var(--myt)") : mediaFrame([], o.n, "var(--myt)"), meta: [h("span", { text: o.k })], title: o.n, blocks: [["The idea", o.idea], ["Best argument", o.best], ["Hardest problem", o.hard, true], ["Who argues it", o.who]] });
+  const art = h("div", { class: "art" }, u ? h("img", { src: window.ART_BASE + u, alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.replaceWith(h("div", { class: "tile" }, h("b", { text: o.n }))) }) : h("div", { class: "tile" }, h("b", { text: o.n })));
+  return h("article", { class: "pan craft", onclick: e => { if (!e.target.closest("button")) file(); }, "data-cur": "Open file" }, art, h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: o.k })), h("h3", { text: o.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); }))));
 window.FERMI.forEach((f, i) => $("#fermi-rows").append(row("", f.n, f.k + (f.star ? ", where this page ends up" : ""), [blk("The idea", f.t), blk("The problem", f.x, true)], false, f.star)));
 window.RETRIEVALS.forEach(r => $("#ret-rows").append(row(r.y, r.who, h("span", { class: "chip t-" + r.k, text: TIER[r.k].name }), [blk("The claim", r.what), blk("Where it stands", r.st, true)], true)));
 window.PHYSICS.forEach((p, i) => $("#phys-rows").append(row("", p.n, "", [h("p", { text: p.t })])));
@@ -333,5 +351,5 @@ $("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.S
 $("#credits").append("Background photography: ", Object.values(window.BG).map(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Hero video from the Planet Jumping asset set.");
 
 new IntersectionObserver(es => document.body.classList.toggle("at-top", es[0].isIntersecting), { rootMargin: "-45% 0px -45% 0px" }).observe($("#top"));
-armBg(document); reveal(document); collectPar(); parallax(); requestAnimationFrame(frame); requestAnimationFrame(portalFrame);
+armBg(document); reveal(document); collectPar(); route(); parallax(); requestAnimationFrame(frame); requestAnimationFrame(portalFrame);
 })();
