@@ -186,7 +186,7 @@ async function travel() {
 portalBtn.onclick = travel;
 
 /* ───────── hero chapter tabs ───────── */
-(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[5]]];
+(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[6]]];
   T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
 
 /* ───────── preloader ───────── */
@@ -319,11 +319,11 @@ function filmDeck() {
     if (EMBED && id) face.addEventListener("click", ev => { ev.preventDefault(); frame.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: f.n + " trailer", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: true, referrerpolicy: "strict-origin-when-cross-origin" })); });
     frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films");
 }
-const TH_CAP = ["They came down, and we called them gods", "One sky, three pyramids", "Something was added", "The view from the other side of the glass", "Same visitor, different costume", "What a secret this size would look like", "We were shown it in the dark first", "The proof may already be inside us"];
+const TH_CAP = ["They came down, and we called them gods", "One sky, three pyramids", "Something was added", "The view from the other side of the glass", "Malmstrom, Montana, March 1967", "Same visitor, different costume", "What a secret this size would look like", "We were shown it in the dark first", "The proof may already be inside us"];
 window.THESIS.forEach((t, i) => {
   const items = [A.thesis[i] ? ["a", A.thesis[i], TH_CAP[i]] : null, i === 0 ? ["i", "Pieter Bruegel the Elder - The Fall of the Rebel Angels - Google Art Project.jpg", "Bruegel, The Fall of the Rebel Angels, 1562", "PD"] : null, i === 3 ? window.SECTION_VIDEO.zoo : null];
-  const inset = items.some(Boolean) ? h("div", { class: "inset art16" }, mediaFrame(items, ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"][i], "var(--hot)")) : null;
-  const films = i === 6 ? h("div", { class: "inset wide", style: "margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))" }, filmDeck()) : null;
+  const inset = items.some(Boolean) ? h("div", { class: "inset art16" }, mediaFrame(items, ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"][i], "var(--hot)")) : null;
+  const films = t.n === "We have been told already" ? h("div", { class: "inset wide", style: "margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))" }, filmDeck()) : null;
   $("#thesis-list").append(h("div", { class: "th" }, h("div", {}, h("h3", { text: t.n }), inset, h("p", { class: "say", text: t.t }), films,
     h("details", {}, h("summary", { class: "open", "data-cur": "Expand", text: "Pressure test" }), h("div", { class: "rowbody" }, blk("What supports it", t.f), blk("What cuts against it", t.x, true))))));
 });
