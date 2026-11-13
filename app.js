@@ -97,8 +97,8 @@ addEventListener("resize", () => decks.forEach(d => d.isConnected ? d._upd() : d
 const VIEWS = [["footage", "Evidence", ["footage", "start"]], ["beings", "Phenotypes"], ["craft", "Craft"], ["sites", "Sites"], ["origins", "Theories"], ["psi", "Psi"], ["programs", "Programs"], ["retrievals", "Retrievals"], ["math", "The math"], ["voices", "Voices"], ["deeper", "Library"]];
 const VIEW_OF = {}; VIEWS.forEach(([id, , ids]) => (ids || [id]).forEach(x => { VIEW_OF[x] = id; const el = document.getElementById(x); el.classList.add("view"); el.dataset.view = id; }));
 const SECTIONS = [["top", "Arrival"], ["record", "Timeline"], ["thesis", "Thesis"]];
-$("#nav").append(h("a", { href: "#top", "data-v": "", text: "Timeline" }), ...VIEWS.map(([id, t]) => h("a", { href: "#" + id, "data-v": id, text: t })));
-[["#top", "Timeline"], ["#thesis", "Thesis"], ...VIEWS.map(([id, t]) => ["#" + id, t])].forEach(([href, t], i) => $("#full").append(h("a", { href, style: `--i:${i}`, onclick: () => menu(false) }, t)));
+$("#nav").append(h("a", { href: "#top", "data-v": "", text: "Timeline" }), ...VIEWS.map(([id, t]) => h("a", { href: "#" + id, "data-v": id, text: t, title: id === "beings" ? "Types of aliens" : null })));
+[["#top", "Timeline"], ["#thesis", "Thesis"], ...VIEWS.map(([id, t]) => ["#" + id, id === "beings" ? "Phenotypes: types of aliens" : t])].forEach(([href, t], i) => $("#full").append(h("a", { href, style: `--i:${i}`, onclick: () => menu(false) }, t)));
 const menu = on => { $("#full").classList.toggle("open", on); document.body.classList.toggle("lock", on); };
 $("#menu").onclick = () => menu(true); $("#full-x").onclick = () => menu(false);
 addEventListener("keydown", e => { if (e.key === "Escape") menu(false); });
@@ -152,7 +152,7 @@ if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.A
 if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate").style.translate = `${(e.clientX / innerWidth - .5) * -24}px ${(e.clientY / innerHeight - .5) * -16}px`; });
 
 /* ───────── hero chapter tabs ───────── */
-(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[6]]];
+(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight types of aliens", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[6]]];
   T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
 
 /* ───────── intro: a craft crosses the night sky, lights you up and takes you ───────── */

@@ -664,3 +664,5 @@ body[data-v]:not([data-v=""]){--railw:0px}
 body[data-v]:not([data-v=""]) .scene>.inner,body[data-v]:not([data-v=""]) .stage .list,body[data-v]:not([data-v=""]) .stage .head,body[data-v]:not([data-v=""]) .stage .info{max-width:1500px;margin-left:auto;margin-right:auto}
 body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-right:var(--pad)}
 .lineup .shot .ai{top:auto;bottom:14px}
+
+.lede .what{display:block;font:400 clamp(18px,1.6vw,24px)/1.2 var(--mega);color:var(--hot);letter-spacing:.04em;margin-bottom:8px}
