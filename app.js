@@ -101,8 +101,16 @@ function route() {
   if (v) { if (v !== was || id === v) scrollTo(0, 0); else document.getElementById(id).scrollIntoView(); }
   else if (id) { const el = document.getElementById(id); if (el) el.scrollIntoView(); } else if (was) scrollTo(0, 0);
   document.documentElement.style.scrollBehavior = "";
+  pager(v);
   requestAnimationFrame(() => { decks.forEach(d => d.isConnected && d._upd()); collectPar(); parallax(); });
 }
+/* next / previous chapter at the foot of every page */
+const ORDER = [["", "Timeline"], ...VIEWS.map(([id, t]) => [id, t])];
+const PIMG = { "": "hero", footage: ["craft", "tictac"], beings: ["being", "grey"], craft: ["craft", "disc"], sites: ["thesis", 1], origins: ["origin", 1], psi: "psi", programs: ["thesis", 6], retrievals: ["craft", "acorn"], math: ["origin", 0], voices: ["thesis", 7], deeper: ["thesis", 2] };
+const pimg = id => { const k = PIMG[id], A = window.ART; const f = typeof k === "string" ? A[k] : k ? A[k[0]][k[1]] : null; return f ? window.ART_BASE + f : null; };
+function pager(v) { const i = ORDER.findIndex(o => o[0] === v), prev = ORDER[(i - 1 + ORDER.length) % ORDER.length], next = ORDER[(i + 1) % ORDER.length];
+  const card = (o, dir) => { const im = pimg(o[0]); return h("a", { class: "pg " + dir, href: o[0] ? "#" + o[0] : "#top", "data-cur": dir === "next" ? "Next" : "Back" }, im ? h("img", { src: im, alt: "", loading: "lazy", draggable: "false" }) : null, h("span", {}, h("i", { text: dir === "next" ? "Next" : "Previous" }), h("b", { text: o[0] === "beings" ? "Phenotypes: types of aliens" : o[1] }))); };
+  $("#pager").replaceChildren(card(prev, "prev"), card(next, "next")); }
 addEventListener("hashchange", route);
 /* timeline rail: one entry per era plus the thesis */
 const railIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) $$("#rail a").forEach(a => a.classList.toggle("on", a.dataset.s === e.target.id)); }), { rootMargin: "-45% 0px -50% 0px" });
@@ -355,7 +363,7 @@ window.THESIS.forEach((t, i) => {
 $("#lib").append(h("div", { class: "stack" }, mediaFrame([window.SECTION_VIDEO.phenomenon], "Film", "var(--hot)"), mediaFrame([window.SECTION_VIDEO.gobekli], "Dig", "var(--hot)")));
 for (const k in window.LIBRARY) $("#lib").append(h("div", {}, h("h3", { text: k }), h("ul", {}, window.LIBRARY[k].map(([t, d]) => h("li", {}, h("a", { href: (k === "Read" ? "https://www.google.com/search?tbm=bks&q=" : "https://www.youtube.com/results?search_query=") + encodeURIComponent(t.replace(/\(.*?\)/g, "")), target: "_blank", rel: "noopener", text: t }), h("span", { text: d }))))));
 $("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.SOURCES.map(([t, u]) => h("li", {}, h("a", { href: u, target: "_blank", rel: "noopener", text: t }))))));
-$("#credits").append("Background photography: ", Object.values(window.BG).map(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Hero video from the Planet Jumping asset set.");
+$("#credits").append("Background photography: ", ...Object.values(window.BG).flatMap(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Illustrations, intro and hero footage are AI-generated.");
 
 new IntersectionObserver(es => document.body.classList.toggle("at-top", es[0].isIntersecting), { rootMargin: "-45% 0px -45% 0px" }).observe($("#top"));
 armBg(document); reveal(document); collectPar(); route(); parallax(); requestAnimationFrame(frame);

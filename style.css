@@ -712,3 +712,19 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 
 .maker{margin:0 0 18px;font:400 13px var(--body);color:var(--dim)}
 .maker b{font:400 15px var(--title);letter-spacing:.06em;color:var(--fg);margin-left:6px}
+
+/* chapter pager */
+.pager{position:relative;z-index:1;display:grid;grid-template-columns:1fr 2fr;gap:16px;padding:20px var(--pad) 60px calc(var(--pad) + var(--railw))}
+.pg{position:relative;display:block;height:clamp(150px,22vw,260px);overflow:hidden;border:1px solid var(--line);text-decoration:none;color:var(--fg);background:#090b0e}
+.pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.4) brightness(.55);transition:filter .6s,transform 1.2s var(--ease)}
+.pg:hover img{filter:none;transform:scale(1.05)}
+.pg::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(2,3,6,.85))}
+.pg span{position:absolute;z-index:2;left:clamp(16px,2vw,28px);right:16px;bottom:clamp(14px,2vw,24px);display:grid;gap:6px}
+.pg.next span{text-align:right;left:16px;right:clamp(16px,2vw,28px)}
+.pg i{font:500 13px var(--body);font-style:normal;color:var(--hot);letter-spacing:.06em;text-transform:uppercase}
+.pg b{font:400 clamp(20px,2.6vw,40px)/1.05 var(--mega);text-transform:uppercase}
+.pg.next i::after{content:"  \2192"}
+.pg.prev i::before{content:"\2190  "}
+.pg:hover{border-color:rgba(233,237,240,.7)}
+body[data-v]:not([data-v=""]) .pager{--railw:0px}
+@media (max-width:700px){.pager{grid-template-columns:1fr}.pg.prev{order:2;height:110px}}
