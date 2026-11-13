@@ -146,8 +146,6 @@ function frame() {
 
 /* ───────── hero: facts, portal canvas, travel ───────── */
 const countries = new Set(window.PROGRAMS.map(p => p.c)).size;
-[["Record:", `${window.TIMELINE.length} events, from Sumer to this month.`], ["Footage:", "Ten clips. Seven come from government archives."], ["Programs:", `${window.PROGRAMS.length} known or alleged, across ${countries} countries.`], ["Verdict:", "Open. No craft has been shown in public."]]
-  .forEach(([k, v], i) => $("#facts").append(h("div", { class: "fact", style: `--i:${i}` }, h("dt", { text: k }), h("dd", { text: v }))));
 const hero = $("#top");
 $("#hero-plate").style.backgroundImage = `url("${window.ART_BASE + window.ART.hero}")`;
 if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.ART_BASE + window.ART.heroVid; hv.addEventListener("playing", () => hv.classList.add("on"), { once: true }); hv.play().catch(() => {}); new IntersectionObserver(es => es[0].isIntersecting ? hv.play().catch(() => {}) : hv.pause()).observe(hero); }
