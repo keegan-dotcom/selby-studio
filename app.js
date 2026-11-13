@@ -148,9 +148,8 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
 /* ───────── intro: a craft crosses the night sky, lights you up and takes you ───────── */
 (() => {
   const pre = $("#pre"), cv = $("#abduct"), cx = cv.getContext("2d"), cue = $("#pre-cue"), logo = $("#logo"); let done = false, t0 = 0, raf = 0;
-  const finish = () => { if (done) return; done = true; cancelAnimationFrame(raf); logo.classList.add("dock"); pre.classList.add("done"); document.body.classList.add("ready"); setTimeout(() => hero.classList.add("show"), 250); setTimeout(() => { logo.classList.add("set"); pre.remove(); }, 1600); try { sessionStorage.setItem("abducted", "1"); } catch (e) {} };
-  let seen = false; try { seen = sessionStorage.getItem("abducted") === "1"; } catch (e) {}
-  if (STILL || seen) { pre.classList.add("quick"); return finish(); }
+  const finish = () => { if (done) return; done = true; cancelAnimationFrame(raf); logo.classList.add("dock"); pre.classList.add("done"); document.body.classList.add("ready"); setTimeout(() => hero.classList.add("show"), 250); setTimeout(() => { logo.classList.add("set"); pre.remove(); }, 1600);};
+  if (STILL) { pre.classList.add("quick"); return finish(); }
   const ship = new Image(); ship.src = window.ART_BASE + window.ART.saucer;
   const SX = 40, SY = 130, SW = 1265, SH = 450, AX = 669 - SX, AY = 519 - SY; /* crop of the craft and its underside aperture */
   let W, H, D; const size = () => { D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * D; cv.height = H * D; cx.setTransform(D, 0, 0, D, 0, 0); };
