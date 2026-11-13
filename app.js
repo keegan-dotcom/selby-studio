@@ -133,7 +133,7 @@ sizeWarp(); addEventListener("resize", sizeWarp);
 function frame() {
   const y = scrollY, d = document.documentElement, dv = y - lastY; lastY = y; vel += (dv - vel) * .2;
   $("#bar").style.width = (100 * y / Math.max(1, d.scrollHeight - d.clientHeight)) + "%";
-  { const pc = Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight)); $("#depth-n").textContent = pc + "%"; $("#depth-f").style.transform = `scaleY(${pc / 100})`; $("#depth").classList.toggle("on", y > innerHeight * .5); document.body.classList.toggle("scrolled", y > innerHeight * .8); }
+  { const pc = Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight)); $("#depth-n").textContent = pc + "%"; $("#depth-f").style.transform = `scaleY(${pc / 100})`; $("#depth").classList.toggle("on", y > innerHeight * .5 && y + innerHeight < d.scrollHeight - 260); document.body.classList.toggle("scrolled", y > innerHeight * .8); }
   if (!STILL) { if (dv) parallax();
     wx.clearRect(0, 0, warp.width, warp.height); wx.lineCap = "round";
     for (const s of stars) { s.y -= vel * s.z * .35 + s.z * .06; if (s.y < -40) s.y += warp.height + 80; if (s.y > warp.height + 40) s.y -= warp.height + 80;
