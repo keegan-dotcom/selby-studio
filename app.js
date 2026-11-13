@@ -72,9 +72,13 @@ dos.addEventListener("click", e => { if (e.target === dos) dos.close(); });
 /* ───────── deck: a grid that shows the first few and expands on demand ───────── */
 const decks = new Set();
 function deck(panels, cls, first) {
-  const n = first || 6, grid = h("div", { class: "grid-deck" }, panels), el = h("div", { class: "deck " + (cls || "") }, grid);
-  if (panels.length > n) { panels.slice(n).forEach(p => p.classList.add("more")); el.classList.add("folded");
-    const btn = h("button", { class: "btn ghost showmore", type: "button", "data-cur": "Show", text: `Show all ${panels.length}`, onclick: () => { el.classList.remove("folded"); btn.remove(); reveal(el); } }); el.append(h("div", { class: "deck-ui" }, btn)); }
+  const step = first || 4, grid = h("div", { class: "grid-deck" }, panels), el = h("div", { class: "deck " + (cls || "") }, grid); let shown = step;
+  const apply = () => panels.forEach((p, i) => p.classList.toggle("more", i >= shown));
+  if (panels.length > step) { apply();
+    const btn = h("button", { class: "btn ghost showmore", type: "button", "data-cur": "Show" });
+    const label = () => { const left = panels.length - shown; btn.textContent = left > step ? `Show ${step} more (${left} left)` : `Show the last ${left}`; };
+    btn.onclick = () => { shown += step; apply(); reveal(el); if (shown >= panels.length) btn.remove(); else label(); };
+    label(); el.append(h("div", { class: "deck-ui" }, btn)); }
   el._upd = () => {}; return el;
 }
 
@@ -197,17 +201,32 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
   $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
 })();
 
-/* ───────── reticle cursor: exact dot, lagging targeting box, live coordinates ───────── */
+/* ───────── cursor: a craft's light. A glowing core leaves rising motes; brackets lock onto whatever you point at. ───────── */
 if (FINE && !STILL) (() => {
   document.documentElement.classList.add("ship");
-  const c = $("#cursor"), r = $("#reti"), lab = $("#cur-lab"), xy = $("#cur-xy"); let mx = -99, my = -99, x = -99, y = -99;
-  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); r.classList.add("on"); c.style.transform = `translate3d(${mx}px,${my}px,0)`;
-    const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,input,video[controls]"); r.classList.toggle("hot", !!t && !t.matches("input"));
-    lab.textContent = t ? (t.dataset.cur || (t.matches("summary") ? "Expand" : t.matches("video") ? "Play" : "Open")) : ""; }, { passive: true });
+  const c = $("#cursor"), r = $("#reti"), lab = $("#cur-lab"), cv = $("#motes"), cx = cv.getContext("2d");
+  let mx = -99, my = -99, x = -99, y = -99, tgt = null, motes = [], last = 0;
+  const box = { x: 0, y: 0, w: 34, h: 34 }, size = () => { cv.width = innerWidth * (devicePixelRatio || 1); cv.height = innerHeight * (devicePixelRatio || 1); cx.setTransform(devicePixelRatio || 1, 0, 0, devicePixelRatio || 1, 0, 0); };
+  size(); addEventListener("resize", size);
+  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); r.classList.add("on");
+    const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,video[controls],.hs");
+    tgt = t && !t.matches("input") ? t : null; r.classList.toggle("hot", !!tgt); c.classList.toggle("hot", !!tgt);
+    lab.textContent = tgt ? (tgt.dataset.cur || (tgt.matches("summary") ? "Expand" : tgt.matches("video") ? "Play" : "Open")) : "";
+    const now = performance.now(); if (now - last > 16) { last = now; for (let i = 0; i < 2; i++) motes.push({ x: mx + (Math.random() - .5) * 6, y: my + (Math.random() - .5) * 6, vx: (Math.random() - .5) * .35, vy: -.25 - Math.random() * .6, l: 1, s: .6 + Math.random() * 1.4 }); } }, { passive: true });
   document.addEventListener("mouseleave", () => { c.classList.remove("on"); r.classList.remove("on"); });
-  addEventListener("pointerdown", () => r.classList.add("down")); addEventListener("pointerup", () => r.classList.remove("down"));
-  const loop = () => { x += (mx - x) * .22; y += (my - y) * .22; r.style.transform = `translate3d(${x}px,${y}px,0)`;
-    xy.textContent = ""; requestAnimationFrame(loop); }; loop();
+  addEventListener("pointerdown", () => { r.classList.add("down"); for (let i = 0; i < 18; i++) { const a = Math.random() * 6.28, v = 1 + Math.random() * 2.2; motes.push({ x: mx, y: my, vx: Math.cos(a) * v, vy: Math.sin(a) * v - .4, l: 1, s: 1 + Math.random() * 1.5 }); } });
+  addEventListener("pointerup", () => r.classList.remove("down"));
+  const loop = () => {
+    x += (mx - x) * .35; y += (my - y) * .35; c.style.transform = `translate3d(${mx}px,${my}px,0)`;
+    let tx, ty, tw, th;
+    if (tgt && tgt.isConnected) { const b = tgt.getBoundingClientRect(), p = 6; tw = Math.min(b.width + p * 2, innerWidth); th = Math.min(b.height + p * 2, innerHeight); tx = b.left - p + (b.width + p * 2 - tw) / 2; ty = b.top - p + (b.height + p * 2 - th) / 2;
+      if (tw > 520 || th > 420) { tw = 64; th = 64; tx = mx - 32; ty = my - 32; } }
+    else { tw = 34; th = 34; tx = x - 17; ty = y - 17; }
+    const k = tgt ? .22 : .5; box.x += (tx - box.x) * k; box.y += (ty - box.y) * k; box.w += (tw - box.w) * k; box.h += (th - box.h) * k;
+    r.style.transform = `translate3d(${box.x}px,${box.y}px,0)`; r.style.width = box.w + "px"; r.style.height = box.h + "px";
+    cx.clearRect(0, 0, innerWidth, innerHeight); cx.globalCompositeOperation = "lighter";
+    motes = motes.filter(m => (m.l -= .018) > 0); for (const m of motes) { m.x += m.vx; m.y += m.vy; m.vx *= .985; const a = m.l * .8; cx.fillStyle = `rgba(200,225,255,${a})`; cx.fillRect(m.x, m.y, m.s, m.s * (1 + (1 - m.l) * 2)); }
+    cx.globalCompositeOperation = "source-over"; requestAnimationFrame(loop); }; loop();
 })();
 
 /* ───────── footage reel, stats ───────── */
@@ -310,7 +329,7 @@ function filmDeck() {
   return deck(window.FILMS.map((f, i) => { const frame = h("div", { class: "media" }), id = window.FILM_YT[f.y];
     const face = h("a", { class: "face", href: id ? "https://www.youtube.com/watch?v=" + id : ytFind(f.n + " official trailer"), target: "_blank", rel: "noopener", "data-cur": "Trailer", "aria-label": "Play trailer: " + f.n }, h("div", { class: "poster" + (id ? " shot" : ""), style: `--h:${(18 + i * 29) % 360}` }, id ? h("img", { src: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, alt: "", loading: "lazy", draggable: "false", onerror: e => { e.target.parentElement.classList.remove("shot"); e.target.remove(); } }) : null, h("b", { text: String(f.y) }), h("div", {}, f.s ? h("span", { text: "Spielberg" }) : null, h("h4", { text: f.n }))), h("span", { class: "play" }));
     if (EMBED && id) face.addEventListener("click", ev => { ev.preventDefault(); frame.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: f.n + " trailer", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: true, referrerpolicy: "strict-origin-when-cross-origin" })); });
-    frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films", 12);
+    frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films");
 }
 const TH_CAP = ["They came down, and we called them gods", "One sky, three pyramids", "Something was added", "The view from the other side of the glass", "Malmstrom, Montana, March 1967", "Same visitor, different costume", "What a secret this size would look like", "We were shown it in the dark first", "The proof may already be inside us"];
 window.THESIS.forEach((t, i) => {
