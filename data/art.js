@@ -2,6 +2,7 @@
 window.ART_BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3JmN8ceS5QkrfG5ooFzPEFDS1rx/";
 window.ART = {
  "intro": "hf_20261113_230336_2e1bcacf-21ae-4eca-8c41-b3d912957a8a.mp4",
+ "intro2k": "hf_20261113_233521_58c2fc37-27f3-4b55-8347-faac0badd19d.mp4",
  "saucer": "hf_20261113_225010_e8c38b5e-476c-4711-a8ee-6b867813e2db.png",
  "hero": "hf_20261113_231427_a0a54850-e12c-4b14-8e29-a7c29d170024.png",
  "heroVid": "hf_20261113_231522_96169580-5b72-4455-b3d3-08dec5e59b21.mp4",

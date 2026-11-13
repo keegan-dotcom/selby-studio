@@ -709,3 +709,6 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 @media (min-width:1101px){.hero-plate{background-position:50% 35%}.hero-plate video{object-position:50% 35%}}
 @media (min-width:1101px){.hero-plate{background-position:50% 58%}.hero-plate video{object-position:50% 58%}.htabs{bottom:18px}}
 @media (min-width:1101px){.hero-plate{inset:0;animation:none;transform:none}}
+
+.maker{margin:0 0 18px;font:400 13px var(--body);color:var(--dim)}
+.maker b{font:400 15px var(--title);letter-spacing:.06em;color:var(--fg);margin-left:6px}
