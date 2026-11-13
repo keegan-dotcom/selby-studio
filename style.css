@@ -707,3 +707,4 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 .reti .lab{left:14px;top:12px}
 /* split any crop mostly from the bottom so the craft stays whole; the figure still clears the cards */
 @media (min-width:1101px){.hero-plate{background-position:50% 35%}.hero-plate video{object-position:50% 35%}}
+@media (min-width:1101px){.hero-plate{background-position:50% 58%}.hero-plate video{object-position:50% 58%}.htabs{bottom:18px}}
