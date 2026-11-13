@@ -33,6 +33,8 @@ function show(frame, item, tileText, color) {
     const doc = /memo|Record|Times|Call|Assessment|Tehran|Twining|Blue Book|fatima|Nürnberg|Utsuro|graph|GEIPAN|map/i.test(a);
     frame.append(h("img", { src: cImg(a, 1100), alt: b, loading: "lazy", draggable: "false", class: doc ? "doc" : null, onerror: () => tile(frame, tileText, color) }), b ? h("div", { class: "cap", text: b }) : null,
       h("a", { class: "src", href: cPage(a), target: "_blank", rel: "noopener", text: "Commons · " + c }));
+  } else if (kind === "a") {
+    frame.append(h("img", { src: window.ART_BASE + a, alt: b, loading: "lazy", draggable: "false", onerror: () => tile(frame, tileText, color) }), b ? h("div", { class: "cap", text: b }) : null, h("span", { class: "src", text: "AI illustration" }));
   } else if (kind === "v") {
     const v = h("video", { controls: true, preload: "none", playsinline: true, poster: cPoster(a, 1100), "aria-label": c });
     ["480p.vp9.webm", "360p.mpeg4.mov", "240p.vp9.webm"].forEach(k => v.append(h("source", { src: cVid(a, b, k), type: k.endsWith("mov") ? "video/quicktime" : "video/webm" })));
@@ -49,7 +51,7 @@ function show(frame, item, tileText, color) {
 function mediaFrame(items, tileText, color) {
   const frame = h("div", { class: "media" }); items = (items || []).filter(Boolean);
   if (items.length > 1) { const tabs = h("div", { class: "tabs" });
-    items.forEach((it, i) => tabs.append(h("button", { type: "button", "aria-pressed": i === 0 ? "true" : "false", "aria-label": (it[0] === "i" ? "Image: " : "Video: ") + (it[0] === "v" ? it[3] : it[2]), text: it[0] === "i" ? "▣" : "▶", onclick: ev => { $$("button", tabs).forEach(x => x.setAttribute("aria-pressed", "false")); ev.currentTarget.setAttribute("aria-pressed", "true"); show(frame, it, tileText, color); } })));
+    items.forEach((it, i) => tabs.append(h("button", { type: "button", "aria-pressed": i === 0 ? "true" : "false", "aria-label": (it[0] === "i" || it[0] === "a" ? "Image: " : "Video: ") + (it[0] === "v" ? it[3] : it[2]), text: it[0] === "i" ? "▣" : it[0] === "a" ? "✦" : "▶", onclick: ev => { $$("button", tabs).forEach(x => x.setAttribute("aria-pressed", "false")); ev.currentTarget.setAttribute("aria-pressed", "true"); show(frame, it, tileText, color); } })));
     frame.append(tabs); }
   show(frame, items[0], tileText, color);
   return frame;
@@ -266,38 +268,24 @@ const CRAFT_G = {
   plasma: `<g class="blink"><circle cx="86" cy="58" r="26" fill="#ff6a1a" stroke="none" opacity=".6"/><circle cx="112" cy="64" r="22" fill="#ffd9b0" stroke="none" opacity=".6"/><circle cx="100" cy="54" r="12" fill="#fff" stroke="none"/></g><path d="M40 102c20-8 40 8 60 0s40 8 60 0" stroke-dasharray="2 7"/>`
 };
 
-/* ───────── beings lineup ───────── */
+/* ───────── beings lineup: one photoreal plate, eight hotspots ───────── */
+const A = window.ART, artUrl = k => window.ART_BASE + k;
 (() => {
-  const FT = 52, BASE = 470, W = 1210, B = Object.fromEntries(window.BEINGS.map(b => [b.g, b]));
-  const fig = (x, ft, o) => {
-    const H = ft * FT, top = BASE - H, hr = o.head * H, hy = top + hr * 1.15, sh = top + hr * 2.3 + H * .025, hip = BASE - H * .46, sw = o.sw * H, hw = o.hw * H, aw = o.limb * H, c = o.c, lw = o.ghost ? 1.5 : aw;
-    const body = o.orb ? `<circle cx="${x}" cy="${BASE - 150}" r="34" fill="${c}" opacity=".3"/><circle cx="${x}" cy="${BASE - 150}" r="20" fill="${c}"/><circle cx="${x}" cy="${BASE - 150}" r="52" fill="none" stroke="${c}" stroke-dasharray="2 8"/><path d="M${x} ${BASE - 96}V${BASE}" stroke="${c}" stroke-dasharray="1 9"/>` :
-      `<g fill="${o.ghost ? "none" : c}" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" ${o.ghost ? 'stroke-dasharray="3 6"' : ""}><path d="M${x - sw} ${sh}L${x + sw} ${sh}L${x + hw} ${hip}L${x - hw} ${hip}z" stroke-width="${lw}"/><path d="M${x - sw} ${sh}L${x - sw - H * .035} ${hip + H * .1}M${x + sw} ${sh}L${x + sw + H * .035} ${hip + H * .1}M${x - hw * .55} ${hip}L${x - hw * .75} ${BASE - aw / 2}M${x + hw * .55} ${hip}L${x + hw * .75} ${BASE - aw / 2}" stroke-width="${lw}" fill="none"/><path d="M${x} ${hy + hr}L${x} ${sh}" stroke-width="${o.ghost ? 1.5 : aw * .9}"/></g>` +
-      (o.ghost ? `<ellipse cx="${x}" cy="${hy}" rx="${hr}" ry="${hr * 1.15}" fill="none" stroke="${c}" stroke-dasharray="3 6"/>` : o.tri ? `<path d="M${x - hr * 1.5} ${top + hr * .5}Q${x} ${top - hr * .5} ${x + hr * 1.5} ${top + hr * .5}L${x} ${top + hr * 2.5}z" fill="${c}"/>` : `<ellipse cx="${x}" cy="${hy}" rx="${hr * (o.hwid || 1)}" ry="${hr * 1.15}" fill="${c}"/>`) + (o.extra || (() => ""))(x, top, hr, hy, H, sh, hip);
-    return `<g class="${o.g ? "fg" : ""}" ${o.g ? `data-g="${o.g}" tabindex="0" role="button" aria-label="Open file: ${o.n}"` : 'opacity=".5"'}><rect x="${x - 62}" y="${BASE - 8.2 * FT}" width="124" height="${8.2 * FT + 60}" fill="transparent"/>${body}<text x="${x}" y="${BASE + 32}" text-anchor="middle" font-family="Tektur,Arial Narrow,sans-serif" font-weight="900" font-size="24" fill="#fff" style="text-transform:uppercase">${o.n.toUpperCase()}</text><text x="${x}" y="${BASE + 51}" text-anchor="middle" font-family="Unbounded,Arial,sans-serif" font-size="9" letter-spacing="1.4" fill="rgba(255,255,255,.66)">${o.h}</text></g>`;
-  };
-  const eyes = (dx, rx, ry, rot, col) => (x, top, hr, hy) => [-1, 1].map(s => `<ellipse cx="${x + s * hr * dx}" cy="${hy + hr * .2}" rx="${hr * rx}" ry="${hr * ry}" fill="${col || "#070605"}" transform="rotate(${-s * rot} ${x + s * hr * dx} ${hy + hr * .2})"/>`).join("");
-  const figs = [
-    [75, 3, { g: "goblin", n: "Little men", h: "UNDER 3 FT", head: .17, sw: .13, hw: .1, limb: .07, c: "#b9f0dc", extra: (x, top, hr, hy) => `<path d="M${x - hr} ${hy - hr * .3}l${-hr * .9} ${-hr * .9}l${hr * .5} ${hr * 1.2}zM${x + hr} ${hy - hr * .3}l${hr * .9} ${-hr * .9}l${-hr * .5} ${hr * 1.2}z" fill="#b9f0dc"/>` + eyes(.42, .26, .26, 0)(x, top, hr, hy) }],
-    [195, 4, { g: "grey", n: "Grey", h: "3.5 TO 4.5 FT", head: .13, hwid: 1.05, sw: .085, hw: .06, limb: .035, c: "#b4b9c4", extra: eyes(.45, .36, .22, 24) }],
-    [315, 5, { g: "hybrid", n: "Hybrid", h: "ABOUT 5 FT", head: .085, sw: .09, hw: .065, limb: .034, c: "#e9d9d0", extra: eyes(.45, .3, .2, 14) }],
-    [440, 5.75, { n: "You", h: "5 FT 9 IN", head: .065, sw: .12, hw: .085, limb: .05, c: "#fff", ghost: true }],
-    [570, 6.5, { g: "nordic", n: "Nordic", h: "6 TO 7 FT", head: .062, sw: .125, hw: .085, limb: .05, c: "#f4e6c4", extra: (x, top, hr, hy, H, sh) => `<path d="M${x - hr * 1.05} ${hy - hr * .5}Q${x - hr * 1.9} ${sh} ${x - hr * 1.5} ${sh + H * .09}M${x + hr * 1.05} ${hy - hr * .5}Q${x + hr * 1.9} ${sh} ${x + hr * 1.5} ${sh + H * .09}" stroke="#e7c873" stroke-width="${hr * .55}" fill="none" stroke-linecap="round"/>` }],
-    [700, 6.5, { g: "mantis", n: "Mantis", h: "6 TO 7 FT", head: .05, tri: true, sw: .075, hw: .05, limb: .024, c: "#a5d892", extra: (x, top, hr) => `<path d="M${x - hr * .6} ${top + hr * .2}Q${x - hr * 2.4} ${top - hr * 2.4} ${x - hr * 3.4} ${top - hr * 1.4}M${x + hr * .6} ${top + hr * .2}Q${x + hr * 2.4} ${top - hr * 2.4} ${x + hr * 3.4} ${top - hr * 1.4}" stroke="#a5d892" stroke-width="2" fill="none"/>` + [-1, 1].map(s => `<ellipse cx="${x + s * hr * .85}" cy="${top + hr * .75}" rx="${hr * .5}" ry="${hr * .3}" fill="#070605" transform="rotate(${-s * 28} ${x + s * hr * .85} ${top + hr * .75})"/>`).join("") }],
-    [845, 7, { g: "reptile", n: "Reptilian", h: "6 TO 8 FT", head: .066, sw: .15, hw: .1, limb: .06, c: "#d2a35a", extra: (x, top, hr, hy, H, sh, hip) => `<path d="M${x + H * .08} ${hip}Q${x + H * .24} ${BASE - H * .1} ${x + H * .1} ${BASE - 6}Q${x + H * .2} ${BASE - 2} ${x + H * .3} ${BASE - 10}" stroke="#d2a35a" stroke-width="${H * .03}" fill="none" stroke-linecap="round"/><path d="M${x - hr * .5} ${top + 2}l${hr * .25} ${-hr * .6}l${hr * .25} ${hr * .5}l${hr * .25} ${-hr * .6}l${hr * .25} ${hr * .6}" stroke="#d2a35a" stroke-width="2" fill="none"/>` + eyes(.42, .3, .1, 0)(x, top, hr, hy) }],
-    [1010, 7.5, { g: "white", n: "Tall White", h: "UP TO 8 FT", head: .062, sw: .095, hw: .065, limb: .034, c: "#f2f5ff", extra: eyes(.42, .34, .2, 16, "#5fb2ff") }],
-    [1130, 4, { g: "light", n: "Light form", h: "ANY SIZE", orb: true, head: .1, sw: .1, hw: .1, limb: .05, c: "#ffb476" }]
-  ];
-  let grid = ""; for (let f = 1; f <= 8; f++) grid += `<path d="M24 ${BASE - f * FT}H${W - 50}" stroke="rgba(255,255,255,${f % 2 ? .12 : .24})" stroke-dasharray="${f % 2 ? "2 8" : "0"}"/><text x="${W - 44}" y="${BASE - f * FT + 4}" font-family="Unbounded,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,.66)">${f} FT</text>`;
-  const el = $("#lineup"); el.innerHTML = `<svg viewBox="0 0 ${W} 545" role="group" aria-label="Height comparison of eight reported being types against an average human"><path d="M24 ${BASE}H${W - 50}" stroke="rgba(255,255,255,.5)"/>${grid}${figs.map(([x, ft, o]) => fig(x, ft, o)).join("")}</svg>`;
-  const open = g => { const b = B[g], im = window.BEING_IMG[g]; if (!b) return; openDos({ left: im ? mediaFrame([["i", im[0], b.n, im[1]]], b.n, "var(--ice)") : h("div", { class: "art", html: svg("0 0 120 140", BEING_G[g]) }), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
-  el.addEventListener("click", e => { const g = e.target.closest(".fg"); if (g) open(g.dataset.g); });
-  el.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches(".fg")) { e.preventDefault(); open(e.target.dataset.g); } });
+  const B = Object.fromEntries(window.BEINGS.map(b => [b.g, b]));
+  const open = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : h("div", { class: "art", html: svg("0 0 120 140", BEING_G[g]) }), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
+  const spots = [["goblin", "Little men", "Under 3 ft", 7.4, 53], ["grey", "Grey", "3.5 to 4.5 ft", 16.9, 37], ["hybrid", "Hybrid", "About 5 ft", 27.2, 30.5], [null, "You", "5 ft 9 in", 38.6, 24.5], ["nordic", "Nordic", "6 to 7 ft", 51, 13.5], ["mantis", "Mantis", "6 to 7 ft", 63.8, 9], ["reptile", "Reptilian", "6 to 8 ft", 77.5, 7.5], ["white", "Tall White", "Up to 8 ft", 91.2, 1.5]];
+  const shot = h("div", { class: "shot" }, h("img", { src: artUrl(A.lineup), alt: "Eight figures standing in a row against a dark wall, shortest to tallest: a little goblin-like being, a Grey, a hybrid, an average human, a Nordic, a mantis being, a Reptilian and a Tall White.", draggable: "false", onerror: e => { e.target.remove(); shot.classList.add("noimg"); } }),
+    spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "Open file" : null, "aria-label": g ? `Open file: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration · heights to scale" }));
+  $("#lineup").append(h("div", { class: "plate" }, shot));
+  const L = B.light; $("#lineup").after(h("button", { class: "orbcard", type: "button", "data-cur": "Open file", onclick: () => open("light") }, A.being.light ? h("img", { src: artUrl(A.being.light), alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.remove() }) : null, h("span", {}, h("i", { text: L.tag }), h("b", { text: L.n }), h("em", { text: "The ninth type has no body to measure. Open the file →" }))));
 })();
 
 /* ───────── craft, observables ───────── */
-$("#craft-deck").append(deck(window.CRAFT.map(c => { const art = () => h("div", { class: "art", html: svg("0 0 200 120", CRAFT_G[c.g] || "") });
-  return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open the file →", onclick: () => openDos({ left: art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] }) }))); })));
+$("#craft-count").textContent = `${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][window.CRAFT.length] || window.CRAFT.length} shapes. Orbs and lights make up most of today's military reports.`;
+$("#craft-deck").append(deck(window.CRAFT.map(c => { const u = A.craft[c.g];
+  const art = () => { const b = h("div", { class: "art" }); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: e => { b.innerHTML = svg("0 0 200 120", CRAFT_G[c.g] || ""); } }), h("span", { class: "ai", text: "AI illustration" })); else b.innerHTML = svg("0 0 200 120", CRAFT_G[c.g] || ""); return b; };
+  const file = () => openDos({ left: u ? mediaFrame([["a", u, c.n]], c.n, "var(--hot)") : art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] });
+  return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open the file →", onclick: file }))); })));
 window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("b", { text: String(i + 1) }), h("h4", { text: o.n }), h("p", { text: o.t }))));
 $("#obs-vid").append(mediaFrame([window.SECTION_VIDEO.observables], "5", "var(--hot)"), mediaFrame([["i", "USS Nimitz 2004 tic tac UFO.jpg", "Artist's reconstruction of the 2004 Nimitz encounter", "CC BY-SA 4.0"]], "2004", "var(--hot)"));
 
@@ -328,13 +316,16 @@ const VOICE_YT = { "David Grusch": "RBAISwCZ2v0", "Jacques Vallée": "fyX8V1XXmQ
 /* ───────── thesis, films ───────── */
 function filmDeck() {
   return deck(window.FILMS.map((f, i) => { const frame = h("div", { class: "media" }), id = window.FILM_YT[f.y];
-    const face = h("a", { class: "face", href: id ? "https://www.youtube.com/watch?v=" + id : ytFind(f.n + " official trailer"), target: "_blank", rel: "noopener", "data-cur": "Trailer", "aria-label": "Play trailer: " + f.n }, h("div", { class: "poster", style: `--h:${(18 + i * 29) % 360}` }, h("b", { text: String(f.y) }), h("div", {}, f.s ? h("span", { text: "Spielberg" }) : null, h("h4", { text: f.n }))), h("span", { class: "play" }));
+    const face = h("a", { class: "face", href: id ? "https://www.youtube.com/watch?v=" + id : ytFind(f.n + " official trailer"), target: "_blank", rel: "noopener", "data-cur": "Trailer", "aria-label": "Play trailer: " + f.n }, h("div", { class: "poster" + (id ? " shot" : ""), style: `--h:${(18 + i * 29) % 360}` }, id ? h("img", { src: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, alt: "", loading: "lazy", draggable: "false", onerror: e => { e.target.parentElement.classList.remove("shot"); e.target.remove(); } }) : null, h("b", { text: String(f.y) }), h("div", {}, f.s ? h("span", { text: "Spielberg" }) : null, h("h4", { text: f.n }))), h("span", { class: "play" }));
     if (EMBED && id) face.addEventListener("click", ev => { ev.preventDefault(); frame.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: f.n + " trailer", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: true, referrerpolicy: "strict-origin-when-cross-origin" })); });
     frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films");
 }
+const TH_CAP = ["They came down, and we called them gods", "One sky, three pyramids", "Something was added", "The view from the other side of the glass", "Same visitor, different costume", "What a secret this size would look like", "We were shown it in the dark first", "The proof may already be inside us"];
 window.THESIS.forEach((t, i) => {
-  const inset = i === 6 ? h("div", { class: "inset wide", style: "margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))" }, filmDeck()) : i === 0 ? h("div", { class: "inset" }, mediaFrame([["i", "Pieter Bruegel the Elder - The Fall of the Rebel Angels - Google Art Project.jpg", "Bruegel, The Fall of the Rebel Angels, 1562", "PD"]], "I", "var(--hot)")) : i === 3 ? h("div", { class: "inset" }, mediaFrame([window.SECTION_VIDEO.zoo], "IV", "var(--hot)")) : null;
-  $("#thesis-list").append(h("div", { class: "th" }, h("b", { text: String(i + 1) }), h("div", {}, h("h3", { text: t.n }), h("p", { class: "say", text: t.t }), inset,
+  const items = [A.thesis[i] ? ["a", A.thesis[i], TH_CAP[i]] : null, i === 0 ? ["i", "Pieter Bruegel the Elder - The Fall of the Rebel Angels - Google Art Project.jpg", "Bruegel, The Fall of the Rebel Angels, 1562", "PD"] : null, i === 3 ? window.SECTION_VIDEO.zoo : null];
+  const inset = items.some(Boolean) ? h("div", { class: "inset art16" }, mediaFrame(items, ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"][i], "var(--hot)")) : null;
+  const films = i === 6 ? h("div", { class: "inset wide", style: "margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))" }, filmDeck()) : null;
+  $("#thesis-list").append(h("div", { class: "th" }, h("b", { text: String(i + 1) }), h("div", {}, h("h3", { text: t.n }), inset, h("p", { class: "say", text: t.t }), films,
     h("details", {}, h("summary", { class: "open", "data-cur": "Expand", text: "Pressure test →" }), h("div", { class: "rowbody" }, blk("What supports it", t.f), blk("What cuts against it", t.x, true))))));
 });
 
@@ -360,5 +351,6 @@ for (const k in window.LIBRARY) $("#lib").append(h("div", {}, h("h3", { text: k 
 $("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.SOURCES.map(([t, u]) => h("li", {}, h("a", { href: u, target: "_blank", rel: "noopener", text: t + " ↗" }))))));
 $("#credits").append("Background photography: ", Object.values(window.BG).map(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Hero video from the Planet Jumping asset set.");
 
+new IntersectionObserver(es => document.body.classList.toggle("at-top", es[0].isIntersecting), { rootMargin: "-45% 0px -45% 0px" }).observe($("#top"));
 armBg(document); reveal(document); collectPar(); parallax(); requestAnimationFrame(frame); requestAnimationFrame(portalFrame);
 })();

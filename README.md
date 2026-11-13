@@ -1,7 +1,7 @@
-# The Case for Disclosure
+# Not Alone
 
 A static, single-page visual field guide to the UFO/UAP phenomenon. No build step.
-Live: https://case-for-disclosure.vercel.app
+Live: https://notalone101.vercel.app
 
 - `index.html` – markup and meta tags
 - `style.css` – the interface (Tektur, Unbounded and Chakra Petch are self-hosted in `fonts/`)
@@ -10,5 +10,6 @@ Live: https://case-for-disclosure.vercel.app
 - `data/atlas.js` – sites, beings, craft, origins, Fermi answers, retrieval claims, voices, thesis
 - `data/media.js` – Wikimedia Commons files and YouTube IDs attached to each entry
 - `data/extra.js` – government programs and background photography
+- `data/art.js` – original AI illustrations (beings line-up, portraits, craft, thesis plates), hot-linked from the generator's CDN
 
 This branch is independent of `main`.

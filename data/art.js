@@ -1,0 +1,41 @@
+/* Original AI illustrations generated for this site (Higgsfield, GPT Image). They are reconstructions of witness descriptions, not photographs. */
+window.ART_BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3JmN8ceS5QkrfG5ooFzPEFDS1rx/";
+window.ART = {
+ "lineup": "hf_20261113_220115_b53c0c25-f66a-4b0c-9ec7-52a451f55c74.png",
+ "being": {
+  "grey": "hf_20261113_220218_5c45c6a8-4137-4a41-9df1-3bbcb3e30982.png",
+  "nordic": "hf_20261113_220306_7fc15b39-8927-4aee-8986-0a03ed49a1aa.png",
+  "reptile": "hf_20261113_220306_d673ad55-0ef6-4319-8136-0859d5707ea2.png",
+  "mantis": "hf_20261113_220307_033bf7ed-33b8-4008-9a47-9e3d7bc06cae.png",
+  "white": "hf_20261113_220219_1ca503d4-ca3b-4f2e-a2ec-8b8438c2b7e0.png",
+  "goblin": "hf_20261113_220218_407d9bea-ffb4-411a-bff2-913be6f9e819.png",
+  "hybrid": "hf_20261113_220307_0820e6ab-e143-40fd-a7f4-013c84f3d524.png",
+  "light": "hf_20261113_220217_99373c3d-311e-4891-bb9a-1ce2e756d76c.png"
+ },
+ "craft": {
+  "orb": "hf_20261113_220709_34227866-e933-49d4-b2c0-a096bea653ba.png",
+  "disc": "hf_20261113_220708_5698468b-3063-4099-8955-e05016894347.png",
+  "triangle": "hf_20261113_220708_0ad138a9-e1e7-4dc5-9fe1-04659539bb68.png",
+  "tictac": "hf_20261113_220708_398da72a-d21d-4439-9c1f-1c9c0de2866c.png",
+  "cigar": "hf_20261113_220752_693e5606-5c87-4d80-a8e4-8236d71b221e.png",
+  "egg": "hf_20261113_220752_13588bc8-8cd4-4ce0-a5c1-1e4a825f8515.png",
+  "cube": "hf_20261113_220936_0ec9ae77-a85d-4e9e-9730-38648d791cac.png",
+  "boomerang": "hf_20261113_220752_7f4dae24-e653-4d4b-b797-8fd65d3a4091.png",
+  "diamond": "hf_20261113_220844_8d8b4375-523e-4108-8984-f908657fbf83.png",
+  "acorn": "hf_20261113_221042_08998277-49f5-471a-bb0a-330965d8e28c.png",
+  "saturn": "hf_20261113_220936_6ec5ae61-abfd-4d34-82cb-7ffec2615450.png",
+  "fleet": "hf_20261113_220936_883c45bc-caf1-40db-b323-ce5528f7da4a.png",
+  "jelly": "hf_20261113_220844_47ea925a-78af-4941-ac96-2d114649adfa.png",
+  "plasma": "hf_20261113_220843_0a206739-6b05-42d1-a466-3cd044f2305d.png"
+ },
+ "thesis": [
+  "hf_20261113_220936_751b6152-194b-4ec8-b4f3-62f4cca9f64f.png",
+  "hf_20261113_221041_e0a0d90f-e80e-4e16-bd11-27cc63bfb414.png",
+  "hf_20261113_221042_e710cdbd-77ea-44f9-a173-b188a97f9bff.png",
+  "hf_20261113_221042_52e5782d-064a-4151-b459-b2152df3dc11.png",
+  "hf_20261113_221132_37ffb354-5fe7-4b24-ae08-a6e8e09ae472.png",
+  "hf_20261113_221132_fee9df19-1b2c-43d9-84f4-b8ba850c10ed.png",
+  "hf_20261113_221133_3bd87460-f7af-4311-83ed-1de5a99687b2.png",
+  "hf_20261113_221132_aecc3b81-4aa5-4c08-8d5b-b9815b8ca367.png"
+ ]
+};

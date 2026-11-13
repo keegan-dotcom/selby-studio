@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Case for Disclosure</title>
-<meta name="description" content="Five thousand years of sky visitors, crash stories, cockpit video and sworn testimony. Watch the evidence, then read the pushback beside every claim.">
+<title>Not Alone · Aliens 101</title>
+<meta name="description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean. Watch the evidence, then read the pushback beside every claim.">
 <meta name="theme-color" content="#070605">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="The Case for Disclosure">
-<meta property="og:description" content="Five thousand years of sky visitors, crash stories, cockpit video and sworn testimony, in one scroll.">
-<meta property="og:url" content="https://case-for-disclosure.vercel.app/">
-<meta property="og:image" content="https://case-for-disclosure.vercel.app/og.png">
+<meta property="og:title" content="Not Alone · Aliens 101">
+<meta property="og:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
+<meta property="og:url" content="https://notalone101.vercel.app/">
+<meta property="og:image" content="https://notalone101.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Case for Disclosure">
-<meta name="twitter:description" content="Five thousand years of sky visitors, crash stories, cockpit video and sworn testimony, in one scroll.">
-<meta name="twitter:image" content="https://case-for-disclosure.vercel.app/og.png">
+<meta name="twitter:title" content="Not Alone · Aliens 101">
+<meta name="twitter:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
+<meta name="twitter:image" content="https://notalone101.vercel.app/og.png">
 <link rel="preload" href="fonts/tektur-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -28,9 +28,9 @@
 
 <div class="pre" id="pre" aria-label="Loading"><video id="pre-video" muted playsinline preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/5fc5651c-3b5d-4171-b507-87f7e635d1b4.mp4"></video></div>
 <div class="pre-count" id="pre-count" aria-live="polite"><span id="pre-val">0</span><i>%</i></div>
-<a class="logo" id="logo" href="#top" aria-label="Disclosure, back to top">
+<a class="logo" id="logo" href="#top" aria-label="Not Alone, back to top">
   <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><ellipse cx="20" cy="23" rx="18" ry="6" fill="#fff"/><path d="M10 21c1-9 19-9 20 0z" fill="#ff6a1a"/><circle cx="11" cy="24" r="1.4" fill="#070605"/><circle cx="20" cy="26" r="1.4" fill="#070605"/><circle cx="29" cy="24" r="1.4" fill="#070605"/></svg>
-  <span>Disclosure</span>
+  <span>Not Alone</span>
 </a>
 <header class="top"><nav class="nav" id="nav" aria-label="Primary"></nav><button class="menu" id="menu" type="button" data-cur="Menu">Menu</button></header>
 <aside class="rail" id="rail" aria-label="Sections"></aside>
@@ -47,7 +47,7 @@
     <button class="portal" id="portal" type="button" data-cur="Enter" aria-label="Enter: travel to Earth and watch the footage"></button>
   </div>
   <div class="hero-content chrome">
-    <h1><small>The case for</small>Disclosure</h1>
+    <h1><small>You are</small>Not alone</h1>
     <dl class="facts" id="facts"></dl>
   </div>
   <video id="portal-video" muted playsinline loop preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/fc3ded42-e845-41f3-a830-5cab512d79cd.mp4" style="position:absolute;width:1px;height:1px;visibility:hidden"></video>
@@ -83,12 +83,12 @@
 </section>
 
 <section class="scene" id="beings" data-name="Beings"><div class="bg" data-bg="beings"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Who people see</span><h2 class="mega">The <em>beings</em></h2></div><p class="lede">Heights as witnesses most often report them, drawn to one scale. Pick a figure to open its file.</p></div>
+  <div class="inner"><div class="headrow"><div><span class="kick">Who people see</span><h2 class="mega">The <em>beings</em></h2></div><p class="lede">Heights as witnesses most often report them, shown to one scale. Pick a figure to open its file.</p></div>
     <div class="lineup" id="lineup"></div></div>
 </section>
 
 <section class="scene" id="craft" data-name="Craft"><div class="bg" data-bg="craft"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">What people see</span><h2 class="mega">The <em>craft</em></h2></div><p class="lede">Ten shapes. Orbs and lights make up most of today's military reports.</p></div></div>
+  <div class="inner"><div class="headrow"><div><span class="kick">What people see</span><h2 class="mega">The <em>craft</em></h2></div><p class="lede" id="craft-count">Orbs and lights make up most of today's military reports.</p></div></div>
   <div id="craft-deck"></div>
   <div class="inner"><h3 class="sub">Why they are not aircraft</h3><div class="split"><div class="obs" id="obs"></div><div class="stack" id="obs-vid"></div></div></div>
 </section>
@@ -147,6 +147,7 @@
 <script src="data/atlas.js"></script>
 <script src="data/media.js"></script>
 <script src="data/extra.js"></script>
+<script src="data/art.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
