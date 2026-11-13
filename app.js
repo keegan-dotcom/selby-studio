@@ -149,9 +149,8 @@ const countries = new Set(window.PROGRAMS.map(p => p.c)).size;
 [["Record:", `${window.TIMELINE.length} events, from Sumer to this month.`], ["Footage:", "Ten clips. Seven come from government archives."], ["Programs:", `${window.PROGRAMS.length} known or alleged, across ${countries} countries.`], ["Verdict:", "Open. No craft has been shown in public."]]
   .forEach(([k, v], i) => $("#facts").append(h("div", { class: "fact", style: `--i:${i}` }, h("dt", { text: k }), h("dd", { text: v }))));
 const hero = $("#top");
-$("#portal-img").src = window.ART_BASE + window.ART.being.grey;
-{ const pw = $(".portal-wrap"); let rx = 0, ry = 0, tx = 0, ty = 0; if (FINE && !STILL) { addEventListener("pointermove", e => { ty = (e.clientX / innerWidth - .5) * 30; tx = (e.clientY / innerHeight - .5) * -24; }); const tick = () => { rx += (tx - rx) * .08; ry += (ty - ry) * .08; $("#portal").style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; requestAnimationFrame(tick); }; tick(); } }
 $("#hero-plate").style.backgroundImage = `url("${window.ART_BASE + window.ART.hero}")`;
+if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.ART_BASE + window.ART.heroVid; hv.addEventListener("playing", () => hv.classList.add("on"), { once: true }); hv.play().catch(() => {}); new IntersectionObserver(es => es[0].isIntersecting ? hv.play().catch(() => {}) : hv.pause()).observe(hero); }
 if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate").style.translate = `${(e.clientX / innerWidth - .5) * -24}px ${(e.clientY / innerHeight - .5) * -16}px`; });
 
 /* ───────── hero chapter tabs ───────── */

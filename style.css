@@ -635,3 +635,10 @@ body:not(.ready) .logo{opacity:0}
 .pre.film video{opacity:1}
 .pre.film canvas{opacity:0}
 .pre-white{position:absolute;inset:0;background:#f5f9ff;opacity:0;pointer-events:none}
+
+/* hero: one scene, the craft and its passenger */
+.hero-plate{background-position:50% 50%}
+.hero-plate video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.5s}
+.hero-plate video.on{opacity:1}
+.hero .shade{background:linear-gradient(to bottom,rgba(2,3,6,.25) 0,transparent 22%,transparent 62%,rgba(2,3,6,.85) 100%),linear-gradient(to right,rgba(2,3,6,.55),transparent 38%),linear-gradient(to left,rgba(2,3,6,.5),transparent 30%)}
+@keyframes plate{from{transform:scale(1.03)}to{transform:scale(1.08)}}
