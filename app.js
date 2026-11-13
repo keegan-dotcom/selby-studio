@@ -200,9 +200,16 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
     if (t > 6.15) return finish();
     raf = requestAnimationFrame(draw);
   };
-  const go = () => { raf = requestAnimationFrame(draw); };
-  ship.decode ? ship.decode().then(go, go) : (ship.onload = go);
-  setTimeout(() => { if (!t0) go(); }, 2500);
+  let started = false; const go = () => { if (started || done) return; started = true; raf = requestAnimationFrame(draw); };
+  /* the filmed version: a generated shot of the craft arriving and the beam taking you. Falls back to the canvas version if it is slow or fails. */
+  const vid = $("#pre-vid"), white = $("#pre-white");
+  if (window.ART.intro) {
+    vid.src = window.ART_BASE + window.ART.intro;
+    const playVid = () => { if (started || done) return; started = true; pre.classList.add("film"); vid.play().catch(() => { started = false; pre.classList.remove("film"); go(); });
+      const tick = () => { if (done) return; const d = vid.duration || 10, c = vid.currentTime; cue.style.opacity = String(Math.min(1, c / .6) * (1 - Math.min(1, Math.max(0, (c - 2.2) / .6)))); white.style.opacity = String(Math.max(0, (c - (d - 1.1)) / 1.1)); if (c >= d - .05) return finish(); requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
+    vid.addEventListener("canplaythrough", playVid, { once: true }); vid.addEventListener("ended", finish); vid.addEventListener("error", () => { if (!started) ship.decode ? ship.decode().then(go, go) : go(); });
+    setTimeout(() => { if (!started) { vid.removeAttribute("src"); ship.decode ? ship.decode().then(go, go) : go(); } }, 3500);
+  } else { ship.decode ? ship.decode().then(go, go) : (ship.onload = go); setTimeout(go, 2500); }
   const skip = () => { if (!done) { pre.classList.add("flash"); finish(); } };
   $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
 })();
