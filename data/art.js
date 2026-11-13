@@ -1,6 +1,7 @@
 /* Original AI illustrations generated for this site (Higgsfield, GPT Image). They are reconstructions of witness descriptions, not photographs. */
 window.ART_BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3JmN8ceS5QkrfG5ooFzPEFDS1rx/";
 window.ART = {
+ "psi": "hf_20261113_223537_1fa74941-7dc4-4d0c-953d-37956c7faf8f.png",
  "lineup": "hf_20261113_220115_b53c0c25-f66a-4b0c-9ec7-52a451f55c74.png",
  "being": {
   "grey": "hf_20261113_220218_5c45c6a8-4137-4a41-9df1-3bbcb3e30982.png",

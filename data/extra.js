@@ -73,3 +73,83 @@ window.BG = {
   voices:["Very Large Array, 2012.jpg","CC BY 2.0","John Fowler"],
   thesis:["Pillars of Creation (NIRCam Image).jpg","PD","NASA, ESA, CSA, STScI"]
 };
+
+window.PSI = [
+ {
+  "y": "1972–1995",
+  "k": "rec",
+  "n": "Stargate: the government paid for psychics",
+  "t": "Physicists Hal Puthoff and Russell Targ began remote-viewing trials at Stanford Research Institute in 1972 with CIA money. Under names like Grill Flame and Stargate, the CIA, DIA and Army kept psychic spies on the books for over twenty years, including Ingo Swann, Pat Price and Joseph McMoneagle.",
+  "x": "A 1995 review for the CIA split. Statistician Jessica Utts said the effect was real. Psychologist Ray Hyman said it was not shown, and the review found no operational intelligence value. The program was shut that year."
+ },
+ {
+  "y": "1975",
+  "k": "clm",
+  "n": "Remote viewing the Moon",
+  "t": "In his 1998 book Penetration, Swann says a man he calls Axelrod had him view the far side of the Moon and that he saw towers, machinery and humanoid workers, then saw a craft over a lake with Axelrod's people. He says he was warned the visitors could detect viewers.",
+  "x": "It rests on Swann's word alone. No document backs the Moon sessions, and the book came out more than twenty years after the events it describes."
+ },
+ {
+  "y": "1970s–now",
+  "k": "rec",
+  "n": "The same names run both programs",
+  "t": "Puthoff co-founded remote viewing, then his company EarthTech did contract work for the Pentagon's AAWSAP UFO program from 2008 and later joined To The Stars. Kit Green was the CIA's monitor of the SRI psychics and later worked with Stanford's Garry Nolan on UFO witnesses. Lue Elizondo writes that a Stargate veteran taught him to remote view.",
+  "x": "Overlapping people do not prove overlapping phenomena. Critics read it the other way: the UFO programs were staffed by paranormal believers, which shaped what they went looking for."
+ },
+ {
+  "y": "1983",
+  "k": "rec",
+  "n": "The Gateway Process",
+  "t": "An Army intelligence officer, Lt. Col. Wayne McDonnell, wrote an assessment of the Monroe Institute's sound-based meditation, arguing that focused consciousness could move outside time and space. The CIA released it in 2003 and it went viral in 2023.",
+  "x": "It is one officer's theory, built from the physics he read, not a test result. Nothing shows the Army used it."
+ },
+ {
+  "y": "2008–2010",
+  "k": "wit",
+  "n": "The hitchhiker effect",
+  "t": "In Skinwalkers at the Pentagon (2021), AAWSAP's own program manager James Lacatski and his co-authors describe staff, and later their families, reporting apparitions, orbs and poltergeist activity at home after visiting Skinwalker Ranch. The program treated it as a possible contagion and logged medical effects.",
+  "x": "The accounts come from the same team that ran the study. No outside group checked them."
+ },
+ {
+  "y": "2010s",
+  "k": "wit",
+  "n": "A brain built for contact",
+  "t": "Garry Nolan and Kit Green scanned about a hundred people with anomalous experiences, many of them military and intelligence. They report far denser wiring between the caudate and putamen, a region tied to intuition, than in controls. Elizondo argues the same people tend to be the remote viewers and the ones the phenomenon picks.",
+  "x": "The study is unpublished and the sample was not chosen at random. Nolan says the subjects' claimed abilities were never tested, and nobody knows whether the wiring came before or after the experiences."
+ },
+ {
+  "y": "1994",
+  "k": "wit",
+  "n": "The space kids",
+  "t": "At Ariel School in Zimbabwe, sixty-two children described a craft and thin black-eyed beings in the field at break time. Several said the beings spoke to them without words, with warnings about technology and the planet. Harvard psychiatrist John Mack interviewed them, and many tell the same story as adults.",
+  "x": "Children talk to each other, and Mack's interviews came after weeks of press coverage. The 'starseed' and 'indigo child' belief that some children carry visitor souls has no evidence behind it."
+ },
+ {
+  "y": "1980, told 2010",
+  "k": "clm",
+  "n": "The Rendlesham download",
+  "t": "Airman Jim Penniston says he touched the craft in Rendlesham Forest and afterwards a stream of ones and zeros filled his head, which he wrote in a notebook. Decoded, it reads as coordinates for ancient sites and a phrase about 'continuation for planetary advancement'.",
+  "x": "The notebook surfaced thirty years later and appears in none of his 1980 statements."
+ },
+ {
+  "y": "2025",
+  "k": "clm",
+  "n": "Psionic pilots",
+  "t": "Jake Barber told NewsNation that the crash-retrieval program used 'psionic' people to summon, communicate with and even steer craft, so some retrievals were invitations rather than crashes. His private team says it ran its own summoning in 2024 with a psionic member. Two veterans backed him on camera.",
+  "x": "No verifiable evidence has been shown, and the footage he released is unverified. AARO says it is looking into his claims."
+ },
+ {
+  "y": "1990–now",
+  "k": "clm",
+  "n": "CE-5: calling them down",
+  "t": "Steven Greer teaches groups to meditate under the night sky and project an invitation, which he calls a close encounter of the fifth kind. Thousands of people have tried it and many report lights that answer.",
+  "x": "The lights that answer look like satellites, aircraft and flares. Greer's own claims, like the Atacama 'alien' skeleton, have not held up."
+ },
+ {
+  "y": "All eras",
+  "k": "wit",
+  "n": "Mind to mind",
+  "t": "Across abduction reports from every continent, beings rarely speak. Witnesses say thoughts arrive in their heads. Mack, a Pulitzer winner, concluded the experiences were real to the people and not explained by mental illness.",
+  "x": "Sleep paralysis produces paralysis, a presence and telepathic 'voices', and hypnosis can plant detail. Harvard reviewed Mack's methods in 1994 and let him keep his post."
+ }
+];

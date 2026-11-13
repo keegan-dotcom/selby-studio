@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Not Alone · Aliens 101</title>
+<title>Not Alone | Aliens 101</title>
 <meta name="description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean. Watch the evidence, then read the pushback beside every claim.">
 <meta name="theme-color" content="#050608">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Not Alone · Aliens 101">
+<meta property="og:title" content="Not Alone | Aliens 101">
 <meta property="og:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
-<meta property="og:url" content="https://notalone101.vercel.app/">
-<meta property="og:image" content="https://notalone101.vercel.app/og.png">
+<meta property="og:url" content="https://wearenotalone.vercel.app/">
+<meta property="og:image" content="https://wearenotalone.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Not Alone · Aliens 101">
+<meta name="twitter:title" content="Not Alone | Aliens 101">
 <meta name="twitter:description" content="The whole rabbit hole on one page. Sky gods, Roswell, the Tic Tac, Congress under oath, and what it could all mean.">
-<meta name="twitter:image" content="https://notalone101.vercel.app/og.png">
+<meta name="twitter:image" content="https://wearenotalone.vercel.app/og.png">
 <link rel="preload" href="fonts/syncopate-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -34,8 +34,9 @@
 </a>
 <header class="top"><nav class="nav" id="nav" aria-label="Primary"></nav><button class="menu" id="menu" type="button" data-cur="Menu">Menu</button></header>
 <aside class="rail" id="rail" aria-label="Sections"></aside>
-<div class="hud" aria-hidden="true"><span>Sector <b id="hud-sec">00 · Arrival</b></span><span>Depth <b id="hud-depth">000%</b></span></div>
 <div class="full" id="full"><button class="menu x" id="full-x" type="button">Close</button></div>
+
+<div class="depth" id="depth" aria-hidden="true"><span>Rabbit hole depth</span><b id="depth-n">0%</b><i><u id="depth-f"></u></i></div>
 
 <main>
 <section class="hero" id="top" data-name="Arrival">
@@ -46,20 +47,21 @@
     <div class="portal-heading"><span>Next:</span><span>[01] <strong>Earth</strong></span></div>
     <button class="portal" id="portal" type="button" data-cur="Enter" aria-label="Enter: travel to Earth and watch the footage"></button>
   </div>
+  <nav class="htabs chrome" id="htabs" aria-label="Chapters"></nav>
   <div class="hero-content chrome">
-    <h1><small>You are</small>Not alone</h1>
+    <h1>Not alone</h1>
     <dl class="facts" id="facts"></dl>
   </div>
   <video id="portal-video" muted playsinline loop preload="auto" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/fc3ded42-e845-41f3-a830-5cab512d79cd.mp4" style="position:absolute;width:1px;height:1px;visibility:hidden"></video>
 </section>
 
 <section class="scene" id="footage" data-name="Footage"><div class="bg" data-bg="footage"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Watch first</span><h2 class="mega">The <em>footage</em></h2></div><p class="lede">Military video the US government has released, and the clips Congress has been shown. Drag the reel.</p></div></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>footage</em></h2></div><p class="lede">Military video the US government has released, and the clips Congress has been shown. Drag the reel.</p></div></div>
   <div id="reel"></div>
 </section>
 
 <section class="scene" id="start" data-name="Known"><div class="bg" data-bg="start"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">The ground nobody disputes</span><h2 class="mega">What is <em>known</em></h2></div><p class="lede">Disclosure means a government saying openly what it knows about UFOs, now officially called UAP.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">What is <em>known</em></h2></div><p class="lede">Disclosure means a government saying openly what it knows about UFOs, now officially called UAP.</p></div>
     <div class="stats" id="stats"></div>
     <div class="duo">
       <div style="--c:var(--ice)"><h3>On the record</h3><ul><li>The US military has studied these objects since 1947.</li><li>Three Navy videos are authentic and still unidentified.</li><li>Officers have sworn that a crash retrieval program exists.</li><li>The House has voted for a review board with subpoena power.</li></ul></div>
@@ -76,63 +78,69 @@
 
 <section class="stage" id="sites" data-name="Sites">
   <div class="ph" id="ph0"></div><div class="ph" id="ph1"></div><div class="veil"></div>
-  <div class="head"><span class="kick">Sacred sites</span></div>
+  <div class="head"><h2 class="stage-t">Sacred sites</h2></div>
   <div class="big" id="site-no">01</div>
   <div class="list" id="site-list"></div>
   <div class="info" id="site-info"></div>
 </section>
 
 <section class="scene" id="beings" data-name="Beings"><div class="bg" data-bg="beings"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Who people see</span><h2 class="mega">The <em>beings</em></h2></div><p class="lede">Heights as witnesses most often report them, shown to one scale. Pick a figure to open its file.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>phenotypes</em></h2></div><p class="lede">Heights as witnesses most often report them, shown to one scale. Pick a figure to open its file.</p></div>
     <div class="lineup" id="lineup"></div></div>
 </section>
 
 <section class="scene" id="craft" data-name="Craft"><div class="bg" data-bg="craft"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">What people see</span><h2 class="mega">The <em>craft</em></h2></div><p class="lede" id="craft-count">Orbs and lights make up most of today's military reports.</p></div></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>craft</em></h2></div><p class="lede" id="craft-count">Orbs and lights make up most of today's military reports.</p></div></div>
   <div id="craft-deck"></div>
   <div class="inner"><h3 class="sub">Why they are not aircraft</h3><div class="split"><div class="obs" id="obs"></div><div class="stack" id="obs-vid"></div></div></div>
 </section>
 
 <section class="scene" id="origins" data-name="Origins"><div class="bg" data-bg="origins"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Nine explanations</span><h2 class="mega">Where <em>from</em></h2></div><p class="lede">Each one with its best argument and its hardest problem.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>theories</em></h2></div><p class="lede">Each one with its best argument and its hardest problem.</p></div>
     <div class="rows" id="origin-rows"></div></div>
 </section>
 
+<section class="scene" id="psi" data-name="Psi">
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>psi</em> link</h2></div><p class="lede">Remote viewers, telepathic contact, children who say they were spoken to, and claims that craft can be called down or flown with the mind. Only the parts that touch the UFO story.</p></div>
+    <div class="psi-art" id="psi-art"></div>
+    <div class="rows tight" id="psi-rows"></div></div>
+</section>
+
 <section class="scene" id="math" data-name="The math"><div class="bg" data-bg="math"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Drake and Fermi</span><h2 class="mega">Are we <em>alone</em></h2></div><p class="lede">In 1950 Enrico Fermi asked where everybody is. In 1961 Frank Drake wrote an equation for it. Move the sliders.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">Are we <em>alone</em></h2></div><p class="lede">In 1950 Enrico Fermi asked where everybody is. In 1961 Frank Drake wrote an equation for it. Move the sliders.</p></div>
     <div class="split"><div class="glass" id="drake"></div><div class="stack" id="math-vid"></div></div>
     <h3 class="sub">Eight answers to Fermi</h3><div class="rows" id="fermi-rows"></div></div>
 </section>
 
 <section class="scene" id="programs" data-name="Programs"><div class="bg" data-bg="programs"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Known and alleged</span><h2 class="mega">The <em>programs</em></h2></div><p class="lede">Every government effort on record, and the ones insiders say exist. <span id="prog-count"></span></p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>programs</em></h2></div><p class="lede">Every government effort on record, and the ones insiders say exist. <span id="prog-count"></span></p></div>
     <div class="presets" id="prog-tools"></div><div id="prog-rows"></div></div>
 </section>
 
 <section class="scene" id="retrievals" data-name="Retrievals"><div class="bg" data-bg="retrievals"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Crash retrievals</span><h2 class="mega">The <em>legacy</em></h2></div><p class="lede">Every major claim that someone holds a craft, in date order, with its standing.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>legacy</em></h2></div><p class="lede">Every major claim that someone holds a craft, in date order, with its standing.</p></div>
     <div class="rows tight" id="ret-rows"></div>
     <h3 class="sub">Could it fly</h3><div class="rows" id="phys-rows"></div></div>
 </section>
 
 <section class="scene" id="voices" data-name="Voices"><div class="bg" data-bg="voices"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">Who to listen to</span><h2 class="mega">The <em>voices</em></h2></div><p class="lede">The people carrying the argument, and the ones testing it. Pick a name.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>voices</em></h2></div><p class="lede">The people carrying the argument, and the ones testing it. Pick a name.</p></div>
     <div id="voice-groups"></div></div>
 </section>
 
 <section class="scene" id="thesis" data-name="Thesis"><div class="bg" data-bg="thesis"></div><div class="veil"></div>
-  <div class="inner"><div class="headrow"><div><span class="kick">One reading of the record</span><h2 class="mega">The <em>thesis</em></h2></div><p class="lede">Everything above is the record. This last chapter is what I think it adds up to, with the weak points left in.</p></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">The <em>thesis</em></h2></div><p class="lede">Everything above is the record. This last chapter is what I think it adds up to, with the weak points left in.</p></div>
     <div id="thesis-list"></div>
     <p class="closing">They were here before we could write. The proof will be something <em>no agency can classify.</em></p></div>
 </section>
 
 <section class="scene" id="deeper" data-name="Go deeper">
-  <div class="inner"><div class="headrow"><div><span class="kick">Watch, listen, read</span><h2 class="mega">Go <em>deeper</em></h2></div></div>
+  <div class="inner"><div class="headrow"><div><h2 class="mega">Go <em>deeper</em></h2></div></div>
     <div class="lib" id="lib"></div></div>
 </section>
 </main>
 
-<footer><b style="font:800 11px var(--ui);letter-spacing:.2em;text-transform:uppercase;color:#fff">About this page</b>
+<footer><b>About this page</b>
   <p>Evidence ratings are editorial judgements. Video and photographs load from Wikimedia Commons, YouTube and the original hosts and remain the property of their makers. Government footage is in the public domain. Last updated 13 November 2026. PURSUE figures checked against war.gov/ufo that day.</p>
   <p id="credits"></p>
 </footer>

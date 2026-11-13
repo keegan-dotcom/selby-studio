@@ -20,7 +20,7 @@ const cPoster = (f, w) => `https://commons.wikimedia.org/w/thumb.php?f=${enc(f)}
 const cVid = (f, hash, key) => { const e = enc(f.replace(/ /g, "_")); return `https://upload.wikimedia.org/wikipedia/commons/transcoded/${hash}/${e}/${e}.${key}`; };
 const wiki = q => "https://en.wikipedia.org/w/index.php?search=" + encodeURIComponent(q);
 const ytFind = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
-const ext = (label, href) => h("a", { class: "btn ghost", href, target: "_blank", rel: "noopener", "data-cur": "Open", text: label + " ↗" });
+const ext = (label, href) => h("a", { class: "btn ghost", href, target: "_blank", rel: "noopener", "data-cur": "Open", text: label });
 const TIER = window.TIERS, ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const animate = (set, ms) => new Promise(done => { const t0 = performance.now(); const f = now => { const t = Math.min(1, (now - t0) / ms); set(ease(t)); t < 1 ? requestAnimationFrame(f) : done(); }; requestAnimationFrame(f); });
 
@@ -33,13 +33,13 @@ function show(frame, item, tileText, color) {
   if (kind === "i") {
     const doc = /memo|Record|Times|Call|Assessment|Tehran|Twining|Blue Book|fatima|Nürnberg|Utsuro|graph|GEIPAN|map/i.test(a);
     frame.append(h("img", { src: cImg(a, 1100), alt: b, loading: "lazy", draggable: "false", class: doc ? "doc" : null, onerror: () => tile(frame, tileText, color) }), b ? h("div", { class: "cap", text: b }) : null,
-      h("a", { class: "src", href: cPage(a), target: "_blank", rel: "noopener", text: "Commons · " + c }));
+      h("a", { class: "src", href: cPage(a), target: "_blank", rel: "noopener", text: "Wikimedia Commons, " + c }));
   } else if (kind === "a") {
     frame.append(h("img", { src: window.ART_BASE + a, alt: b, loading: "lazy", draggable: "false", onerror: () => tile(frame, tileText, color) }), b ? h("div", { class: "cap", text: b }) : null, h("span", { class: "src", text: "AI illustration" }));
   } else if (kind === "v") {
     const v = h("video", { controls: true, preload: "none", playsinline: true, poster: cPoster(a, 1100), "aria-label": c });
     ["480p.vp9.webm", "360p.mpeg4.mov", "240p.vp9.webm"].forEach(k => v.append(h("source", { src: cVid(a, b, k), type: k.endsWith("mov") ? "video/quicktime" : "video/webm" })));
-    frame.append(v, h("a", { class: "src", href: cPage(a), target: "_blank", rel: "noopener", text: "US government · public domain" }));
+    frame.append(v, h("a", { class: "src", href: cPage(a), target: "_blank", rel: "noopener", text: "US government, public domain" }));
   } else if (kind === "y") {
     const face = h("a", { class: "face", href: "https://www.youtube.com/watch?v=" + a, target: "_blank", rel: "noopener", "data-cur": "Play", "aria-label": "Play: " + b },
       h("img", { src: `https://i.ytimg.com/vi/${a}/hqdefault.jpg`, alt: "", loading: "lazy", draggable: "false", onerror: e => { e.target.remove(); face.prepend(h("div", { class: "tile", style: color ? `--c:${color}` : null }, h("b", { text: tileText }))); } }),
@@ -93,20 +93,20 @@ function deck(panels, cls) {
 addEventListener("resize", () => decks.forEach(d => d.isConnected ? d._upd() : decks.delete(d)));
 
 /* ───────── nav, rail, menu, hud ───────── */
-const SECTIONS = [["top", "Arrival"], ["footage", "Footage"], ["start", "Known"], ["record", "Record"], ["sites", "Sites"], ["beings", "Beings"], ["craft", "Craft"], ["origins", "Origins"], ["math", "The math"], ["programs", "Programs"], ["retrievals", "Retrievals"], ["voices", "Voices"], ["thesis", "Thesis"], ["deeper", "Go deeper"]];
+const SECTIONS = [["top", "Arrival"], ["footage", "Footage"], ["start", "Known"], ["record", "Record"], ["sites", "Sites"], ["beings", "Phenotypes"], ["craft", "Craft"], ["origins", "Theories"], ["psi", "Psi"], ["math", "The math"], ["programs", "Programs"], ["retrievals", "Retrievals"], ["voices", "Voices"], ["thesis", "Thesis"], ["deeper", "Go deeper"]];
 [["footage", "Footage"], ["record", "Record"], ["programs", "Programs"], ["thesis", "Thesis"]].forEach(([id, t]) => $("#nav").append(h("a", { href: "#" + id, text: t })));
-SECTIONS.slice(1).forEach(([id, t], i) => { $("#rail").append(h("a", { href: "#" + id, "data-s": id, text: t })); $("#full").append(h("a", { href: "#" + id, style: `--i:${i}`, onclick: () => menu(false) }, h("i", { text: pad(i + 1) }), t)); });
+SECTIONS.slice(1).forEach(([id, t], i) => { $("#rail").append(h("a", { href: "#" + id, "data-s": id, text: t })); $("#full").append(h("a", { href: "#" + id, style: `--i:${i}`, onclick: () => menu(false) }, t)); });
 const menu = on => { $("#full").classList.toggle("open", on); document.body.classList.toggle("lock", on); };
 $("#menu").onclick = () => menu(true); $("#full-x").onclick = () => menu(false);
 addEventListener("keydown", e => { if (e.key === "Escape") menu(false); });
 const secIO = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const id = e.target.id, i = SECTIONS.findIndex(s => s[0] === id);
   $$("#rail a").forEach(a => a.classList.toggle("on", a.dataset.s === id)); $$("#nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + id));
-  $("#hud-sec").textContent = pad(i) + " · " + SECTIONS[i][1]; }), { rootMargin: "-45% 0px -50% 0px" });
+  }), { rootMargin: "-45% 0px -50% 0px" });
 SECTIONS.forEach(([id]) => secIO.observe(document.getElementById(id)));
 
 /* ───────── reveal + backgrounds + parallax ───────── */
 const rvIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rvIO.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
-const reveal = root => $$(".kick,.mega,.lede,.sub,.stat,.duo>div,.rows>details,.th,.vg,.glass,.lineup,.closing,.country,.obs>div,.lib>div", root).forEach((el, i) => { if (el.classList.contains("rv")) return; el.classList.add("rv"); const sib = el.parentElement ? [...el.parentElement.children].indexOf(el) : 0; el.style.setProperty("--i", Math.min(sib, 8)); rvIO.observe(el); });
+const reveal = root => $$(".mega,.lede,.sub,.stat,.duo>div,.rows>details,.th,.vg,.glass,.lineup,.closing,.country,.obs>div,.lib>div", root).forEach((el, i) => { if (el.classList.contains("rv")) return; el.classList.add("rv"); const sib = el.parentElement ? [...el.parentElement.children].indexOf(el) : 0; el.style.setProperty("--i", Math.min(sib, 8)); rvIO.observe(el); });
 const bgIO = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const el = e.target, b = window.BG[el.dataset.bg]; bgIO.unobserve(el); if (!b) return;
   const src = cImg(b[0], 1920), im = new Image(); im.onload = () => { el.style.backgroundImage = `url("${src}")`; el.classList.add("vis"); }; im.src = src; }), { rootMargin: "60% 0px" });
 const armBg = root => $$(".bg[data-bg]", root).forEach(el => bgIO.observe(el));
@@ -122,7 +122,7 @@ sizeWarp(); addEventListener("resize", sizeWarp);
 function frame() {
   const y = scrollY, d = document.documentElement, dv = y - lastY; lastY = y; vel += (dv - vel) * .2;
   $("#bar").style.width = (100 * y / Math.max(1, d.scrollHeight - d.clientHeight)) + "%";
-  $("#hud-depth").textContent = String(Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight))).padStart(3, "0") + "%";
+  { const pc = Math.round(100 * y / Math.max(1, d.scrollHeight - d.clientHeight)); $("#depth-n").textContent = pc + "%"; $("#depth-f").style.transform = `scaleY(${pc / 100})`; $("#depth").classList.toggle("on", y > innerHeight * .5); }
   if (!STILL) { if (dv) parallax();
     wx.clearRect(0, 0, warp.width, warp.height); wx.lineCap = "round";
     for (const s of stars) { s.y -= vel * s.z * .35 + s.z * .06; if (s.y < -40) s.y += warp.height + 80; if (s.y > warp.height + 40) s.y -= warp.height + 80;
@@ -172,6 +172,10 @@ async function travel() {
 }
 portalBtn.onclick = travel;
 
+/* ───────── hero chapter tabs ───────── */
+(() => { const A = window.ART, T = [["footage", "The footage", "Navy and PURSUE video", A.craft.tictac], ["beings", "Phenotypes", "Eight reported types", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[5]], ["thesis", "The thesis", "What it adds up to", A.thesis[0]]];
+  T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
+
 /* ───────── preloader ───────── */
 (() => {
   const pre = $("#pre"), v = $("#pre-video"), val = $("#pre-val"), cnt = $("#pre-count"), logo = $("#logo"); let done = false, fake = 0;
@@ -197,7 +201,7 @@ if (FINE && !STILL) (() => {
   document.addEventListener("mouseleave", () => { c.classList.remove("on"); r.classList.remove("on"); });
   addEventListener("pointerdown", () => r.classList.add("down")); addEventListener("pointerup", () => r.classList.remove("down"));
   const loop = () => { x += (mx - x) * .22; y += (my - y) * .22; r.style.transform = `translate3d(${x}px,${y}px,0)`;
-    xy.textContent = "X " + String(Math.max(0, Math.round(mx))).padStart(4, "0") + "  Y " + String(Math.max(0, Math.round(my + scrollY))).padStart(5, "0"); requestAnimationFrame(loop); }; loop();
+    xy.textContent = ""; requestAnimationFrame(loop); }; loop();
 })();
 
 /* ───────── footage reel, stats ───────── */
@@ -213,15 +217,15 @@ const fchip = (label, g, v, cls) => h("button", { type: "button", class: "chip "
 for (const k in TIER) tools.append(fchip(TIER[k].name, "tier", k, "t-" + k)); tools.append(fchip("Has video", "vid", true));
 $("#q").addEventListener("input", e => { st.q = e.target.value.trim().toLowerCase(); drawRecord(); });
 const yearText = e => e.y < 0 ? Math.round(-e.y) + " BCE" : String(Math.floor(e.y)), hasVid = e => (window.MEDIA[e.t] || []).some(m => m[0] !== "i"), tc = k => `var(--${k})`;
-const openEntry = e => openDos({ left: mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), meta: [h("span", { text: e.d + " · " + e.p }), h("span", { class: "chip t-" + e.k, title: TIER[e.k].desc, text: TIER[e.k].name })], title: e.t,
+const openEntry = e => openDos({ left: mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), meta: [h("span", { text: e.d + ", " + e.p }), h("span", { class: "chip t-" + e.k, title: TIER[e.k].desc, text: TIER[e.k].name })], title: e.t,
   blocks: [["The case", e.s], ["The pushback", e.c, true]], links: [ext("Read more", wiki(e.w)), e.v ? ext("Find footage", ytFind(e.v)) : null, ...(e.l || []).map(([t, u]) => ext(t, u))].filter(Boolean) });
 function drawRecord() {
   const root = $("#eras"); root.replaceChildren(); let n = 0;
   window.ERAS.forEach(era => { const rows = window.TIMELINE.filter(e => e.e === era.id && (!st.tier || e.k === st.tier) && (!st.vid || hasVid(e)) && (!st.q || (e.t + " " + e.p + " " + e.s + " " + e.c + " " + e.d + " " + (e.g || []).join(" ")).toLowerCase().includes(st.q)));
     if (!rows.length) return; n += rows.length;
     root.append(h("section", { class: "scene era" }, h("div", { class: "bg", "data-bg": era.id }), h("div", { class: "veil" }),
-      h("div", { class: "inner" }, h("div", { class: "headrow" }, h("div", {}, h("span", { class: "kick", text: era.span + " · " + rows.length + " files" }), h("h2", { class: "mega", text: era.name })), h("p", { class: "lede", text: era.note }))),
-      deck(rows.map(e => h("article", { class: "pan" }, mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: e.d }), h("span", { class: "chip t-" + e.k, text: TIER[e.k].name })), h("h3", { text: e.t }), h("div", { class: "where", text: e.p }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open the file →", onclick: () => openEntry(e) }))))))); });
+      h("div", { class: "inner" }, h("div", { class: "headrow" }, h("div", {}, h("h2", { class: "mega", text: era.name })), h("p", { class: "lede", text: era.span + ". " + era.note + " " + rows.length + " files." }))),
+      deck(rows.map(e => h("article", { class: "pan" }, mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: e.d }), h("span", { class: "chip t-" + e.k, text: TIER[e.k].name })), h("h3", { text: e.t }), h("div", { class: "where", text: e.p }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: () => openEntry(e) }))))))); });
   if (!n) root.append(h("p", { class: "empty", text: "Nothing matches. Clear a filter or try another word." }));
   armBg(root); reveal(root); collectPar();
 }
@@ -233,9 +237,9 @@ drawRecord();
   const set = i => { i = (i + S.length) % S.length; if (i === cur) return; cur = i; const s = S[i], im = window.SITE_IMG[s.g];
     flip ^= 1; ph[flip].style.backgroundImage = im ? `url("${cImg(im[0], 1920)}")` : "none"; ph[flip].classList.add("vis"); ph[flip ^ 1].classList.remove("vis");
     $("#site-no").textContent = pad(i + 1); $$("button", list).forEach((b, j) => b.setAttribute("aria-pressed", j === i ? "true" : "false"));
-    info.replaceChildren(h("div", { class: "swap" }, h("span", { class: "kick", text: s.p + " · " + s.d }), h("h3", { text: s.n }), h("p", { text: s.f })),
+    info.replaceChildren(h("div", { class: "swap" }, h("p", { class: "loc", text: s.p + ", " + s.d }), h("h3", { text: s.n }), h("p", { text: s.f })),
       h("div", { class: "acts swap" }, h("button", { class: "arrow", type: "button", "aria-label": "Previous site", "data-cur": "Back", html: ARR(-1), onclick: () => set(cur - 1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next site", "data-cur": "Next", html: ARR(1), onclick: () => set(cur + 1) }),
-        h("button", { class: "btn", type: "button", "data-cur": "Open file", text: "The claim and the dig", onclick: () => openDos({ left: mediaFrame(im ? [["i", im[0], s.n, im[1]]] : [], s.n, "var(--myt)"), meta: [h("span", { text: s.p + " · " + s.c })], title: s.n, blocks: [["Built", s.d], ["What is there", s.f], ["The sky-visitor reading", s.a], ["What archaeologists found", s.r, true]], links: [ext("Read more", wiki(s.n))] }) }))); };
+        h("button", { class: "btn", type: "button", "data-cur": "Open file", text: "The claim and the dig", onclick: () => openDos({ left: mediaFrame(im ? [["i", im[0], s.n, im[1]]] : [], s.n, "var(--myt)"), meta: [h("span", { text: s.p + ", " + s.c })], title: s.n, blocks: [["Built", s.d], ["What is there", s.f], ["The sky-visitor reading", s.a], ["What archaeologists found", s.r, true]], links: [ext("Read more", wiki(s.n))] }) }))); };
   S.forEach((s, i) => list.append(h("button", { type: "button", "aria-pressed": "false", "data-cur": "View", text: s.n, onclick: () => set(i) })));
   new IntersectionObserver((es, io) => { if (es[0].isIntersecting) { io.disconnect(); set(0); } }, { rootMargin: "40% 0px" }).observe($("#sites"));
   if (FINE && !STILL) $("#sites").addEventListener("pointermove", e => { const dx = (e.clientX / innerWidth - .5) * -26, dy = (e.clientY / innerHeight - .5) * -18; ph.forEach(p => p.style.translate = `${dx}px ${dy}px`); });
@@ -248,9 +252,9 @@ const A = window.ART, artUrl = k => window.ART_BASE + k;
   const open = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : mediaFrame([], b.n, "var(--ice)"), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
   const spots = [["goblin", "Little men", "Under 3 ft", 7.4, 53], ["grey", "Grey", "3.5 to 4.5 ft", 16.9, 37], ["hybrid", "Hybrid", "About 5 ft", 27.2, 30.5], [null, "You", "5 ft 9 in", 38.6, 24.5], ["nordic", "Nordic", "6 to 7 ft", 51, 13.5], ["mantis", "Mantis", "6 to 7 ft", 63.8, 9], ["reptile", "Reptilian", "6 to 8 ft", 77.5, 7.5], ["white", "Tall White", "Up to 8 ft", 91.2, 1.5]];
   const shot = h("div", { class: "shot" }, h("img", { src: artUrl(A.lineup), alt: "Eight figures standing in a row against a dark wall, shortest to tallest: a little goblin-like being, a Grey, a hybrid, an average human, a Nordic, a mantis being, a Reptilian and a Tall White.", draggable: "false", onerror: e => { e.target.remove(); shot.classList.add("noimg"); } }),
-    spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "Open file" : null, "aria-label": g ? `Open file: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration · heights to scale" }));
+    spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "Open file" : null, "aria-label": g ? `Open file: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration, heights to scale" }));
   $("#lineup").append(h("div", { class: "plate" }, shot));
-  const L = B.light; $("#lineup").after(h("button", { class: "orbcard", type: "button", "data-cur": "Open file", onclick: () => open("light") }, A.being.light ? h("img", { src: artUrl(A.being.light), alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.remove() }) : null, h("span", {}, h("i", { text: L.tag }), h("b", { text: L.n }), h("em", { text: "The ninth type has no body to measure. Open the file →" }))));
+  const L = B.light; $("#lineup").after(h("button", { class: "orbcard", type: "button", "data-cur": "Open file", onclick: () => open("light") }, A.being.light ? h("img", { src: artUrl(A.being.light), alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.remove() }) : null, h("span", {}, h("i", { text: L.tag }), h("b", { text: L.n }), h("em", { text: "The ninth type has no body to measure." }))));
 })();
 
 /* ───────── craft, observables ───────── */
@@ -258,17 +262,21 @@ $("#craft-count").textContent = `${["Zero","One","Two","Three","Four","Five","Si
 $("#craft-deck").append(deck(window.CRAFT.map(c => { const u = A.craft[c.g];
   const art = () => { const b = h("div", { class: "art" }); const fail = () => b.replaceChildren(h("div", { class: "tile" }, h("b", { text: c.n }))); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: fail }), h("span", { class: "ai", text: "AI illustration" })); else fail(); return b; };
   const file = () => openDos({ left: u ? mediaFrame([["a", u, c.n]], c.n, "var(--hot)") : art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] });
-  return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open the file →", onclick: file }))); })));
-window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("b", { text: String(i + 1) }), h("h4", { text: o.n }), h("p", { text: o.t }))));
+  return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); })));
+window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("h4", { text: o.n }), h("p", { text: o.t }))));
 $("#obs-vid").append(mediaFrame([window.SECTION_VIDEO.observables], "5", "var(--hot)"), mediaFrame([["i", "USS Nimitz 2004 tic tac UFO.jpg", "Artist's reconstruction of the 2004 Nimitz encounter", "CC BY-SA 4.0"]], "2004", "var(--hot)"));
 
 /* ───────── index rows ───────── */
-const row = (no, title, tag, body, small, star) => h("details", {}, h("summary", { style: star ? "color:var(--hot)" : null }, h("span", { class: "no" + (small ? " sm" : ""), text: no }), h("h3", { text: title }), h("span", { class: "tag" }, tag)), h("div", { class: "rowbody" }, body));
+const row = (no, title, tag, body, small, star) => h("details", {}, h("summary", { style: star ? "color:var(--hot)" : null }, no ? h("span", { class: "no" + (small ? " sm" : ""), text: no }) : null, h("h3", { text: title }), h("span", { class: "tag" }, tag)), h("div", { class: "rowbody" }, body));
 const blk = (k, v, warn) => v ? h("p", { class: warn ? "warn" : null }, h("b", { text: k }), v) : null;
-window.ORIGINS.forEach((o, i) => $("#origin-rows").append(row(pad(i + 1), o.n, o.k, [blk("The idea", o.idea), blk("Best argument", o.best), blk("Hardest problem", o.hard, true), blk("Who argues it", o.who)])));
-window.FERMI.forEach((f, i) => $("#fermi-rows").append(row(pad(i + 1), f.n, f.k + (f.star ? " · where this page ends up" : ""), [blk("The idea", f.t), blk("The problem", f.x, true)], false, f.star)));
+window.ORIGINS.forEach((o, i) => $("#origin-rows").append(row("", o.n, o.k, [blk("The idea", o.idea), blk("Best argument", o.best), blk("Hardest problem", o.hard, true), blk("Who argues it", o.who)])));
+window.FERMI.forEach((f, i) => $("#fermi-rows").append(row("", f.n, f.k + (f.star ? ", where this page ends up" : ""), [blk("The idea", f.t), blk("The problem", f.x, true)], false, f.star)));
 window.RETRIEVALS.forEach(r => $("#ret-rows").append(row(r.y, r.who, h("span", { class: "chip t-" + r.k, text: TIER[r.k].name }), [blk("The claim", r.what), blk("Where it stands", r.st, true)], true)));
-window.PHYSICS.forEach((p, i) => $("#phys-rows").append(row(pad(i + 1), p.n, "", [h("p", { text: p.t })])));
+window.PHYSICS.forEach((p, i) => $("#phys-rows").append(row("", p.n, "", [h("p", { text: p.t })])));
+
+/* ───────── psi ───────── */
+$("#psi-art").append(mediaFrame([["a", A.psi, "A 1970s remote-viewing session, as described by participants"]], "Psi", "var(--myt)"));
+window.PSI.forEach(r => $("#psi-rows").append(row(r.y, r.n, h("span", { class: "chip t-" + r.k, text: TIER[r.k].name }), [blk("The claim", r.t), blk("The pushback", r.x, true)], true)));
 
 /* ───────── programs ───────── */
 (() => {
@@ -277,7 +285,7 @@ window.PHYSICS.forEach((p, i) => $("#phys-rows").append(row(pad(i + 1), p.n, "",
   const draw = () => { out.replaceChildren(); let last = "", box;
     P.filter(p => !f || p.st === f).forEach(p => { if (p.c !== last) { last = p.c; out.append(h("div", { class: "country", text: p.c })); box = h("div", { class: "rows tight" }); out.append(box); }
       box.append(row(p.y, p.n, h("span", { class: "chip", style: `--c:${S[p.st].c}`, text: S[p.st].n }), [blk("Run by", p.a), blk("What it was", p.t, p.st !== "confirmed")], true)); }); reveal(out); };
-  for (const k in S) tools.append(h("button", { type: "button", class: "chip", style: `--c:${S[k].c}`, "aria-pressed": "false", "data-cur": "Filter", text: S[k].n + " · " + P.filter(p => p.st === k).length, onclick: e => { f = f === k ? "" : k; $$("button", tools).forEach(b => b.setAttribute("aria-pressed", "false")); if (f) e.currentTarget.setAttribute("aria-pressed", "true"); draw(); } }));
+  for (const k in S) tools.append(h("button", { type: "button", class: "chip", style: `--c:${S[k].c}`, "aria-pressed": "false", "data-cur": "Filter", text: S[k].n + ", " + P.filter(p => p.st === k).length, onclick: e => { f = f === k ? "" : k; $$("button", tools).forEach(b => b.setAttribute("aria-pressed", "false")); if (f) e.currentTarget.setAttribute("aria-pressed", "true"); draw(); } }));
   draw();
 })();
 
@@ -298,8 +306,8 @@ window.THESIS.forEach((t, i) => {
   const items = [A.thesis[i] ? ["a", A.thesis[i], TH_CAP[i]] : null, i === 0 ? ["i", "Pieter Bruegel the Elder - The Fall of the Rebel Angels - Google Art Project.jpg", "Bruegel, The Fall of the Rebel Angels, 1562", "PD"] : null, i === 3 ? window.SECTION_VIDEO.zoo : null];
   const inset = items.some(Boolean) ? h("div", { class: "inset art16" }, mediaFrame(items, ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"][i], "var(--hot)")) : null;
   const films = i === 6 ? h("div", { class: "inset wide", style: "margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))" }, filmDeck()) : null;
-  $("#thesis-list").append(h("div", { class: "th" }, h("b", { text: String(i + 1) }), h("div", {}, h("h3", { text: t.n }), inset, h("p", { class: "say", text: t.t }), films,
-    h("details", {}, h("summary", { class: "open", "data-cur": "Expand", text: "Pressure test →" }), h("div", { class: "rowbody" }, blk("What supports it", t.f), blk("What cuts against it", t.x, true))))));
+  $("#thesis-list").append(h("div", { class: "th" }, h("div", {}, h("h3", { text: t.n }), inset, h("p", { class: "say", text: t.t }), films,
+    h("details", {}, h("summary", { class: "open", "data-cur": "Expand", text: "Pressure test" }), h("div", { class: "rowbody" }, blk("What supports it", t.f), blk("What cuts against it", t.x, true))))));
 });
 
 /* ───────── Drake calculator ───────── */
@@ -321,7 +329,7 @@ window.THESIS.forEach((t, i) => {
 /* ───────── library, credits ───────── */
 $("#lib").append(h("div", { class: "stack" }, mediaFrame([window.SECTION_VIDEO.phenomenon], "Film", "var(--hot)"), mediaFrame([window.SECTION_VIDEO.gobekli], "Dig", "var(--hot)")));
 for (const k in window.LIBRARY) $("#lib").append(h("div", {}, h("h3", { text: k }), h("ul", {}, window.LIBRARY[k].map(([t, d]) => h("li", {}, h("a", { href: (k === "Read" ? "https://www.google.com/search?tbm=bks&q=" : "https://www.youtube.com/results?search_query=") + encodeURIComponent(t.replace(/\(.*?\)/g, "")), target: "_blank", rel: "noopener", text: t }), h("span", { text: d }))))));
-$("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.SOURCES.map(([t, u]) => h("li", {}, h("a", { href: u, target: "_blank", rel: "noopener", text: t + " ↗" }))))));
+$("#lib").append(h("div", {}, h("h3", { text: "Sources" }), h("ul", {}, window.SOURCES.map(([t, u]) => h("li", {}, h("a", { href: u, target: "_blank", rel: "noopener", text: t }))))));
 $("#credits").append("Background photography: ", Object.values(window.BG).map(([f, lic, who], i) => [i ? ", " : "", h("a", { href: cPage(f), target: "_blank", rel: "noopener", text: who }), " (" + lic + ")"]), ". Hero video from the Planet Jumping asset set.");
 
 new IntersectionObserver(es => document.body.classList.toggle("at-top", es[0].isIntersecting), { rootMargin: "-45% 0px -45% 0px" }).observe($("#top"));

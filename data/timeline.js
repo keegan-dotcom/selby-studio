@@ -1,12 +1,12 @@
 /* Timeline data. k = evidence tier: rec (documented), wit (witnessed), clm (claimed), myt (tradition), hoax (discredited)
    e = era key. w = Wikipedia search, v = video search, l = direct primary links. */
 window.ERAS = [
-  { id: "a", name: "Ancient and sacred", span: "to 1500 CE", note: "Texts and traditions about beings who came down from the sky and taught." },
+  { id: "a", name: "Ancient and sacred", span: "Up to 1500 CE", note: "Texts and traditions about beings who came down from the sky and taught." },
   { id: "b", name: "Portents and airships", span: "1500 to 1939", note: "Broadsheets, legends, miracle crowds and the first mass sighting waves." },
   { id: "c", name: "The saucer age", span: "1940 to 1969", note: "War, the bomb, Roswell, and 22 years of official Air Force study." },
   { id: "d", name: "High strangeness", span: "1970 to 1999", note: "Abductions, nuclear bases, triangles, and the first reverse-engineering claims." },
   { id: "e", name: "The quiet build", span: "2000 to 2016", note: "Navy radar, a secret Pentagon program, and cases that surfaced years later." },
-  { id: "f", name: "The disclosure era", span: "2017 to now", note: "Leaked video, sworn testimony, legislation and the government file releases." }
+  { id: "f", name: "The disclosure era", span: "2017 to today", note: "Leaked video, sworn testimony, legislation and the government file releases." }
 ];
 
 window.TIERS = {
