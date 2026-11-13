@@ -697,3 +697,11 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 .deck.folded .more{display:none}
 @media (max-width:1100px){.grid-deck{--cols:2}}
 @media (max-width:600px){.grid-deck{--cols:1}}
+
+/* laser cursor */
+.cursor .halo{display:none}
+.cursor .dot{left:-3.5px;top:-3.5px;width:7px;height:7px;background:#fff;box-shadow:0 0 4px 2px rgba(200,235,255,.95),0 0 14px 5px rgba(110,190,255,.6),0 0 34px 10px rgba(80,160,255,.25)}
+.cursor.hot .dot{transform:scale(1.6);box-shadow:0 0 4px 2px rgba(255,236,200,.95),0 0 16px 6px rgba(217,165,92,.7),0 0 40px 12px rgba(217,165,92,.3)}
+.cursor.down .dot{transform:scale(.7)}
+.reti{width:0;height:0}
+.reti .lab{left:14px;top:12px}

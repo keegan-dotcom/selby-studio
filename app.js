@@ -201,32 +201,28 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
   $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
 })();
 
-/* ───────── cursor: a craft's light. A glowing core leaves rising motes; brackets lock onto whatever you point at. ───────── */
+/* ───────── cursor: a laser point that draws a fading beam behind it ───────── */
 if (FINE && !STILL) (() => {
   document.documentElement.classList.add("ship");
   const c = $("#cursor"), r = $("#reti"), lab = $("#cur-lab"), cv = $("#motes"), cx = cv.getContext("2d");
-  let mx = -99, my = -99, x = -99, y = -99, tgt = null, motes = [], last = 0;
-  const box = { x: 0, y: 0, w: 34, h: 34 }, size = () => { cv.width = innerWidth * (devicePixelRatio || 1); cv.height = innerHeight * (devicePixelRatio || 1); cx.setTransform(devicePixelRatio || 1, 0, 0, devicePixelRatio || 1, 0, 0); };
+  let mx = -99, my = -99, pts = [], hot = false, burst = 0;
+  const D = () => devicePixelRatio || 1, size = () => { cv.width = innerWidth * D(); cv.height = innerHeight * D(); cx.setTransform(D(), 0, 0, D(), 0, 0); };
   size(); addEventListener("resize", size);
-  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); r.classList.add("on");
-    const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,video[controls],.hs");
-    tgt = t && !t.matches("input") ? t : null; r.classList.toggle("hot", !!tgt); c.classList.toggle("hot", !!tgt);
-    lab.textContent = tgt ? (tgt.dataset.cur || (tgt.matches("summary") ? "Expand" : tgt.matches("video") ? "Play" : "Open")) : "";
-    const now = performance.now(); if (now - last > 16) { last = now; for (let i = 0; i < 2; i++) motes.push({ x: mx + (Math.random() - .5) * 6, y: my + (Math.random() - .5) * 6, vx: (Math.random() - .5) * .35, vy: -.25 - Math.random() * .6, l: 1, s: .6 + Math.random() * 1.4 }); } }, { passive: true });
-  document.addEventListener("mouseleave", () => { c.classList.remove("on"); r.classList.remove("on"); });
-  addEventListener("pointerdown", () => { r.classList.add("down"); for (let i = 0; i < 18; i++) { const a = Math.random() * 6.28, v = 1 + Math.random() * 2.2; motes.push({ x: mx, y: my, vx: Math.cos(a) * v, vy: Math.sin(a) * v - .4, l: 1, s: 1 + Math.random() * 1.5 }); } });
-  addEventListener("pointerup", () => r.classList.remove("down"));
-  const loop = () => {
-    x += (mx - x) * .35; y += (my - y) * .35; c.style.transform = `translate3d(${mx}px,${my}px,0)`;
-    let tx, ty, tw, th;
-    if (tgt && tgt.isConnected) { const b = tgt.getBoundingClientRect(), p = 6; tw = Math.min(b.width + p * 2, innerWidth); th = Math.min(b.height + p * 2, innerHeight); tx = b.left - p + (b.width + p * 2 - tw) / 2; ty = b.top - p + (b.height + p * 2 - th) / 2;
-      if (tw > 520 || th > 420) { tw = 64; th = 64; tx = mx - 32; ty = my - 32; } }
-    else { tw = 34; th = 34; tx = x - 17; ty = y - 17; }
-    const k = tgt ? .22 : .5; box.x += (tx - box.x) * k; box.y += (ty - box.y) * k; box.w += (tw - box.w) * k; box.h += (th - box.h) * k;
-    r.style.transform = `translate3d(${box.x}px,${box.y}px,0)`; r.style.width = box.w + "px"; r.style.height = box.h + "px";
-    cx.clearRect(0, 0, innerWidth, innerHeight); cx.globalCompositeOperation = "lighter";
-    motes = motes.filter(m => (m.l -= .018) > 0); for (const m of motes) { m.x += m.vx; m.y += m.vy; m.vx *= .985; const a = m.l * .8; cx.fillStyle = `rgba(200,225,255,${a})`; cx.fillRect(m.x, m.y, m.s, m.s * (1 + (1 - m.l) * 2)); }
-    cx.globalCompositeOperation = "source-over"; requestAnimationFrame(loop); }; loop();
+  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); r.classList.add("on"); pts.push({ x: mx, y: my, t: performance.now() });
+    const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,video[controls],.hs"); hot = !!t && !t.matches("input");
+    c.classList.toggle("hot", hot); r.classList.toggle("hot", hot); lab.textContent = hot ? (t.dataset.cur || (t.matches("summary") ? "Expand" : t.matches("video") ? "Play" : "Open")) : ""; }, { passive: true });
+  document.addEventListener("mouseleave", () => { c.classList.remove("on"); r.classList.remove("on"); pts = []; });
+  addEventListener("pointerdown", () => { burst = 1; c.classList.add("down"); }); addEventListener("pointerup", () => c.classList.remove("down"));
+  const LIFE = 260;
+  const loop = now => {
+    c.style.transform = `translate3d(${mx}px,${my}px,0)`; r.style.transform = `translate3d(${mx}px,${my}px,0)`;
+    pts = pts.filter(p => now - p.t < LIFE); cx.clearRect(0, 0, innerWidth, innerHeight);
+    if (pts.length > 1) { cx.lineCap = "round"; cx.lineJoin = "round"; cx.globalCompositeOperation = "lighter";
+      for (const [w, col] of [[9, "120,200,255,.10"], [4, "150,215,255,.35"], [1.6, "235,248,255,.95"]]) {
+        for (let i = 1; i < pts.length; i++) { const a = 1 - (now - pts[i].t) / LIFE; cx.strokeStyle = `rgba(${col.split(",").slice(0, 3).join(",")},${(+col.split(",")[3] * a).toFixed(3)})`; cx.lineWidth = w * (.35 + .65 * a); cx.beginPath(); cx.moveTo(pts[i - 1].x, pts[i - 1].y); cx.lineTo(pts[i].x, pts[i].y); cx.stroke(); } }
+      cx.globalCompositeOperation = "source-over"; }
+    if (burst > 0) { burst -= .06; cx.globalCompositeOperation = "lighter"; const rr = 6 + (1 - burst) * 26; cx.strokeStyle = `rgba(190,230,255,${burst})`; cx.lineWidth = 1.5; cx.beginPath(); cx.arc(mx, my, rr, 0, 7); cx.stroke(); cx.globalCompositeOperation = "source-over"; }
+    requestAnimationFrame(loop); }; requestAnimationFrame(loop);
 })();
 
 /* ───────── footage reel, stats ───────── */
