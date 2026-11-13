@@ -134,7 +134,7 @@ function frame() {
 const countries = new Set(window.PROGRAMS.map(p => p.c)).size;
 const hero = $("#top");
 $("#hero-plate").style.backgroundImage = `url("${window.ART_BASE + window.ART.hero}")`;
-if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.ART_BASE + window.ART.heroVid; hv.addEventListener("playing", () => hv.classList.add("on"), { once: true }); hv.play().catch(() => {}); new IntersectionObserver(es => es[0].isIntersecting ? hv.play().catch(() => {}) : hv.pause()).observe(hero); }
+if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.ART_BASE + (window.ART.heroVid2k && innerWidth * (devicePixelRatio || 1) >= 1900 && !(navigator.connection && navigator.connection.saveData) ? window.ART.heroVid2k : window.ART.heroVid); hv.addEventListener("playing", () => hv.classList.add("on"), { once: true }); hv.play().catch(() => {}); new IntersectionObserver(es => es[0].isIntersecting ? hv.play().catch(() => {}) : hv.pause()).observe(hero); }
 if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate").style.translate = `${(e.clientX / innerWidth - .5) * -24}px ${(e.clientY / innerHeight - .5) * -16}px`; });
 
 /* ───────── hero chapter tabs ───────── */
