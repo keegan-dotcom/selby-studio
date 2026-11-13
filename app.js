@@ -69,28 +69,14 @@ $("#dos-x").onclick = () => dos.close();
 dos.addEventListener("close", () => dosGrid.replaceChildren());
 dos.addEventListener("click", e => { if (e.target === dos) dos.close(); });
 
-/* ───────── deck: draggable, tilting reel ───────── */
+/* ───────── deck: a grid that shows the first few and expands on demand ───────── */
 const decks = new Set();
-function deck(panels, cls) {
-  const track = h("div", { class: "track" }, panels), cur = h("b", { text: "01" }), fill = h("i");
-  const go = d => track.scrollBy({ left: d * Math.min(track.clientWidth * .7, 600), behavior: "smooth" });
-  const el = h("div", { class: "deck " + (cls || "") }, track, h("div", { class: "deck-ui" },
-    h("button", { class: "arrow", type: "button", "aria-label": "Previous", "data-cur": "Back", html: ARR(-1), onclick: () => go(-1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next", "data-cur": "Next", html: ARR(1), onclick: () => go(1) }),
-    h("span", { class: "n" }, cur, " / " + pad(panels.length)), h("div", { class: "ln" }, fill)));
-  const upd = () => { const tr = track.getBoundingClientRect(), c = tr.left + tr.width / 2; let best = 0, bd = 1e9;
-    panels.forEach((p, i) => { const r = p.getBoundingClientRect(); if (r.right < -200 || r.left > innerWidth + 200) return; const d = (r.left + r.width / 2 - c) / tr.width, a = Math.max(-1, Math.min(1, d));
-      if (!STILL) p.style.transform = `rotateY(${-a * 26}deg) translateZ(${-Math.abs(a) * 120}px)`; if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; } });
-    cur.textContent = pad(best + 1); fill.style.transform = `scaleX(${track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth)})`; };
-  let tick = 0; track.addEventListener("scroll", () => { if (!tick) tick = requestAnimationFrame(() => { tick = 0; upd(); }); }, { passive: true });
-  let down = null, moved = 0;
-  track.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.target.closest("video,iframe,button,a.src")) return; down = { x: e.clientX, s: track.scrollLeft }; moved = 0; });
-  addEventListener("pointermove", e => { if (!down) return; const dx = e.clientX - down.x; moved = Math.max(moved, Math.abs(dx)); if (moved > 5) { track.classList.add("drag"); track.scrollLeft = down.s - dx; } });
-  addEventListener("pointerup", () => { if (down) { down = null; setTimeout(() => track.classList.remove("drag"), 0); } });
-  track.addEventListener("click", e => { if (moved > 5) { e.preventDefault(); e.stopPropagation(); moved = 0; } }, true);
-  el._upd = upd; decks.add(el); requestAnimationFrame(upd);
-  return el;
+function deck(panels, cls, first) {
+  const n = first || 6, grid = h("div", { class: "grid-deck" }, panels), el = h("div", { class: "deck " + (cls || "") }, grid);
+  if (panels.length > n) { panels.slice(n).forEach(p => p.classList.add("more")); el.classList.add("folded");
+    const btn = h("button", { class: "btn ghost showmore", type: "button", "data-cur": "Show", text: `Show all ${panels.length}`, onclick: () => { el.classList.remove("folded"); btn.remove(); reveal(el); } }); el.append(h("div", { class: "deck-ui" }, btn)); }
+  el._upd = () => {}; return el;
 }
-addEventListener("resize", () => decks.forEach(d => d.isConnected ? d._upd() : decks.delete(d)));
 
 /* ───────── nav, rail, menu, hud ───────── */
 /* Home is the timeline and the thesis. Everything else opens as its own tab (#/craft style hashes still work as #craft). */
@@ -324,7 +310,7 @@ function filmDeck() {
   return deck(window.FILMS.map((f, i) => { const frame = h("div", { class: "media" }), id = window.FILM_YT[f.y];
     const face = h("a", { class: "face", href: id ? "https://www.youtube.com/watch?v=" + id : ytFind(f.n + " official trailer"), target: "_blank", rel: "noopener", "data-cur": "Trailer", "aria-label": "Play trailer: " + f.n }, h("div", { class: "poster" + (id ? " shot" : ""), style: `--h:${(18 + i * 29) % 360}` }, id ? h("img", { src: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, alt: "", loading: "lazy", draggable: "false", onerror: e => { e.target.parentElement.classList.remove("shot"); e.target.remove(); } }) : null, h("b", { text: String(f.y) }), h("div", {}, f.s ? h("span", { text: "Spielberg" }) : null, h("h4", { text: f.n }))), h("span", { class: "play" }));
     if (EMBED && id) face.addEventListener("click", ev => { ev.preventDefault(); frame.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: f.n + " trailer", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: true, referrerpolicy: "strict-origin-when-cross-origin" })); });
-    frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films");
+    frame.append(face); return h("article", { class: "pan" }, frame, h("p", { text: f.t })); }), "films", 12);
 }
 const TH_CAP = ["They came down, and we called them gods", "One sky, three pyramids", "Something was added", "The view from the other side of the glass", "Malmstrom, Montana, March 1967", "Same visitor, different costume", "What a secret this size would look like", "We were shown it in the dark first", "The proof may already be inside us"];
 window.THESIS.forEach((t, i) => {

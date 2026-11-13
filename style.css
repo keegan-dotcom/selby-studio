@@ -666,3 +666,18 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 .lineup .shot .ai{top:auto;bottom:14px}
 
 .lede .what{display:block;font:400 clamp(18px,1.6vw,24px)/1.2 var(--mega);color:var(--hot);letter-spacing:.04em;margin-bottom:8px}
+
+/* ── grids instead of sideways scrolling ── */
+.deck{padding:0 var(--pad) 0 calc(var(--pad) + var(--railw))}
+.grid-deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(16px,2vw,28px) clamp(14px,1.6vw,24px);padding:24px 0 10px}
+.grid-deck .pan{flex:none;width:auto;transform:none!important;will-change:auto}
+.deck.folded .more{display:none}
+.deck .deck-ui{padding:8px 0 0;justify-content:center}
+.showmore{min-width:200px;justify-content:center}
+.films .grid-deck{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.films .pan{flex-basis:auto}
+.pan.craft{flex-basis:auto}
+@media (max-width:1100px){.htabs{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible}.ht{flex:none}}
+@media (max-width:640px){.htabs{grid-template-columns:repeat(2,1fr);gap:8px}.htabs .ht:nth-child(n+5){display:none}}
+@media (max-width:640px){.htabs .ht:nth-child(n+5){display:block}.htabs .ht .th-img{aspect-ratio:16/8}}
+@media (max-width:900px){.plate{min-width:0;padding-bottom:58px}.hs .tag i{display:none}.hs .tag b{font-size:9px;white-space:normal;text-align:center}.hs .tag{width:100%;white-space:normal}.lineup{overflow:visible}}
