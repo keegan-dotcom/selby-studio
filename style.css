@@ -681,9 +681,9 @@ body[data-v]:not([data-v=""]) .scene>.inner{padding-left:var(--pad);padding-righ
 @media (max-width:640px){.htabs{grid-template-columns:repeat(2,1fr);gap:8px}.htabs .ht:nth-child(n+5){display:none}}
 @media (max-width:640px){.htabs .ht:nth-child(n+5){display:block}.htabs .ht .th-img{aspect-ratio:16/8}}
 @media (max-width:900px){.plate{min-width:0;padding-bottom:58px}.hs .tag i{display:none}.hs .tag b{font-size:9px;white-space:normal;text-align:center}.hs .tag{width:100%;white-space:normal}.lineup{overflow:visible}}
-/* keep the figure clear of the chapter cards: the scene ends above them and fades into the night */
-.hero-plate{inset:-2% -2% 16% -2%;background-position:50% 100%;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+/* keep the figure clear of the chapter cards: anchor the scene to its base so any crop comes off the sky */
+.hero-plate{background-position:50% 100%}
 .hero-plate video{object-position:50% 100%}
-.hero{background:radial-gradient(60% 40% at 50% 70%,#0e1621 0,#020306 70%)}
-@media (max-width:1100px){.hero-plate{inset:-2% -2% 30% -2%}}
-@media (max-width:640px){.hero-plate{inset:0 0 44% 0;background-size:cover}}
+@media (min-width:1101px){.th-img{aspect-ratio:16/7}}
+@media (max-width:1100px){.hero-plate{inset:-2% -2% 34% -2%;background-position:50% 100%;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}}
+@media (max-width:640px){.hero-plate{inset:0 -40% 46% -40%}}
