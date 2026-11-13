@@ -394,7 +394,7 @@ window.TIMELINE = [
   c:`It was a public directive, and its legal form was not specified. A House deadline for the Pentagon to hand over specific videos passed in April with nothing delivered.`,
   w:"United States UFO files", v:"Trump orders release UFO files February 2026" },
 { y:2026.35, d:"8 May 2026 onward", e:"f", k:"rec", g:["gov"], t:"PURSUE: the government publishes its own UFO files", p:"war.gov/ufo",
-  s:`The Pentagon launched a public archive and has posted five releases so far, from more than 160 files and 20 videos in the first to batches drawn from the CIA, FBI, NASA and the Department of Energy. One AARO memo dated June 2026 covers six federal agents who watched an orange orb release smaller red ones over two evenings in 2023 near a sensitive site. The case is still open.`,
+  s:`The Pentagon launched a public archive and has posted seven tranches so far, 478 files by the seventh on 23 October 2026, from more than 160 files and 20 videos in the first to batches drawn from the CIA, FBI, NASA and the Department of Energy. One AARO memo dated June 2026 covers six federal agents who watched an orange orb release smaller red ones over two evenings in 2023 near a sensitive site. The case is still open.`,
   c:`Officials say nothing in the files confirms extraterrestrial life. Skeptics found smears, balloons and material public for decades. Advocates note there is nothing on crash retrievals and say that proves the real files sit elsewhere.`,
   w:"United States UFO files", v:"PURSUE UFO files release war.gov orbs launching orbs",
   l:[["The PURSUE archive","https://www.war.gov/ufo/"]] },
