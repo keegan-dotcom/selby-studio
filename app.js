@@ -64,9 +64,10 @@ function openDos({ left, meta, title, blocks, links }) {
   dosGrid.replaceChildren(h("div", { class: "left" }, left), h("div", {}, h("div", { class: "meta" }, meta), h("h2", { text: title }),
     blocks.filter(b => b[1]).map(([k, v, warn], i) => h("div", { class: "blk" + (warn ? " warn" : ""), style: `--i:${i}` }, h("b", { text: k }), h("p", { text: v }))), links && links.length ? h("div", { class: "links" }, links) : null));
   dos.showModal(); dosGrid.scrollTop = 0;
+  ["#motes", "#reti", "#cursor"].forEach(q => { const n = $(q); if (n) dos.append(n); });
 }
 $("#dos-x").onclick = () => dos.close();
-dos.addEventListener("close", () => dosGrid.replaceChildren());
+dos.addEventListener("close", () => { dosGrid.replaceChildren(); ["#motes", "#reti", "#cursor"].forEach(q => { const n = $(q); if (n) document.body.append(n); }); });
 dos.addEventListener("click", e => { if (e.target === dos) dos.close(); });
 
 /* ───────── deck: a grid that shows the first few and expands on demand ───────── */
@@ -253,7 +254,7 @@ function drawRecord() {
     if (!rows.length) return; n += rows.length;
     root.append(h("section", { class: "scene era", id: "era-" + era.id }, h("div", { class: "bg", "data-bg": era.id }), h("div", { class: "veil" }),
       h("div", { class: "inner" }, h("div", { class: "headrow" }, h("div", {}, h("h2", { class: "mega", text: era.name })), h("p", { class: "lede", text: era.span + ". " + era.note + " " + rows.length + " files." }))),
-      deck(rows.map(e => h("article", { class: "pan" }, mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: e.d }), h("span", { class: "chip t-" + e.k, text: TIER[e.k].name })), h("h3", { text: e.t }), h("div", { class: "where", text: e.p }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: () => openEntry(e) }))))))); });
+      deck(rows.map(e => h("article", { class: "pan", "data-cur": "More detail", onclick: ev => { if (!ev.target.closest("button")) openEntry(e); } }, mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: e.d }), h("span", { class: "chip t-" + e.k, text: TIER[e.k].name })), h("h3", { text: e.t }), h("div", { class: "where", text: e.p }), h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: () => openEntry(e) }))))))); });
   if (!n) root.append(h("p", { class: "empty", text: "Nothing matches. Clear a filter or try another word." }));
   armBg(root); reveal(root); collectPar();
   $("#rail").replaceChildren(...$$(".era", root).map(sec => h("a", { href: "#" + sec.id, "data-s": sec.id, text: window.ERAS.find(x => "era-" + x.id === sec.id).name })), h("a", { href: "#thesis", "data-s": "thesis", text: "The thesis" }));
@@ -269,7 +270,7 @@ drawRecord(); railIO.observe($("#thesis"));
     $("#site-no").textContent = pad(i + 1); $$("button", list).forEach((b, j) => b.setAttribute("aria-pressed", j === i ? "true" : "false"));
     info.replaceChildren(h("div", { class: "swap" }, h("p", { class: "loc", text: s.p + ", " + s.d }), h("h3", { text: s.n }), h("p", { text: s.f })),
       h("div", { class: "acts swap" }, h("button", { class: "arrow", type: "button", "aria-label": "Previous site", "data-cur": "Back", html: ARR(-1), onclick: () => set(cur - 1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next site", "data-cur": "Next", html: ARR(1), onclick: () => set(cur + 1) }),
-        h("button", { class: "btn", type: "button", "data-cur": "Open file", text: "The claim and the dig", onclick: () => openDos({ left: mediaFrame(im ? [["i", im[0], s.n, im[1]]] : [], s.n, "var(--myt)"), meta: [h("span", { text: s.p + ", " + s.c })], title: s.n, blocks: [["Built", s.d], ["What is there", s.f], ["The sky-visitor reading", s.a], ["What archaeologists found", s.r, true]], links: [ext("Read more", wiki(s.n))] }) }))); };
+        h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: () => openDos({ left: mediaFrame(im ? [["i", im[0], s.n, im[1]]] : [], s.n, "var(--myt)"), meta: [h("span", { text: s.p + ", " + s.c })], title: s.n, blocks: [["Built", s.d], ["What is there", s.f], ["The sky-visitor reading", s.a], ["What archaeologists found", s.r, true]], links: [ext("Read more", wiki(s.n))] }) }))); };
   S.forEach((s, i) => list.append(h("button", { type: "button", "aria-pressed": "false", "data-cur": "View", text: s.n, onclick: () => set(i) })));
   new IntersectionObserver((es, io) => { if (es[0].isIntersecting) { io.disconnect(); set(0); } }, { rootMargin: "40% 0px" }).observe($("#sites"));
   if (FINE && !STILL) $("#sites").addEventListener("pointermove", e => { const dx = (e.clientX / innerWidth - .5) * -26, dy = (e.clientY / innerHeight - .5) * -18; ph.forEach(p => p.style.translate = `${dx}px ${dy}px`); });
@@ -279,12 +280,24 @@ drawRecord(); railIO.observe($("#thesis"));
 const A = window.ART, artUrl = k => window.ART_BASE + k;
 (() => {
   const B = Object.fromEntries(window.BEINGS.map(b => [b.g, b]));
-  const open = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : mediaFrame([], b.n, "var(--ice)"), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
+  const open = window.openBeing = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : mediaFrame([], b.n, "var(--ice)"), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Also called", (window.BEING_LORE[g] || {}).aka], ["The lore", (window.BEING_LORE[g] || {}).lore], ["Why it matters", (window.BEING_LORE[g] || {}).lore2], ["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
   const spots = [["goblin", "Little men", "Under 3 ft", 7.4, 53], ["grey", "Grey", "3.5 to 4.5 ft", 16.9, 37], ["hybrid", "Hybrid", "About 5 ft", 27.2, 30.5], [null, "You", "5 ft 9 in", 38.6, 24.5], ["nordic", "Nordic", "6 to 7 ft", 51, 13.5], ["mantis", "Mantis", "6 to 7 ft", 63.8, 9], ["reptile", "Reptilian", "6 to 8 ft", 77.5, 7.5], ["white", "Tall White", "Up to 8 ft", 91.2, 1.5]];
   const shot = h("div", { class: "shot" }, h("img", { src: artUrl(A.lineup), alt: "Eight figures standing in a row against a dark wall, shortest to tallest: a little goblin-like being, a Grey, a hybrid, an average human, a Nordic, a mantis being, a Reptilian and a Tall White.", draggable: "false", onerror: e => { e.target.remove(); shot.classList.add("noimg"); } }),
-    spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "Open file" : null, "aria-label": g ? `Open file: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration, heights to scale" }));
+    spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "More detail" : null, "aria-label": g ? `More detail: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration, heights to scale" }));
   $("#lineup").append(h("div", { class: "plate" }, shot));
-  const L = B.light; $("#lineup").after(h("button", { class: "orbcard", type: "button", "data-cur": "Open file", onclick: () => open("light") }, A.being.light ? h("img", { src: artUrl(A.being.light), alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.remove() }) : null, h("span", {}, h("i", { text: L.tag }), h("b", { text: L.n }), h("em", { text: "The ninth type has no body to measure." }))));
+  const L = B.light; $("#lineup").after(h("button", { class: "orbcard", type: "button", "data-cur": "More detail", onclick: () => open("light") }, A.being.light ? h("img", { src: artUrl(A.being.light), alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.remove() }) : null, h("span", {}, h("i", { text: L.tag }), h("b", { text: L.n }), h("em", { text: "The ninth type has no body to measure." })), h("span", { class: "open", text: "More detail" })));
+})();
+
+/* ───────── phenotype field guide: one profile per type ───────── */
+(() => { const L = window.BEING_LORE, A = window.ART;
+  window.BEINGS.forEach((b, i) => { const l = L[b.g]; if (!l) return; const im = A.being[b.g];
+    $("#profiles").append(h("article", { class: "prof" + (i % 2 ? " flip" : ""), "data-cur": "More detail", onclick: ev => { if (!ev.target.closest("button")) window.openBeing(b.g); } },
+      h("div", { class: "prof-img" }, im ? h("img", { src: window.ART_BASE + im, alt: b.n + ", as witnesses describe them", loading: "lazy", draggable: "false" }) : null, h("span", { class: "ai", text: "AI illustration" })),
+      h("div", { class: "prof-t" },
+        h("span", { class: "prof-tag", text: b.tag }), h("h3", { text: b.n }), h("p", { class: "aka", text: "Also called " + l.aka }),
+        h("dl", { class: "prof-facts" }, h("dt", { text: "Height" }), h("dd", { text: l.h }), h("dt", { text: "First reported" }), h("dd", { text: l.first }), h("dt", { text: "Said to come from" }), h("dd", { text: b.from })),
+        h("p", { class: "lore", text: l.lore }),
+        h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: () => window.openBeing(b.g) })))); });
 })();
 
 /* ───────── craft, observables ───────── */
@@ -292,7 +305,7 @@ $("#craft-count").textContent = `${["Zero","One","Two","Three","Four","Five","Si
 $("#craft-deck").append(deck(window.CRAFT.map(c => { const u = A.craft[c.g];
   const art = () => { const b = h("div", { class: "art" }); const fail = () => b.replaceChildren(h("div", { class: "tile" }, h("b", { text: c.n }))); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: fail }), h("span", { class: "ai", text: "AI illustration" })); else fail(); return b; };
   const file = () => openDos({ left: u ? mediaFrame([["a", u, c.n]], c.n, "var(--hot)") : art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] });
-  return h("article", { class: "pan craft", "data-cur": "Open file", onclick: e => { if (!e.target.closest("button")) file(); } }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); })));
+  return h("article", { class: "pan craft", "data-cur": "More detail", onclick: e => { if (!e.target.closest("button")) file(); } }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: file }))); })));
 window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("h4", { text: o.n }), h("p", { text: o.t }))));
 $("#obs-vid").append(mediaFrame([window.SECTION_VIDEO.observables], "5", "var(--hot)"), mediaFrame([["i", "USS Nimitz 2004 tic tac UFO.jpg", "Artist's reconstruction of the 2004 Nimitz encounter", "CC BY-SA 4.0"]], "2004", "var(--hot)"));
 
@@ -302,7 +315,7 @@ const blk = (k, v, warn) => v ? h("p", { class: warn ? "warn" : null }, h("b", {
 $("#origin-rows").replaceWith(h("div", { id: "origin-deck" }, deck(window.ORIGINS.map((o, i) => { const u = (A.origin || [])[i];
   const file = () => openDos({ left: u ? mediaFrame([["a", u, o.n]], o.n, "var(--myt)") : mediaFrame([], o.n, "var(--myt)"), meta: [h("span", { text: o.k })], title: o.n, blocks: [["The idea", o.idea], ["Best argument", o.best], ["Hardest problem", o.hard, true], ["Who argues it", o.who]] });
   const art = h("div", { class: "art" }, u ? h("img", { src: window.ART_BASE + u, alt: "", loading: "lazy", draggable: "false", onerror: e => e.target.replaceWith(h("div", { class: "tile" }, h("b", { text: o.n }))) }) : h("div", { class: "tile" }, h("b", { text: o.n })));
-  return h("article", { class: "pan craft", onclick: e => { if (!e.target.closest("button")) file(); }, "data-cur": "Open file" }, art, h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: o.k })), h("h3", { text: o.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open file", onclick: file }))); }))));
+  return h("article", { class: "pan craft", onclick: e => { if (!e.target.closest("button")) file(); }, "data-cur": "More detail" }, art, h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: o.k })), h("h3", { text: o.n }), h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: file }))); }))));
 window.FERMI.forEach((f, i) => $("#fermi-rows").append(row("", f.n, f.k + (f.star ? ", where this page ends up" : ""), [blk("The idea", f.t), blk("The problem", f.x, true)], false, f.star)));
 window.RETRIEVALS.forEach(r => $("#ret-rows").append(row(r.y, r.who, h("span", { class: "chip t-" + r.k, text: TIER[r.k].name }), [blk("The claim", r.what), blk("Where it stands", r.st, true)], true)));
 window.PHYSICS.forEach((p, i) => $("#phys-rows").append(row("", p.n, "", [h("p", { text: p.t })])));
@@ -325,7 +338,7 @@ window.PSI.forEach(r => $("#psi-rows").append(row(r.y, r.n, h("span", { class: "
 /* ───────── voices ───────── */
 const VOICE_YT = { "David Grusch": "RBAISwCZ2v0", "Jacques Vallée": "fyX8V1XXmQM", "David Fravor": "aB8zcAttP1E", "Karl Nell": "Rpl0FrdJWfs", "Jake Barber": "3dtA9w5ldHw", "Ryan Graves": "Lf6y9QHj5S8", "Beatriz Villarroel": "1zRWi_r3HRM", "James Lacatski": "rW02-PuPMJ8", "John Mack": "-U1WecFObQw", "Robert Salas": "R6qOppJ3PBk", "Charles Halt": "eSdDFUetIEc", "Bob Lazar": "iitR3nBa5Ps", "Alex Dietrich": "ZBtMbBPzqHY" };
 (() => { const groups = {}; window.VOICES.forEach(v => (groups[v.c] = groups[v.c] || []).push(v));
-  for (const g in groups) $("#voice-groups").append(h("div", { class: "vg" }, h("h3", { text: g }), h("div", { class: "names" }, groups[g].map(v => h("button", { type: "button", "data-cur": "Open file", text: v.n, onclick: () => openDos({ left: mediaFrame(VOICE_YT[v.n] ? [["y", VOICE_YT[v.n], v.n]] : [], v.n.split(" ").map(w => w[0]).join("").slice(0, 3), "var(--hot)"), meta: [h("span", { text: g })], title: v.n, blocks: [["Role", v.r], ["Why they matter", v.t]], links: [ext("Watch interviews", ytFind(v.n + " UAP interview")), ext("Background", wiki(v.n))] }) }))))); })();
+  for (const g in groups) $("#voice-groups").append(h("div", { class: "vg" }, h("h3", { text: g }), h("div", { class: "names" }, groups[g].map(v => h("button", { type: "button", "data-cur": "More detail", text: v.n, onclick: () => openDos({ left: mediaFrame(VOICE_YT[v.n] ? [["y", VOICE_YT[v.n], v.n]] : [], v.n.split(" ").map(w => w[0]).join("").slice(0, 3), "var(--hot)"), meta: [h("span", { text: g })], title: v.n, blocks: [["Role", v.r], ["Why they matter", v.t]], links: [ext("Watch interviews", ytFind(v.n + " UAP interview")), ext("Background", wiki(v.n))] }) }))))); })();
 
 /* ───────── thesis, films ───────── */
 function filmDeck() {

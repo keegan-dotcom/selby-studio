@@ -452,3 +452,62 @@ window.SOURCES = [
   ["UK National Archives: UFO files", "https://www.nationalarchives.gov.uk/ufos/"],
   ["GEIPAN, French space agency UAP unit", "https://www.geipan.fr/"]
 ];
+
+window.BEING_LORE = {
+ "grey": {
+  "aka": "Zetas, Zeta Reticulans, EBEs",
+  "h": "3.5 to 4.5 ft",
+  "first": "1961, the Betty and Barney Hill abduction in New Hampshire",
+  "lore": "The face on every T-shirt. In 1969 schoolteacher Marjorie Fish built a 3D model from the star map Betty Hill said she was shown and matched it to Zeta Reticuli, a double star 39 light-years away. The leaked MJ-12 papers of the 1980s called them EBEs, extraterrestrial biological entities, and insider lore says the Roswell bodies were Greys. Short 'workers' are said to be supervised by taller Greys. Whitley Strieber's Communion cover in 1987 fixed the image for good.",
+  "lore2": "The 'Alien Autopsy' film of 1995 showed a Grey on a table. Its producer admitted in 2006 it was a staged 'restoration'."
+ },
+ "nordic": {
+  "aka": "Pleiadians, Space Brothers, Venusians, the Tall Blondes",
+  "h": "6 to 7 ft",
+  "first": "1952, George Adamski in the California desert",
+  "lore": "The friendly ones. On 20 November 1952 George Adamski said he met Orthon, a long-haired man from Venus, near Desert Center, California, and was warned about atomic testing. A wave of 1950s contactees followed, like Truman Bethurum and the beautiful captain Aura Rhanes. From 1975 Swiss farmer Billy Meier said he was meeting Semjase from the Pleiades and photographed her ships. In whistleblower lore Nordics are the ones who can walk among us undetected.",
+  "lore2": "They are the only type described as indistinguishable from humans, which is why some researchers think the stories are about us, not them."
+ },
+ "reptile": {
+  "aka": "Reptoids, Draconians, Dracos, Saurians",
+  "h": "6 to 8 ft",
+  "first": "1967, Officer Herbert Schirmer in Ashland, Nebraska",
+  "lore": "The villains of the lore. Police patrolman Herbert Schirmer lost twenty minutes on 3 December 1967; under hypnosis he described crew wearing a winged-serpent emblem. In the 1980s the Dulce base story put reptilians in caverns under New Mexico working with the US government. In 1999 David Icke's The Biggest Secret made them shape-shifting rulers, and a 2013 poll found 4% of Americans believe it. The serpent teacher is one of the oldest figures in myth: the Nāga, Quetzalcoatl, the serpent in Eden.",
+  "lore2": "Of all the types, this one has the thinnest witness base and the most borrowed mythology."
+ },
+ "mantis": {
+  "aka": "Mantids, Insectoids, the Praying Mantis beings",
+  "h": "6 to 7 ft",
+  "first": "1980s abduction files",
+  "lore": "The ones in charge. Abductees describe them standing back while Greys work, watching with huge slanted eyes, sometimes in robes, often described as doctors or teachers and as very old. They speak only mind to mind and leave an impression of calm, ancient intelligence. In psychiatrist Rick Strassman's DMT study at the University of New Mexico in the 1990s, several volunteers independently described insect-like beings working on them, which some read as the same entities met by a different route.",
+  "lore2": "Mantis beings are the type most often reported by people who say they have had a lifetime of contact rather than a single event."
+ },
+ "white": {
+  "aka": "The Tall Whites, the Nevada neighbours",
+  "h": "Up to 8 ft",
+  "first": "1965 to 1967, the Nellis Air Force ranges",
+  "lore": "The neighbours. Charles Hall says that as a young Air Force weather observer at Indian Springs on the Nellis ranges in Nevada he met tall, chalk-white beings with large blue eyes and thin pale hair who kept craft in a hangar in the hills. He describes them as short-tempered, protective of their children, and in a quiet arrangement with senior Air Force officers. He told it all in his Millennial Hospitality books.",
+  "lore2": "It is a single-witness story, but it is the most detailed account anyone has given of beings living alongside the military."
+ },
+ "goblin": {
+  "aka": "Little men, Hopkinsville goblins, hairy dwarfs, the Flatwoods monster",
+  "h": "Under 3 ft, with one 10 ft giant",
+  "first": "1952 to 1965, the great occupant wave",
+  "lore": "Before the Grey took over, the occupants came in every shape. On 21 August 1955 two farming families near Kelly, Kentucky said small silver beings with huge ears and glowing eyes besieged their farmhouse for hours and shrugged off shotgun fire. In 1952 at Flatwoods, West Virginia, boys and a local mother met a ten-foot figure with a spade-shaped hood and a choking mist. Venezuela in 1954 had hairy dwarfs that fought back, and in 1965 French farmer Maurice Masse was frozen in place by two small beings in his lavender field.",
+  "lore2": "Jacques Vallée points out how close these accounts are to old fairy and goblin folklore, from abductions to lost time."
+ },
+ "hybrid": {
+  "aka": "Hubrids, star children, the in-betweens",
+  "h": "About 5 ft",
+  "first": "1987, Budd Hopkins's Intruders",
+  "lore": "The programme. In Intruders (1987) Budd Hopkins said abductees were being used to produce human-alien children, and historian David Jacobs pushed it further in The Threat (1998): later-generation hybrids indistinguishable from people, being placed among us. Abductees describe 'baby presentations' where they are asked to hold pale, large-eyed infants, and women describe pregnancies that vanish. It is the closest thing in the lore to Genesis 6, where the sons of God take human wives.",
+  "lore2": "This is the type that connects most directly to the idea that humans themselves were engineered."
+ },
+ "light": {
+  "aka": "Orbs, foo fighters, light beings, plasmas",
+  "h": "Any size",
+  "first": "1944, Allied night-fighter crews over Germany",
+  "lore": "No body at all. Allied pilots in 1944 named them foo fighters: balls of light that paced their planes at night. Since then orbs have been reported at Hessdalen in Norway, on Skinwalker Ranch, inside bedrooms during abductions and, today, in most military reports. Some witnesses say an orb became a figure, or that a being stepped out of one. Lue Elizondo says orbs have caused injuries consistent with radiation.",
+  "lore2": "If the phenomenon is an intelligence rather than a species, this may be the closest thing to what it actually looks like."
+ }
+};
