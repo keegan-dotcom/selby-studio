@@ -8,6 +8,7 @@ const h = (tag, attrs, ...kids) => {
   for (const c of kids.flat(3)) if (c != null && c !== false) e.append(c);
   return e;
 };
+const ARR = d => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><path d="${d < 0 ? "M10 3 5 8l5 5M5 8h9" : "M6 3l5 5-5 5M11 8H2"}"/></svg>`;
 const pad = n => String(n).padStart(2, "0");
 const enc = f => encodeURIComponent(f).replace(/'/g, "%27");
 const FINE = matchMedia("(hover:hover) and (pointer:fine)").matches, STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -51,7 +52,7 @@ function show(frame, item, tileText, color) {
 function mediaFrame(items, tileText, color) {
   const frame = h("div", { class: "media" }); items = (items || []).filter(Boolean);
   if (items.length > 1) { const tabs = h("div", { class: "tabs" });
-    items.forEach((it, i) => tabs.append(h("button", { type: "button", "aria-pressed": i === 0 ? "true" : "false", "aria-label": (it[0] === "i" || it[0] === "a" ? "Image: " : "Video: ") + (it[0] === "v" ? it[3] : it[2]), text: it[0] === "i" ? "▣" : it[0] === "a" ? "✦" : "▶", onclick: ev => { $$("button", tabs).forEach(x => x.setAttribute("aria-pressed", "false")); ev.currentTarget.setAttribute("aria-pressed", "true"); show(frame, it, tileText, color); } })));
+    items.forEach((it, i) => tabs.append(h("button", { type: "button", "aria-pressed": i === 0 ? "true" : "false", "aria-label": (it[0] === "i" || it[0] === "a" ? "Image: " : "Video: ") + (it[0] === "v" ? it[3] : it[2]), text: it[0] === "i" ? "Photo" : it[0] === "a" ? "Render" : "Video", onclick: ev => { $$("button", tabs).forEach(x => x.setAttribute("aria-pressed", "false")); ev.currentTarget.setAttribute("aria-pressed", "true"); show(frame, it, tileText, color); } })));
     frame.append(tabs); }
   show(frame, items[0], tileText, color);
   return frame;
@@ -74,7 +75,7 @@ function deck(panels, cls) {
   const track = h("div", { class: "track" }, panels), cur = h("b", { text: "01" }), fill = h("i");
   const go = d => track.scrollBy({ left: d * Math.min(track.clientWidth * .7, 600), behavior: "smooth" });
   const el = h("div", { class: "deck " + (cls || "") }, track, h("div", { class: "deck-ui" },
-    h("button", { class: "arrow", type: "button", "aria-label": "Previous", "data-cur": "Back", text: "◀", onclick: () => go(-1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next", "data-cur": "Next", text: "▶", onclick: () => go(1) }),
+    h("button", { class: "arrow", type: "button", "aria-label": "Previous", "data-cur": "Back", html: ARR(-1), onclick: () => go(-1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next", "data-cur": "Next", html: ARR(1), onclick: () => go(1) }),
     h("span", { class: "n" }, cur, " / " + pad(panels.length)), h("div", { class: "ln" }, fill)));
   const upd = () => { const tr = track.getBoundingClientRect(), c = tr.left + tr.width / 2; let best = 0, bd = 1e9;
     panels.forEach((p, i) => { const r = p.getBoundingClientRect(); if (r.right < -200 || r.left > innerWidth + 200) return; const d = (r.left + r.width / 2 - c) / tr.width, a = Math.max(-1, Math.min(1, d));
@@ -125,7 +126,7 @@ function frame() {
   if (!STILL) { if (dv) parallax();
     wx.clearRect(0, 0, warp.width, warp.height); wx.lineCap = "round";
     for (const s of stars) { s.y -= vel * s.z * .35 + s.z * .06; if (s.y < -40) s.y += warp.height + 80; if (s.y > warp.height + 40) s.y -= warp.height + 80;
-      const len = Math.min(140, Math.abs(vel) * s.z * 1.6); wx.strokeStyle = `rgba(255,${235 - len},${220 - len * 1.4},${.25 + s.z * .6})`; wx.lineWidth = s.z * 1.6;
+      const len = Math.min(140, Math.abs(vel) * s.z * 1.6); wx.strokeStyle = `rgba(${215 - len * .4},${228 - len * .2},240,${.15 + s.z * .5})`; wx.lineWidth = s.z * 1.1;
       wx.beginPath(); wx.moveTo(s.x, s.y); wx.lineTo(s.x, s.y + (vel > 0 ? len : -len) + .1); wx.stroke(); } }
   requestAnimationFrame(frame);
 }
@@ -156,7 +157,7 @@ function portalFrame(now) {
     if (w > 1 && hh > 1) { const path = new Path2D();
       [[w / 2 - rad, -hh / 2 + rad, -Math.PI / 2], [w / 2 - rad, hh / 2 - rad, 0], [-w / 2 + rad, hh / 2 - rad, Math.PI / 2], [-w / 2 + rad, -hh / 2 + rad, Math.PI]].forEach(([ox, oy, a0], ci) => { for (let i = 0; i <= 10; i++) { const a = a0 + Math.PI / 2 * i / 10, x = ox + Math.cos(a) * rad, y = oy + Math.sin(a) * rad, z = x * Math.sin(ay) - y * Math.sin(ax), p = 850 / (850 + z), sx = cx + x * Math.cos(ay) * p, sy = cy + y * Math.cos(ax) * p; ci + i ? path.lineTo(sx, sy) : path.moveTo(sx, sy); } });
       path.closePath(); px.save(); px.clip(path); drawCover(); px.restore();
-      if (e < .02 && sc > .5) { px.strokeStyle = "rgba(255,255,255,.6)"; px.lineWidth = 1.2; px.stroke(path); } }
+      if (e < .02 && sc > .5) { px.strokeStyle = "rgba(233,237,240,.45)"; px.lineWidth = 1; px.stroke(path); } }
   }
   requestAnimationFrame(portalFrame);
 }
@@ -186,20 +187,17 @@ portalBtn.onclick = travel;
   setTimeout(() => { if (!done && !(v.currentTime > 0)) fakeRun(); }, 1800); setTimeout(finish, 7000);
 })();
 
-/* ───────── ship cursor ───────── */
+/* ───────── reticle cursor: exact dot, lagging targeting box, live coordinates ───────── */
 if (FINE && !STILL) (() => {
   document.documentElement.classList.add("ship");
-  const c = $("#cursor"), ship = $(".ship", c), lab = $("#cur-lab"), tc = $("#trail"), tx = tc.getContext("2d"); let mx = -99, my = -99, x = -99, y = -99, ang = 0, parts = [];
-  const size = () => { tc.width = innerWidth; tc.height = innerHeight; }; size(); addEventListener("resize", size);
-  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,input,video[controls],.fg"); c.classList.toggle("hot", !!t); lab.textContent = t ? (t.dataset.cur || (t.matches("summary") ? "Expand" : t.matches("video") ? "Play" : t.matches(".fg") ? "Open file" : t.matches("input") ? "" : "Open")) : ""; }, { passive: true });
-  document.addEventListener("mouseleave", () => c.classList.remove("on")); addEventListener("pointerdown", () => c.classList.add("down")); addEventListener("pointerup", () => c.classList.remove("down"));
-  const loop = () => { const dx = mx - x, dy = my - y, sp = Math.hypot(dx, dy); x += dx * .2; y += dy * .2;
-    if (sp > 3) { let ta = Math.atan2(dy, dx) * 180 / Math.PI + 90, da = ((ta - ang + 540) % 360) - 180; ang += da * .18; } else ang += (((-28 - ang + 540) % 360) - 180) * .06;
-    c.style.transform = `translate3d(${x}px,${y}px,0)`; ship.style.transform = `rotate(${ang}deg) scale(${c.classList.contains("hot") ? .72 : 1})`;
-    if (sp > 2) { const a = (ang + 90) * Math.PI / 180; for (let i = 0; i < 2; i++) parts.push({ x: x + Math.cos(a) * 16, y: y + Math.sin(a) * 16, vx: Math.cos(a) * (1 + Math.random() * 2) + (Math.random() - .5), vy: Math.sin(a) * (1 + Math.random() * 2) + (Math.random() - .5), l: 1 }); }
-    tx.clearRect(0, 0, tc.width, tc.height);
-    parts = parts.filter(p => (p.l -= .045) > 0); for (const p of parts) { p.x += p.vx; p.y += p.vy; tx.fillStyle = `rgba(255,${120 + p.l * 120 | 0},${40 + p.l * 60 | 0},${p.l})`; tx.beginPath(); tx.arc(p.x, p.y, 3.2 * p.l, 0, 7); tx.fill(); }
-    requestAnimationFrame(loop); }; loop();
+  const c = $("#cursor"), r = $("#reti"), lab = $("#cur-lab"), xy = $("#cur-xy"); let mx = -99, my = -99, x = -99, y = -99;
+  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; c.classList.add("on"); r.classList.add("on"); c.style.transform = `translate3d(${mx}px,${my}px,0)`;
+    const t = e.target.closest && e.target.closest("[data-cur],a,button,summary,input,video[controls]"); r.classList.toggle("hot", !!t && !t.matches("input"));
+    lab.textContent = t ? (t.dataset.cur || (t.matches("summary") ? "Expand" : t.matches("video") ? "Play" : "Open")) : ""; }, { passive: true });
+  document.addEventListener("mouseleave", () => { c.classList.remove("on"); r.classList.remove("on"); });
+  addEventListener("pointerdown", () => r.classList.add("down")); addEventListener("pointerup", () => r.classList.remove("down"));
+  const loop = () => { x += (mx - x) * .22; y += (my - y) * .22; r.style.transform = `translate3d(${x}px,${y}px,0)`;
+    xy.textContent = "X " + String(Math.max(0, Math.round(mx))).padStart(4, "0") + "  Y " + String(Math.max(0, Math.round(my + scrollY))).padStart(5, "0"); requestAnimationFrame(loop); }; loop();
 })();
 
 /* ───────── footage reel, stats ───────── */
@@ -212,7 +210,7 @@ for (const k in TIER) $("#keys").append(h("span", {}, h("span", { class: "chip t
 /* ───────── the record ───────── */
 const st = { tier: "", q: "", vid: false }, tools = $("#tools");
 const fchip = (label, g, v, cls) => h("button", { type: "button", class: "chip " + (cls || "plain"), "aria-pressed": "false", "data-g": g, "data-v": String(v), "data-cur": "Filter", text: label, onclick: () => { st[g] = g === "vid" ? !st.vid : (st[g] === v ? "" : v); $$("button.chip", tools).forEach(b => b.setAttribute("aria-pressed", (b.dataset.g === "vid" ? st.vid : st[b.dataset.g] === b.dataset.v) ? "true" : "false")); drawRecord(); } });
-for (const k in TIER) tools.append(fchip(TIER[k].name, "tier", k, "t-" + k)); tools.append(fchip("▶ With video", "vid", true));
+for (const k in TIER) tools.append(fchip(TIER[k].name, "tier", k, "t-" + k)); tools.append(fchip("Has video", "vid", true));
 $("#q").addEventListener("input", e => { st.q = e.target.value.trim().toLowerCase(); drawRecord(); });
 const yearText = e => e.y < 0 ? Math.round(-e.y) + " BCE" : String(Math.floor(e.y)), hasVid = e => (window.MEDIA[e.t] || []).some(m => m[0] !== "i"), tc = k => `var(--${k})`;
 const openEntry = e => openDos({ left: mediaFrame(window.MEDIA[e.t], yearText(e), tc(e.k)), meta: [h("span", { text: e.d + " · " + e.p }), h("span", { class: "chip t-" + e.k, title: TIER[e.k].desc, text: TIER[e.k].name })], title: e.t,
@@ -236,43 +234,18 @@ drawRecord();
     flip ^= 1; ph[flip].style.backgroundImage = im ? `url("${cImg(im[0], 1920)}")` : "none"; ph[flip].classList.add("vis"); ph[flip ^ 1].classList.remove("vis");
     $("#site-no").textContent = pad(i + 1); $$("button", list).forEach((b, j) => b.setAttribute("aria-pressed", j === i ? "true" : "false"));
     info.replaceChildren(h("div", { class: "swap" }, h("span", { class: "kick", text: s.p + " · " + s.d }), h("h3", { text: s.n }), h("p", { text: s.f })),
-      h("div", { class: "acts swap" }, h("button", { class: "arrow", type: "button", "aria-label": "Previous site", "data-cur": "Back", text: "◀", onclick: () => set(cur - 1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next site", "data-cur": "Next", text: "▶", onclick: () => set(cur + 1) }),
+      h("div", { class: "acts swap" }, h("button", { class: "arrow", type: "button", "aria-label": "Previous site", "data-cur": "Back", html: ARR(-1), onclick: () => set(cur - 1) }), h("button", { class: "arrow", type: "button", "aria-label": "Next site", "data-cur": "Next", html: ARR(1), onclick: () => set(cur + 1) }),
         h("button", { class: "btn", type: "button", "data-cur": "Open file", text: "The claim and the dig", onclick: () => openDos({ left: mediaFrame(im ? [["i", im[0], s.n, im[1]]] : [], s.n, "var(--myt)"), meta: [h("span", { text: s.p + " · " + s.c })], title: s.n, blocks: [["Built", s.d], ["What is there", s.f], ["The sky-visitor reading", s.a], ["What archaeologists found", s.r, true]], links: [ext("Read more", wiki(s.n))] }) }))); };
   S.forEach((s, i) => list.append(h("button", { type: "button", "aria-pressed": "false", "data-cur": "View", text: s.n, onclick: () => set(i) })));
   new IntersectionObserver((es, io) => { if (es[0].isIntersecting) { io.disconnect(); set(0); } }, { rootMargin: "40% 0px" }).observe($("#sites"));
   if (FINE && !STILL) $("#sites").addEventListener("pointermove", e => { const dx = (e.clientX / innerWidth - .5) * -26, dy = (e.clientY / innerHeight - .5) * -18; ph.forEach(p => p.style.translate = `${dx}px ${dy}px`); });
 })();
 
-/* ───────── glyphs ───────── */
-const svg = (vb, inner) => `<svg viewBox="${vb}" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
-const BEING_G = {
-  grey: `<path d="M60 10c34 0 46 36 38 66-6 24-22 48-38 58-16-10-32-34-38-58C14 46 26 10 60 10z"/><path d="M33 74c8-8 20-6 24 4-8 8-20 6-24-4zM87 74c-8-8-20-6-24 4 8 8 20 6 24-4z" fill="#fff"/><path d="M57 100h6M54 112h12"/>`,
-  nordic: `<ellipse cx="60" cy="66" rx="26" ry="34"/><path d="M34 60c-6-34 12-50 26-50s32 16 26 50M34 60c-8 20-10 44-6 66M86 60c8 20 10 44 6 66M46 50c8-8 20-8 28 0"/><path d="M45 68h10M65 68h10M56 96c3 2 5 2 8 0"/>`,
-  reptile: `<path d="M60 12c26 0 40 22 38 50-2 30-18 58-38 66-20-8-36-36-38-66C20 34 34 12 60 12z"/><path d="M30 58l22 8M90 58l-22 8M60 12v22M48 20l-4 14M72 20l4 14"/><ellipse cx="42" cy="70" rx="9" ry="5"/><ellipse cx="78" cy="70" rx="9" ry="5"/><path d="M42 65v10M78 65v10M52 102h16"/>`,
-  mantis: `<path d="M60 126C44 100 22 74 20 40c14-16 66-16 80 0-2 34-24 60-40 86z"/><path d="M26 46c12-10 26-4 30 12-12 10-26 4-30-12zM94 46c-12-10-26-4-30 12 12 10 26 4 30-12z" fill="#fff"/><path d="M48 28C40 10 30 6 22 8M72 28c8-18 18-22 26-20M56 96l4 6 4-6"/>`,
-  white: `<path d="M60 8c24 0 34 28 30 58-4 28-16 56-30 66-14-10-26-38-30-66C26 36 36 8 60 8z"/><ellipse cx="44" cy="68" rx="11" ry="7" stroke="#9fd8ff" transform="rotate(14 44 68)"/><ellipse cx="76" cy="68" rx="11" ry="7" stroke="#9fd8ff" transform="rotate(-14 76 68)"/><path d="M40 14c-8 2-12 8-14 16M80 14c8 2 12 8 14 16M56 104h8"/>`,
-  goblin: `<circle cx="60" cy="68" r="34"/><path d="M28 56C10 44 6 26 8 16c14 4 26 14 30 28M92 56c18-12 22-30 20-40-14 4-26 14-30 28"/><circle cx="46" cy="64" r="9"/><circle cx="74" cy="64" r="9"/><path d="M46 88c8 6 20 6 28 0"/>`,
-  hybrid: `<path d="M60 22c22 0 30 22 26 44-4 22-14 40-26 48-12-8-22-26-26-48-4-22 4-44 26-44z"/><ellipse cx="46" cy="70" rx="8" ry="6" fill="#fff"/><ellipse cx="74" cy="70" rx="8" ry="6" fill="#fff"/><path d="M44 24c-2-8 0-12 4-16M58 20c0-8 2-12 6-14M72 24c4-6 8-8 12-8M56 96h8"/>`,
-  light: `<circle cx="60" cy="68" r="12" fill="#ffd9b0" stroke="none" class="blink"/><circle cx="60" cy="68" r="24" stroke="#ff6a1a"/><circle cx="60" cy="68" r="38" stroke-dasharray="2 7"/><circle cx="60" cy="68" r="52" stroke-dasharray="1 10" opacity=".6"/>`
-};
-const CRAFT_G = {
-  orb: `<g class="float"><circle cx="100" cy="60" r="26" fill="#fff" stroke="none" opacity=".92"/><circle cx="100" cy="60" r="38" stroke-dasharray="2 8"/><circle cx="100" cy="60" r="50" stroke="#ff6a1a" stroke-dasharray="1 12"/></g>`,
-  disc: `<g class="float"><ellipse cx="100" cy="66" rx="70" ry="13" fill="#fff" stroke="none"/><path d="M66 60c8-26 60-26 68 0z" fill="#ff6a1a" stroke="none"/><circle cx="60" cy="68" r="2.5" fill="#070605" stroke="none"/><circle cx="100" cy="72" r="2.5" fill="#070605" stroke="none"/><circle cx="140" cy="68" r="2.5" fill="#070605" stroke="none"/></g>`,
-  triangle: `<g class="float"><path d="M100 14l74 92H26z" fill="#0b0a09"/><circle cx="100" cy="30" r="5" fill="#fff" stroke="none"/><circle cx="44" cy="98" r="5" fill="#fff" stroke="none"/><circle cx="156" cy="98" r="5" fill="#fff" stroke="none"/><circle cx="100" cy="76" r="6" fill="#ff6a1a" stroke="none" class="blink"/></g>`,
-  tictac: `<g class="float"><rect x="50" y="44" width="100" height="32" rx="16" fill="#fff" stroke="none" transform="rotate(-10 100 60)"/><path d="M30 98h140" stroke-dasharray="2 9"/></g>`,
-  cigar: `<g class="float"><rect x="18" y="50" width="164" height="20" rx="10" fill="#fff" stroke="none"/><circle cx="50" cy="60" r="2.5" fill="#ff6a1a" stroke="none"/><circle cx="75" cy="60" r="2.5" fill="#ff6a1a" stroke="none"/><circle cx="100" cy="60" r="2.5" fill="#ff6a1a" stroke="none"/><circle cx="125" cy="60" r="2.5" fill="#ff6a1a" stroke="none"/><circle cx="150" cy="60" r="2.5" fill="#ff6a1a" stroke="none"/></g>`,
-  egg: `<g class="float"><ellipse cx="100" cy="52" rx="27" ry="36" fill="#fff" stroke="none"/><path d="M84 84l-12 22M116 84l12 22M100 88v18"/></g>`,
-  cube: `<g class="float"><circle cx="100" cy="60" r="44"/><path d="M78 44h36v36H78zM92 34h36v36H92zM78 44l14-10M114 44l14-10M78 80l14-10M114 80l14-10" stroke="#ff6a1a"/></g>`,
-  boomerang: `<g class="float"><path d="M12 84L100 30l88 54-88-24z" fill="#0b0a09"/><circle cx="34" cy="76" r="3" fill="#fff" stroke="none"/><circle cx="66" cy="57" r="3" fill="#fff" stroke="none"/><circle cx="100" cy="40" r="3" fill="#ff6a1a" stroke="none"/><circle cx="134" cy="57" r="3" fill="#fff" stroke="none"/><circle cx="166" cy="76" r="3" fill="#fff" stroke="none"/></g>`,
-  jelly: `<g class="float"><path d="M70 56c0-36 60-36 60 0z" fill="#fff" stroke="none"/><path d="M78 56c-2 16 4 26-2 44M92 56c2 18-4 24 0 48M108 56c-2 18 4 26 0 46M122 56c2 16-4 28 2 42"/></g>`,
-  plasma: `<g class="blink"><circle cx="86" cy="58" r="26" fill="#ff6a1a" stroke="none" opacity=".6"/><circle cx="112" cy="64" r="22" fill="#ffd9b0" stroke="none" opacity=".6"/><circle cx="100" cy="54" r="12" fill="#fff" stroke="none"/></g><path d="M40 102c20-8 40 8 60 0s40 8 60 0" stroke-dasharray="2 7"/>`
-};
-
 /* ───────── beings lineup: one photoreal plate, eight hotspots ───────── */
 const A = window.ART, artUrl = k => window.ART_BASE + k;
 (() => {
   const B = Object.fromEntries(window.BEINGS.map(b => [b.g, b]));
-  const open = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : h("div", { class: "art", html: svg("0 0 120 140", BEING_G[g]) }), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
+  const open = g => { const b = B[g]; if (!b) return; openDos({ left: A.being[g] ? mediaFrame([["a", A.being[g], b.n + ", as witnesses describe them"]], b.n, "var(--ice)") : mediaFrame([], b.n, "var(--ice)"), meta: [h("span", { text: b.tag })], title: b.n, blocks: [["Look", b.look], ["Behaviour", b.does], ["Said to come from", b.from], ["Key cases", b.cases], ["Reality check", b.check, true]], links: [ext("Find accounts", ytFind(b.n + " alien encounter witness")), ext("Read more", wiki(b.n + " alien"))] }); };
   const spots = [["goblin", "Little men", "Under 3 ft", 7.4, 53], ["grey", "Grey", "3.5 to 4.5 ft", 16.9, 37], ["hybrid", "Hybrid", "About 5 ft", 27.2, 30.5], [null, "You", "5 ft 9 in", 38.6, 24.5], ["nordic", "Nordic", "6 to 7 ft", 51, 13.5], ["mantis", "Mantis", "6 to 7 ft", 63.8, 9], ["reptile", "Reptilian", "6 to 8 ft", 77.5, 7.5], ["white", "Tall White", "Up to 8 ft", 91.2, 1.5]];
   const shot = h("div", { class: "shot" }, h("img", { src: artUrl(A.lineup), alt: "Eight figures standing in a row against a dark wall, shortest to tallest: a little goblin-like being, a Grey, a hybrid, an average human, a Nordic, a mantis being, a Reptilian and a Tall White.", draggable: "false", onerror: e => { e.target.remove(); shot.classList.add("noimg"); } }),
     spots.map(([g, n, ht, x, t]) => h(g ? "button" : "div", { class: "hs" + (g ? "" : " you"), type: g ? "button" : null, style: `--x:${x}%;--t:${t}%`, "data-cur": g ? "Open file" : null, "aria-label": g ? `Open file: ${n}, ${ht}` : null, onclick: g ? () => open(g) : null }, h("span", { class: "tag" }, h("b", { text: n }), h("i", { text: ht })))), h("span", { class: "ai", text: "AI illustration · heights to scale" }));
@@ -283,7 +256,7 @@ const A = window.ART, artUrl = k => window.ART_BASE + k;
 /* ───────── craft, observables ───────── */
 $("#craft-count").textContent = `${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][window.CRAFT.length] || window.CRAFT.length} shapes. Orbs and lights make up most of today's military reports.`;
 $("#craft-deck").append(deck(window.CRAFT.map(c => { const u = A.craft[c.g];
-  const art = () => { const b = h("div", { class: "art" }); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: e => { b.innerHTML = svg("0 0 200 120", CRAFT_G[c.g] || ""); } }), h("span", { class: "ai", text: "AI illustration" })); else b.innerHTML = svg("0 0 200 120", CRAFT_G[c.g] || ""); return b; };
+  const art = () => { const b = h("div", { class: "art" }); const fail = () => b.replaceChildren(h("div", { class: "tile" }, h("b", { text: c.n }))); if (u) b.append(h("img", { src: artUrl(u), alt: c.n + ", illustrated", loading: "lazy", draggable: "false", onerror: fail }), h("span", { class: "ai", text: "AI illustration" })); else fail(); return b; };
   const file = () => openDos({ left: u ? mediaFrame([["a", u, c.n]], c.n, "var(--hot)") : art(), meta: [h("span", { text: "Reported size " + c.size })], title: c.n, blocks: [["How it behaves", c.how], ["Key cases", c.cases], ["Often turns out to be", c.alike, true]], links: [ext("Find footage", ytFind(c.n + " UFO footage"))] });
   return h("article", { class: "pan craft" }, art(), h("div", { class: "pf" }, h("div", { class: "meta" }, h("span", { text: c.size })), h("h3", { text: c.n }), h("button", { class: "open", type: "button", "data-cur": "Open file", text: "Open the file →", onclick: file }))); })));
 window.OBSERVABLES.forEach((o, i) => $("#obs").append(h("div", {}, h("b", { text: String(i + 1) }), h("h4", { text: o.n }), h("p", { text: o.t }))));
