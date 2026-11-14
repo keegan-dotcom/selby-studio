@@ -204,14 +204,13 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
     /* the film starts the moment it is actually playing; phones that block autoplay (iOS low power mode) get a tap-to-start instead of a different intro */
     const tick = () => { if (done) return; const d = vid.duration || 10, c = vid.currentTime; cue.style.opacity = String(Math.min(1, c / .6) * (1 - Math.min(1, Math.max(0, (c - 2.2) / .6)))); white.style.opacity = String(Math.max(0, (c - (d - 1.1)) / 1.1)); if (c >= d - .05) return finish(); requestAnimationFrame(tick); };
     const start = () => { if (started || done) return; started = true; pre.classList.remove("tap"); pre.classList.add("film"); cue.textContent = "Look up"; requestAnimationFrame(tick); };
-    let asked = false;
-    const askTap = () => { if (started || done || asked) return; asked = true; pre.classList.add("tap"); cue.textContent = "Tap to look up"; cue.style.opacity = "1";
-      pre.addEventListener("click", e => { if (e.target.closest("#pre-skip")) return; vid.play().catch(() => { pre.classList.remove("tap"); ship.decode ? ship.decode().then(go, go) : go(); }); }, { once: true }); };
+    /* if a phone refuses to autoplay (iOS low power mode) or the film never arrives, go straight to the site rather than show a different intro */
+    const bail = () => { if (started || done) return; pre.classList.add("flash"); finish(); };
     vid.addEventListener("playing", start, { once: true }); vid.addEventListener("ended", finish);
-    vid.addEventListener("error", () => { if (!started) ship.decode ? ship.decode().then(go, go) : go(); });
-    const p = vid.play(); if (p && p.catch) p.catch(e => { if (e && e.name === "NotAllowedError") askTap(); });
-    vid.addEventListener("canplay", () => { if (!started) vid.play().catch(askTap); }, { once: true });
-    setTimeout(askTap, 8000);
+    vid.addEventListener("error", bail);
+    const p = vid.play(); if (p && p.catch) p.catch(e => { if (e && e.name === "NotAllowedError") bail(); });
+    vid.addEventListener("canplay", () => { if (!started) vid.play().catch(bail); }, { once: true });
+    setTimeout(bail, 9000);
   } else { ship.decode ? ship.decode().then(go, go) : (ship.onload = go); setTimeout(go, 2500); }
   const skip = () => { if (!done) { pre.classList.add("flash"); finish(); } };
   $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
@@ -306,6 +305,22 @@ const A = window.ART, artUrl = k => window.ART_BASE + k;
         h("dl", { class: "prof-facts" }, h("dt", { text: "Height" }), h("dd", { text: l.h }), h("dt", { text: "First reported" }), h("dd", { text: l.first }), h("dt", { text: "Said to come from" }), h("dd", { text: b.from })),
         h("p", { class: "lore", text: l.lore }),
         h("button", { class: "open", type: "button", "data-cur": "More detail", text: "More detail", onclick: () => window.openBeing(b.g) })))); });
+})();
+
+/* ───────── the author's 2014 essay ───────── */
+(() => { const pdf = "papers/where-is-everybody.pdf";
+  const open = () => openDos({ left: h("a", { class: "paper-sheet big", href: pdf, target: "_blank", rel: "noopener", "data-cur": "Read" }, h("img", { src: "papers/where-is-everybody-p1.jpg", alt: "First page of the essay", draggable: "false" })), meta: [h("span", { text: "Keegan Selby, November 2014" })], title: "Where is everybody?",
+    blocks: [
+      ["The question", "In 1961 Frank Drake needed an agenda for the first SETI meeting at Green Bank, so he wrote seven terms for how many radio-loud civilisations the Milky Way should hold. Even with conservative numbers he got around a thousand. The sky has answered with silence, apart from one 72-second spike in 1977, the Wow! signal, never heard again."],
+      ["Term by term", "The early terms have firmed up since Drake: almost every stable star has planets, and Kepler data suggested as many as 11 billion Earth-sized worlds in habitable zones. The later terms are guesswork. Life appeared on Earth almost as soon as conditions allowed, which hints it is easy, but in billions of species only one has ever built a radio."],
+      ["Rare Earth", "Our moon, born in a random collision, steadies Earth's tilt and drives the tides; the same impact may explain the iron core whose magnetic field shields the atmosphere. Add abiogenesis itself, five mass extinctions and the Cambrian explosion, and Earth may be a fluke that does not repeat."],
+      ["The Mediocrity Principle", "The other side: Earth formed from the same nebular stuff as everything else, and nothing about our star or planet is special. If that holds, the galaxy should be full."],
+      ["Why the silence", "Scale and mismatch. Signals crawl at light speed across a 100,000 light-year galaxy, so a neighbour a few thousand light-years away is a conversation with a delay of millennia. Their technology may be as invisible to us as email to a walkie-talkie, and they may ignore us the way we ignore bacteria. Or we are in a zoo, kept apart like an uncontacted tribe."],
+      ["Where it lands", "Our search covers roughly 0.1% of the galaxy, too little to call the silence evidence of absence. What SETI has proven is narrower: nobody within range has been broadcasting long enough to reach us. And we might be the first to ask the question at all."],
+      ["Since 2014", "The James Webb Space Telescope the essay looked forward to launched on 25 December 2021 and now reads the atmospheres of distant planets. The Wow! signal is still unexplained. And the UFO question Fermi was joking about at lunch in 1950 is now in front of Congress."]
+    ], links: [h("a", { class: "btn", href: pdf, target: "_blank", rel: "noopener", text: "Read the full paper (PDF)" })] });
+  $("#paper-open").onclick = open;
+  $("#paper").addEventListener("click", e => { if (!e.target.closest("a,button")) open(); });
 })();
 
 /* ───────── craft, observables ───────── */
