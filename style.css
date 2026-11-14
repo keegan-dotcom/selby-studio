@@ -841,3 +841,11 @@ html{scroll-padding-top:80px}
 .dos .paper-sheet.big{transform:none;aspect-ratio:auto;max-height:70vh}
 .dos .paper-sheet.big img{height:auto}
 @media (max-width:760px){.paper{grid-template-columns:1fr}.paper-sheet{max-width:320px;margin:0 auto}}
+/* phones: six chapter cards as a slim 3×2 strip so the figure stays clear */
+@media (max-width:760px){
+ .htabs{grid-template-columns:repeat(3,1fr);gap:5px}
+ .htabs .ht{position:relative;display:block!important;height:62px}
+ .htabs .ht .th-img{position:absolute;inset:0;flex:none;height:auto;width:auto}
+ .htabs .th-t{position:absolute;inset:auto 0 0 0;padding:16px 7px 6px;background:linear-gradient(transparent,rgba(2,3,6,.9))}
+ .htabs .th-t b{font-size:9.5px;letter-spacing:.04em}
+}
