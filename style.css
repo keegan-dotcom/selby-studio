@@ -773,7 +773,7 @@ details[open]>summary.open::before{content:"−"}
 @media (prefers-reduced-motion:reduce){.hs::after{animation:none}}
 
 /* ── polish pass ── */
-.deck:has(>.grid-deck){padding-left:0;padding-right:0}
+#origin-deck .deck{padding-left:0;padding-right:0}
 .rows summary{grid-template-columns:118px 1fr auto 26px}
 .rows summary>.no{min-width:0}
 .rows summary:not(:has(.no)){grid-template-columns:1fr auto 26px}
@@ -796,3 +796,32 @@ html{scroll-padding-top:80px}
 .orbcard>span.open{left:auto;right:clamp(20px,3vw,40px);bottom:clamp(18px,2.4vw,32px);display:inline-flex;gap:10px}
 .orbcard:hover .open{background:var(--hot);color:#050608}
 .depth{background:rgba(5,6,8,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:10px 14px 10px 16px;border:1px solid var(--line)}
+
+/* ── intro: tap-to-start when a phone blocks autoplay ── */
+.pre.tap{cursor:pointer}
+.pre.tap .pre-cue{opacity:1!important;animation:tapcue 1.8s ease-in-out infinite}
+@keyframes tapcue{50%{opacity:.35}}
+
+/* ── phones: same composition as desktop — full-bleed scene, title on top, chapter cards along the bottom ── */
+@media (max-width:760px){
+ .hero{height:100svh;min-height:620px}
+ .hero-plate{inset:0!important;-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;transform:none!important;background-position:50% 62%!important}
+ .hero-plate video{object-position:50% 62%!important}
+ .hero .shade{background:linear-gradient(to bottom,rgba(2,3,6,.55) 0,transparent 24%,transparent 46%,rgba(2,3,6,.75) 66%,rgba(2,3,6,.95) 100%)}
+ .hero-content{top:88px}
+ .hero-content h1{font-size:clamp(40px,12.5vw,62px);line-height:1.04}
+ .htabs{position:absolute;left:var(--pad);right:var(--pad);top:auto;bottom:max(16px,env(safe-area-inset-bottom));display:grid!important;grid-template-columns:1fr 1fr;gap:6px;overflow:visible}
+ .htabs .ht{display:flex!important;align-items:center;height:50px;flex:none;min-width:0}
+ .htabs .ht .th-img{position:relative;flex:0 0 58px;height:100%;aspect-ratio:auto!important;overflow:hidden}
+ .htabs .ht .th-img img{width:100%;height:100%;object-fit:cover}
+ .htabs .th-t{position:static;background:none;padding:0 10px;min-width:0}
+ .htabs .th-t b{font-size:11px;line-height:1.15}
+ .htabs .th-t em{display:none!important}
+ .htabs .ht:last-child{grid-column:1/-1}
+ /* decks sit inside the page margins like on desktop */
+ .grid-deck{padding-left:0;padding-right:0}
+ .orbcard{aspect-ratio:auto;min-height:220px}
+ .orbcard>span.open{left:clamp(20px,3vw,40px);right:auto;bottom:18px}
+ .orbcard>span:not(.open){bottom:72px}
+ .hs::after{width:16px;height:16px;font-size:12px;top:-2px}
+}

@@ -200,10 +200,18 @@ if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate")
   const vid = $("#pre-vid"), white = $("#pre-white");
   if (window.ART.intro) {
     vid.src = window.ART_BASE + (window.ART.intro2k && innerWidth * (devicePixelRatio || 1) >= 1900 && !(navigator.connection && navigator.connection.saveData) ? window.ART.intro2k : window.ART.intro);
-    const playVid = () => { if (started || done) return; started = true; pre.classList.add("film"); vid.play().catch(() => { started = false; pre.classList.remove("film"); go(); });
-      const tick = () => { if (done) return; const d = vid.duration || 10, c = vid.currentTime; cue.style.opacity = String(Math.min(1, c / .6) * (1 - Math.min(1, Math.max(0, (c - 2.2) / .6)))); white.style.opacity = String(Math.max(0, (c - (d - 1.1)) / 1.1)); if (c >= d - .05) return finish(); requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
-    vid.addEventListener("canplay", playVid, { once: true }); vid.addEventListener("ended", finish); vid.addEventListener("error", () => { if (!started) ship.decode ? ship.decode().then(go, go) : go(); });
-    setTimeout(() => { if (!started) { vid.removeAttribute("src"); ship.decode ? ship.decode().then(go, go) : go(); } }, 6000);
+    vid.muted = true; vid.defaultMuted = true; vid.setAttribute("autoplay", "");
+    /* the film starts the moment it is actually playing; phones that block autoplay (iOS low power mode) get a tap-to-start instead of a different intro */
+    const tick = () => { if (done) return; const d = vid.duration || 10, c = vid.currentTime; cue.style.opacity = String(Math.min(1, c / .6) * (1 - Math.min(1, Math.max(0, (c - 2.2) / .6)))); white.style.opacity = String(Math.max(0, (c - (d - 1.1)) / 1.1)); if (c >= d - .05) return finish(); requestAnimationFrame(tick); };
+    const start = () => { if (started || done) return; started = true; pre.classList.remove("tap"); pre.classList.add("film"); cue.textContent = "Look up"; requestAnimationFrame(tick); };
+    let asked = false;
+    const askTap = () => { if (started || done || asked) return; asked = true; pre.classList.add("tap"); cue.textContent = "Tap to look up"; cue.style.opacity = "1";
+      pre.addEventListener("click", e => { if (e.target.closest("#pre-skip")) return; vid.play().catch(() => { pre.classList.remove("tap"); ship.decode ? ship.decode().then(go, go) : go(); }); }, { once: true }); };
+    vid.addEventListener("playing", start, { once: true }); vid.addEventListener("ended", finish);
+    vid.addEventListener("error", () => { if (!started) ship.decode ? ship.decode().then(go, go) : go(); });
+    const p = vid.play(); if (p && p.catch) p.catch(e => { if (e && e.name === "NotAllowedError") askTap(); });
+    vid.addEventListener("canplay", () => { if (!started) vid.play().catch(askTap); }, { once: true });
+    setTimeout(askTap, 8000);
   } else { ship.decode ? ship.decode().then(go, go) : (ship.onload = go); setTimeout(go, 2500); }
   const skip = () => { if (!done) { pre.classList.add("flash"); finish(); } };
   $("#pre-skip").onclick = skip; addEventListener("keydown", e => { if (e.key === "Escape" || e.key === " ") skip(); }, { once: true });
