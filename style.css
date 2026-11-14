@@ -817,7 +817,6 @@ html{scroll-padding-top:80px}
  .htabs .th-t{position:static;background:none;padding:0 10px;min-width:0}
  .htabs .th-t b{font-size:11px;line-height:1.15}
  .htabs .th-t em{display:none!important}
- .htabs .ht:last-child{grid-column:1/-1}
  /* decks sit inside the page margins like on desktop */
  .grid-deck{padding-left:0;padding-right:0}
  .orbcard{aspect-ratio:auto;min-height:220px}

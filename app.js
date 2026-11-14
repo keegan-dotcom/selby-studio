@@ -151,7 +151,7 @@ if (window.ART.heroVid && !STILL) { const hv = $("#hero-vid"); hv.src = window.A
 if (FINE && !STILL) hero.addEventListener("pointermove", e => { $("#hero-plate").style.translate = `${(e.clientX / innerWidth - .5) * -24}px ${(e.clientY / innerHeight - .5) * -16}px`; });
 
 /* ───────── hero chapter tabs ───────── */
-(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight types of aliens", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["psi", "The psi link", "Minds and machines", A.psi], ["programs", "Programs", "47 on record", A.thesis[6]]];
+(() => { const A = window.ART, T = [["footage", "Evidence", "Video and the numbers", A.craft.tictac], ["beings", "Phenotypes", "Eight types of aliens", A.being.grey], ["craft", "The craft", "Fourteen shapes", A.craft.disc], ["sites", "Sacred sites", "Twelve places", A.thesis[1]], ["origins", "Theories", "Nine explanations", A.thesis[3]], ["programs", "Programs", "47 on record", A.thesis[6]]];
   T.forEach(([id, n, sub, img], i) => $("#htabs").append(h("a", { href: "#" + id, class: "ht", style: `--i:${i}`, "data-cur": "Go" }, h("span", { class: "th-img" }, h("img", { src: window.ART_BASE + img, alt: "", loading: "eager", draggable: "false", onerror: e => e.target.remove() })), h("span", { class: "th-t" }, h("b", { text: n }), h("em", { text: sub }))))); })();
 
 /* ───────── intro: a craft crosses the night sky, lights you up and takes you ───────── */
