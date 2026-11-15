@@ -858,3 +858,9 @@ html{scroll-padding-top:80px}
 .ded-star{display:block;width:6px;height:6px;margin:0 auto 22px;border-radius:50%;background:#fff;box-shadow:0 0 10px 2px rgba(255,255,255,.8),0 0 40px 8px rgba(156,199,214,.35);animation:dedtw 4s ease-in-out infinite}
 @keyframes dedtw{50%{opacity:.45;transform:scale(.8)}}
 @media (prefers-reduced-motion:reduce){.ded-star{animation:none}}
+
+/* the author's honest aside after the thesis */
+.honest{max-width:640px;margin:clamp(28px,4vw,48px) auto 0;padding:18px 22px;text-align:center;font:400 italic clamp(16px,1.25vw,19px)/1.6 var(--body);color:rgba(233,237,240,.78);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.honest b{font-style:normal;font-weight:600;color:var(--hot)}
+.honest .sig{display:block;margin-top:10px;font:400 14px var(--title);font-style:normal;letter-spacing:.08em;color:var(--fg)}
+.honest .sig::before{content:"— "}
